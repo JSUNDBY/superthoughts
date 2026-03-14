@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enroll — Superthoughts Mindful Eating Program</title>
+  <meta name="description" content="Start the Superthoughts mindful eating program. Seven guided recordings, lifetime access, one simple payment.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="home.html" class="logo">
+        <div class="logo-mark"></div>
+        <span class="logo-text">Superthoughts</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="home.html#method">The Method</a>
+        <a href="home.html#sessions">Sessions</a>
+        <a href="home.html#stories">Stories</a>
+        <a href="program.html">Program</a>
+        <a href="enroll.html" class="nav-cta">Start Now</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Enrollment Section -->
+  <section class="hero hero--short">
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+    <div class="container">
+      <div class="enroll-grid">
+        <!-- Left: Info -->
+        <div class="enroll-sidebar">
+          <p class="tag">Begin your practice</p>
+          <h1 class="headline headline--lg">Start <em>today.</em> Go at your own pace.</h1>
+          <p class="body-lg" style="margin-top: 1rem;">One payment, lifetime access. The recordings are yours to keep and revisit whenever you need them.</p>
+
+          <ul class="enroll-perks">
+            <li>7 guided mindful eating recordings (95 min total)</li>
+            <li>Professionally produced audio</li>
+            <li>Stream or download on any device</li>
+            <li>Lifetime access – no subscription</li>
+            <li>New recordings added free</li>
+            <li>From a creator trusted by 37,500+ listeners</li>
+          </ul>
+
+          <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06);">
+            <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem;">
+              <span style="font-family: var(--font-display); font-size: 2.5rem; color: var(--text);">$49</span>
+              <span style="font-size: 0.88rem; color: var(--text-muted);">one-time</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-faint);">No recurring charges. No hidden fees. Ever.</p>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="form-card">
+          <h2 style="font-family: var(--font-display); font-size: 1.35rem; color: var(--text); margin-bottom: 0.35rem; font-weight: 400;">Create your account</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem;">You'll get instant access after signing up.</p>
+
+          <form id="enrollForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First name</label>
+                <input type="text" id="firstName" name="firstName" placeholder="First name" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Last name" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Create a password</label>
+              <input type="password" id="password" name="password" placeholder="At least 8 characters" required minlength="8">
+            </div>
+
+            <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+              <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--text); margin-bottom: 1rem; font-weight: 400;">Payment</h3>
+              <div class="form-group">
+                <label for="cardNumber">Card number</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="expiry">Expiry</label>
+                  <input type="text" id="expiry" name="expiry" placeholder="MM / YY" required>
+                </div>
+                <div class="form-group">
+                  <label for="cvc">CVC</label>
+                  <input type="text" id="cvc" name="cvc" placeholder="123" required>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--full btn--lg">Get instant access – $49</button>
+
+            <p style="text-align: center; font-size: 0.78rem; color: var(--text-faint); margin-top: 1rem; line-height: 1.6;">
+              Secure checkout. Your information is encrypted.<br>
+              Questions? Reach out at hello@superthoughts.co
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust / Testimonial -->
+  <section class="testimonials" style="padding-top: 4rem; padding-bottom: 4rem;">
+    <div class="container" style="max-width: 640px;">
+      <div class="testimonial reveal" style="text-align: center; background: transparent; border: none; padding: 2rem 0;">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote style="font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.6; color: var(--text-muted);">"Cultivating a quality of intention, rather than a checklist, adds value and meaning to the abundant life I have created. Thank you, Josh. I appreciate what you do and the gifts you are blessed with."</blockquote>
+        <div class="testimonial-author" style="margin-top: 1.5rem;">
+          <strong>Natalie S.</strong>
+          <span>Greenville, SC</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Minimal Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border: none; padding-top: 0;">
+        <p>&copy; 2026 Superthoughts. All rights reserved.</p>
+        <p>Questions? hello@superthoughts.co</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enroll in Mindful Eating – Superthoughts</title>
+  <meta name="description" content="Get lifetime access to all 7 guided mindful eating sessions for $49.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c18;
+      --bg-card: #0e1425;
+      --bg-elevated: #151d32;
+      --text: #edf0f7;
+      --text-muted: #9aa4b8;
+      --text-faint: #4e576b;
+      --accent: #7ba4e8;
+      --accent-glow: rgba(123, 164, 232, 0.15);
+      --sage: #8cc4b0;
+      --font-display: 'Lora', Georgia, serif;
+      --font-body: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      background-image: linear-gradient(180deg, #080c18 0%, #0a1028 35%, #0c1230 65%, #080c18 100%);
+      background-attachment: fixed;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+
+    /* Nav */
+    .nav {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text);
+    }
+
+    .nav-back {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .nav-back:hover { color: var(--text-muted); }
+
+    /* Hero */
+    .checkout-hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: clamp(3rem, 8vh, 5rem) 0;
+      position: relative;
+    }
+
+    .checkout-glow {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      background: rgba(123, 164, 232, 0.05);
+      top: 10%;
+      right: 10%;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2.5rem, 5vw, 4rem);
+      align-items: start;
+      position: relative;
+    }
+
+    /* Left - What you get */
+    .checkout-info-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .checkout-info h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .checkout-info h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .checkout-info > p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+
+    .checkout-sessions {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .checkout-sessions li {
+      padding: 0.6rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .checkout-sessions li:last-child { border-bottom: none; }
+
+    .checkout-sessions li span {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      width: 20px;
+    }
+
+    .checkout-sessions li strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .checkout-perks {
+      list-style: none;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .checkout-perks li {
+      padding: 0.45rem 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .checkout-perks li svg {
+      color: var(--sage);
+      flex-shrink: 0;
+    }
+
+    .checkout-quote {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .checkout-quote blockquote {
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+
+    .checkout-quote cite {
+      font-style: normal;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+    }
+
+    /* Right - Purchase card */
+    .purchase-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(123, 164, 232, 0.08);
+      border-radius: 20px;
+      padding: clamp(2rem, 4vw, 2.5rem);
+      position: sticky;
+      top: 2rem;
+    }
+
+    .purchase-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--sage));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .purchase-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .purchase-price {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .purchase-price-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .purchase-includes {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .purchase-includes li {
+      padding: 0.55rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+
+    .purchase-includes li svg {
+      color: var(--sage);
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* Stripe button */
+    .stripe-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      border-radius: 60px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s var(--ease), box-shadow 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .stripe-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(123, 164, 232, 0.25);
+    }
+
+    .stripe-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      line-height: 1.5;
+    }
+
+    .stripe-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+    }
+
+    .stripe-badge svg { opacity: 0.4; }
+
+    /* Guarantee */
+    .guarantee {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: rgba(140, 196, 176, 0.06);
+      border: 1px solid rgba(140, 196, 176, 0.1);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .guarantee p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .guarantee strong { color: var(--sage); }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 2rem 0;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 0.75rem;
+      color: var(--text-faint);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+      .purchase-card {
+        position: static;
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">Superthoughts</a>
+      <a href="free-session.html" class="nav-back">&larr; Back</a>
+    </div>
+  </nav>
+
+  <!-- Checkout -->
+  <section class="checkout-hero">
+    <div class="checkout-glow"></div>
+    <div class="container">
+      <div class="checkout-grid">
+
+        <!-- Left: What you get -->
+        <div class="checkout-info">
+          <p class="checkout-info-tag">Mindful Eating Program</p>
+          <h1>Seven sessions that will change how you <em>eat.</em></h1>
+          <p>A guided practice to realign your relationship with food. Not a diet. Not rules. Just awareness, repeated until it becomes natural.</p>
+
+          <ul class="checkout-sessions">
+            <li><span>01</span> <strong>Arriving at the Table</strong> – 12 min</li>
+            <li><span>02</span> <strong>Hunger vs. Habit</strong> – 14 min</li>
+            <li><span>03</span> <strong>The Pause</strong> – 11 min</li>
+            <li><span>04</span> <strong>Eating With Your Senses</strong> – 15 min</li>
+            <li><span>05</span> <strong>The Stories We Tell</strong> – 13 min</li>
+            <li><span>06</span> <strong>Emotional Weather</strong> – 16 min</li>
+            <li><span>07</span> <strong>Your Own Way Forward</strong> – 14 min</li>
+          </ul>
+
+          <ul class="checkout-perks">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Lifetime access – listen as many times as you want
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Stream online or download for offline listening
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Future sessions included at no extra cost
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              One payment. No subscriptions. No upsells.
+            </li>
+          </ul>
+
+          <div class="checkout-quote">
+            <blockquote>"Gentle, soothing voice. Powerful yet subtle. I moved through my day with ease and clarity."</blockquote>
+            <cite>Cher M. – Los Angeles, CA</cite>
+          </div>
+        </div>
+
+        <!-- Right: Purchase card -->
+        <div class="purchase-card">
+          <div class="purchase-header">
+            <div class="purchase-price">$49</div>
+            <p class="purchase-price-note">One-time payment. Lifetime access.</p>
+          </div>
+
+          <ul class="purchase-includes">
+            <li>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              All 7 guided sessions (95 min)
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Stream or download on any device
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Instant access after payment
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Future recordings included free
+            </li>
+          </ul>
+
+          <!-- This links to your Stripe Payment Link -->
+          <a href="#stripe-payment-link-goes-here" class="stripe-btn">
+            Get instant access
+          </a>
+
+          <p class="stripe-note">
+            Secure checkout powered by Stripe.<br>
+            You'll get access immediately after payment.
+          </p>
+
+          <div class="stripe-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Secure payment · SSL encrypted
+          </div>
+
+          <div class="guarantee">
+            <p><strong>Listen with confidence.</strong> If the program isn't for you, reach out within 14 days and we will make it right. No questions.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Superthoughts · josh@superthoughts.com</p>
+    </div>
+  </footer>
+
+  <!-- DEV NAV: Remove before launch -->
+  <div style="position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid rgba(255,255,255,0.1);padding:0.6rem 1rem;display:flex;gap:1rem;align-items:center;z-index:9999;font-family:monospace;font-size:0.7rem;">
+    <span style="color:#555;margin-right:auto;">DEV NAV</span>
+    <a href="index.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.1);border-radius:4px;">1. Capture</a>
+    <a href="free-session.html" style="color:#8cc4b0;padding:0.3rem 0.6rem;background:rgba(140,196,176,0.1);border-radius:4px;">2. Listen</a>
+    <a href="checkout.html" style="color:#a89bcc;padding:0.3rem 0.6rem;background:rgba(168,155,204,0.15);border-radius:4px;">3. Checkout</a>
+    <a href="my-program.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.1);border-radius:4px;">4. Program</a>
+    <a href="homepage-mockup.html" style="color:#888;padding:0.3rem 0.6rem;background:rgba(255,255,255,0.05);border-radius:4px;">Homepage</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Session — Superthoughts</title>
+  <meta name="description" content="Listen to your guided mindful eating session from Superthoughts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== DELIVERY PAGE ===== */
+
+    .delivery-hero {
+      padding: clamp(7rem, 14vh, 10rem) 0 clamp(3rem, 6vh, 5rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .delivery-hero .container { position: relative; z-index: 2; }
+
+    .welcome-name {
+      color: var(--accent);
+    }
+
+    .player-section {
+      padding: 0 0 clamp(4rem, 8vh, 6rem);
+    }
+
+    .player-card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .player-top {
+      padding: 2.5rem 2.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .player-art {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--sage));
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .player-art svg {
+      width: 32px;
+      height: 32px;
+      fill: none;
+      stroke: var(--bg);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .player-info h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--text);
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .player-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .player-info .tag {
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+
+    .player-embed {
+      padding: 1.5rem 2.5rem 2.5rem;
+    }
+
+    .player-embed iframe {
+      border-radius: 12px;
+      filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(1.1);
+    }
+
+    .player-instructions {
+      text-align: center;
+      padding: 2rem 2.5rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .player-instructions p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .player-instructions strong {
+      color: var(--text);
+    }
+
+    /* ===== TRANSITION / BRIDGE ===== */
+    .bridge {
+      padding: clamp(5rem, 10vw, 8rem) 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .bridge .headline {
+      margin-bottom: 1.25rem;
+    }
+
+    .bridge .body-lg {
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+
+    .bridge-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0 auto 3rem;
+      opacity: 0.5;
+    }
+
+    /* ===== OFFER SECTION ===== */
+    .offer {
+      padding: clamp(5rem, 10vw, 8rem) 0;
+      background: var(--bg-alt);
+    }
+
+    .offer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+
+    .offer-copy .tag { margin-bottom: 1rem; }
+    .offer-copy .headline { margin-bottom: 1.25rem; }
+
+    .offer-copy .body-lg { margin-bottom: 2rem; }
+
+    .offer-sessions {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .offer-sessions li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .offer-sessions li:last-child { border: none; }
+
+    .offer-session-num {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      min-width: 1.5rem;
+      padding-top: 0.15rem;
+    }
+
+    .offer-session-title {
+      font-size: 0.92rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .offer-session-desc {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      margin-top: 0.15rem;
+    }
+
+    .offer-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: clamp(2rem, 4vw, 3rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--sage), var(--rose));
+    }
+
+    .offer-card-badge {
+      display: inline-block;
+      background: rgba(123, 164, 232, 0.12);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+    }
+
+    .offer-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--text);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+
+    .offer-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .offer-price-amount {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .offer-price-detail {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .offer-price-context {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      margin-bottom: 2rem;
+    }
+
+    .offer-includes {
+      list-style: none;
+      margin-bottom: 2rem;
+      padding: 0;
+    }
+
+    .offer-includes li {
+      padding: 0.55rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      list-style: none;
+    }
+
+    .offer-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--sage-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .offer-check svg {
+      width: 10px;
+      height: 10px;
+      stroke: var(--sage);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .offer-guarantee {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      margin-top: 1.25rem;
+      line-height: 1.5;
+    }
+
+    /* ===== TESTIMONIALS ROW ===== */
+    .offer-testimonials {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+      background: var(--bg-alt);
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .offer-testimonials .testimonials-grid {
+      gap: 1.25rem;
+    }
+
+    /* ===== FINAL URGENCY ===== */
+    .final-push {
+      padding: clamp(5rem, 10vw, 7rem) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-push .headline { margin-bottom: 1rem; }
+    .final-push .body-lg {
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    .final-push-note {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      margin-top: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .offer-grid { grid-template-columns: 1fr; }
+      .player-top { flex-direction: column; text-align: center; }
+      .offer-testimonials .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    /* ===== BREATHING VISUAL ===== */
+    .breath-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .breath-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .breath-canvas.active .breath-orb { opacity: 1; }
+
+    .breath-orb--1 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(123, 164, 232, 0.1) 0%, transparent 70%);
+      top: 15%;
+      left: 25%;
+      animation: breathe-a 8s ease-in-out infinite;
+    }
+
+    .breath-orb--2 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(140, 196, 176, 0.08) 0%, transparent 70%);
+      top: 40%;
+      right: 20%;
+      animation: breathe-b 10s ease-in-out infinite;
+    }
+
+    .breath-orb--3 {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(123, 164, 232, 0.06) 0%, transparent 70%);
+      bottom: 25%;
+      left: 35%;
+      animation: breathe-c 12s ease-in-out infinite;
+    }
+
+    @keyframes breathe-a {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+      25% { transform: translate(25px, -15px) scale(1.15); opacity: 0.8; }
+      50% { transform: translate(-10px, 10px) scale(1.05); opacity: 0.6; }
+      75% { transform: translate(15px, 8px) scale(1.2); opacity: 0.9; }
+    }
+
+    @keyframes breathe-b {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+      30% { transform: translate(-20px, 12px) scale(1.2); opacity: 0.7; }
+      60% { transform: translate(12px, -8px) scale(0.95); opacity: 0.5; }
+      85% { transform: translate(-8px, -15px) scale(1.1); opacity: 0.8; }
+    }
+
+    @keyframes breathe-c {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      35% { transform: translate(18px, 15px) scale(1.25); opacity: 0.6; }
+      65% { transform: translate(-12px, -8px) scale(1.1); opacity: 0.5; }
+    }
+
+    /* Keep content above canvas */
+    .delivery-hero, .player-section, .bridge, .offer, .offer-testimonials, .final-push, .footer,
+    nav.nav { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Breathing visual - always active on listen page -->
+  <div class="breath-canvas active" id="breathCanvas">
+    <div class="breath-orb breath-orb--1"></div>
+    <div class="breath-orb breath-orb--2"></div>
+    <div class="breath-orb breath-orb--3"></div>
+  </div>
+
+  <!-- Minimal Nav -->
+  <nav class="nav scrolled" style="position: relative; background: transparent; border: none; box-shadow: none;">
+    <div class="nav-inner">
+      <a href="index.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.16em;color:var(--text);text-decoration:none;">Superthoughts</a>
+    </div>
+  </nav>
+
+  <!-- Welcome / Player -->
+  <section class="delivery-hero">
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+    <div class="container">
+      <p class="tag">You're in</p>
+      <h1 class="headline headline--lg"><span class="welcome-name" id="welcomeName">Welcome</span> – your session is <em>ready.</em></h1>
+      <p class="body-lg" style="max-width: 540px; margin: 1rem auto 0;">Find a quiet spot. Take a breath. Press play when you're ready. This works best right before a meal.</p>
+    </div>
+  </section>
+
+  <section class="player-section">
+    <div class="container">
+      <div class="player-card reveal">
+        <div class="player-top">
+          <div class="player-art">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <div class="player-info">
+            <h2>Healthy Habits: Mindful Eating</h2>
+            <p>Guided by Josh Sundby &middot; 6:30</p>
+            <p class="tag">Your session</p>
+          </div>
+        </div>
+        <div class="player-embed">
+          <iframe
+            width="100%"
+            height="166"
+            scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/josh-sundby-125254387/healthy-habits-mindful-1&color=%237ba4e8&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&buying=false&sharing=false&download=false&show_playcount=false"
+          ></iframe>
+        </div>
+        <div class="player-instructions">
+          <p>Listen to this before your next meal. Follow the guidance and simply notice what happens.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bridge: Complimentary → Paid -->
+  <section class="bridge">
+    <div class="container">
+      <div class="bridge-divider"></div>
+      <p class="tag">Experience the foundation</p>
+      <h2 class="headline headline--lg">Imagine calm, mindful presence at <em>every single meal.</em></h2>
+      <p class="body-lg">What you just experienced is the start of a complete practice. Seven sessions begins the journey you carry with you into every meal.</p>
+    </div>
+  </section>
+
+  <!-- The Offer -->
+  <section class="offer" id="offer">
+    <div class="container">
+      <div class="offer-grid">
+
+        <!-- Left: What's in the full program -->
+        <div class="offer-copy">
+          <p class="tag">The full program</p>
+          <h2 class="headline headline--md">Seven sessions that <em>realign</em> your relationship with food.</h2>
+          <p class="body-lg">Each recording builds on the one before. By the end, mindful eating isn't something you "do" – it's just how you eat.</p>
+
+          <ul class="offer-sessions">
+            <li>
+              <span class="offer-session-num">01</span>
+              <div>
+                <div class="offer-session-title">Arriving at the Table</div>
+                <div class="offer-session-desc">The foundation you just tasted – taken deeper.</div>
+              </div>
+            </li>
+            <li>
+              <span class="offer-session-num">02</span>
+              <div>
+                <div class="offer-session-title">Hunger vs. Habit</div>
+                <div class="offer-session-desc">Know the difference. Change the pattern.</div>
+              </div>
+            </li>
+            <li>
+              <span class="offer-session-num">03</span>
+              <div>
+                <div class="offer-session-title">The Pause</div>
+                <div class="offer-session-desc">The most powerful skill you'll learn.</div>
+              </div>
+            </li>
+            <li>
+              <span class="offer-session-num">04</span>
+              <div>
+                <div class="offer-session-title">Eating With Your Senses</div>
+                <div class="offer-session-desc">More satisfaction from every bite.</div>
+              </div>
+            </li>
+            <li>
+              <span class="offer-session-num">05</span>
+              <div>
+                <div class="offer-session-title">The Stories We Tell</div>
+                <div class="offer-session-desc">Drop the guilt. See clearly.</div>
+              </div>
+            </li>
+            <li>
+              <span class="offer-session-num">06</span>
+              <div>
+                <div class="offer-session-title">Emotional Weather</div>
+                <div class="offer-session-desc">Meet emotional eating without shame.</div>
+              </div>
+            </li>
+            <li>
+              <span class="offer-session-num">07</span>
+              <div>
+                <div class="offer-session-title">Your Own Way Forward</div>
+                <div class="offer-session-desc">Carry this into every meal, forever.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: Pricing Card -->
+        <div class="offer-card">
+          <div class="offer-card-badge">Complete program</div>
+          <h3>Superthoughts: Mindful Eating</h3>
+
+          <div class="offer-price">
+            <span class="offer-price-amount">$49</span>
+            <span class="offer-price-detail">one-time</span>
+          </div>
+          <p class="offer-price-context">Less than a single therapy session. Lasts a lifetime.</p>
+
+          <ul class="offer-includes">
+            <li>
+              <span class="offer-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              7 guided mindful eating recordings
+            </li>
+            <li>
+              <span class="offer-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              95 minutes of professional audio
+            </li>
+            <li>
+              <span class="offer-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Stream or download, any device
+            </li>
+            <li>
+              <span class="offer-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Lifetime access – no subscription
+            </li>
+            <li>
+              <span class="offer-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              Future recordings included free
+            </li>
+            <li>
+              <span class="offer-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              From the same voice you just listened to
+            </li>
+          </ul>
+
+          <a href="checkout.html" class="btn btn--primary btn--full btn--lg">Get the full program <span class="btn-arrow">&rarr;</span></a>
+          <p class="offer-guarantee">One-time payment. No subscription. No upsells after this.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="offer-testimonials">
+    <div class="container">
+      <div class="testimonials-grid">
+        <div class="testimonial reveal">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"Perfect prep for my day. Josh has a <strong>gentle, soothing voice</strong> with powerful yet subtle guidance. I moved through my day with ease and clarity. I felt calm."</blockquote>
+          <div class="testimonial-author">
+            <strong>Cher M.</strong>
+            <span>Los Angeles, CA</span>
+          </div>
+        </div>
+        <div class="testimonial reveal reveal-delay-1">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"I found it so grounding, comforting and reassuring. I felt <strong>calm and confident with clarity and purpose</strong>. You have a lovely, warm and sincere voice."</blockquote>
+          <div class="testimonial-author">
+            <strong>Alison W.</strong>
+            <span>Scotland, UK</span>
+          </div>
+        </div>
+        <div class="testimonial reveal reveal-delay-2">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"A beautiful meditation that left me feeling <strong>connected and in my power</strong>. Simple and so very practical. Love it."</blockquote>
+          <div class="testimonial-author">
+            <strong>Mel D.</strong>
+            <span>Hertfordshire, UK</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Push -->
+  <section class="final-push">
+    <div class="hero-glow hero-glow--1" style="top: 10%; right: 15%;"></div>
+    <div class="hero-glow hero-glow--2" style="bottom: 10%; left: 20%;"></div>
+    <div class="container reveal">
+      <p class="tag">You felt it in 6 minutes</p>
+      <h2 class="headline headline--lg">Imagine what <em>seven sessions</em> will do.</h2>
+      <p class="body-lg">The awareness you just experienced? That's the foundation. The full program will build a practice you carry into every meal, every day.</p>
+      <a href="checkout.html" class="btn btn--primary btn--lg">Start the full program – $49 <span class="btn-arrow">&rarr;</span></a>
+      <p class="final-push-note">One payment. Lifetime access. No subscription.</p>
+    </div>
+  </section>
+
+  <!-- Minimal Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border: none; padding-top: 0;">
+        <p>&copy; 2026 Superthoughts. All rights reserved.</p>
+        <p>Questions? hello@superthoughts.co</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DEV NAV: Remove before launch -->
+  <div style="position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid rgba(255,255,255,0.1);padding:0.6rem 1rem;display:flex;gap:1rem;align-items:center;z-index:9999;font-family:monospace;font-size:0.7rem;">
+    <span style="color:#555;margin-right:auto;">DEV NAV</span>
+    <a href="index.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.1);border-radius:4px;">1. Capture</a>
+    <a href="free-session.html" style="color:#8cc4b0;padding:0.3rem 0.6rem;background:rgba(140,196,176,0.15);border-radius:4px;">2. Listen</a>
+    <a href="checkout.html" style="color:#a89bcc;padding:0.3rem 0.6rem;background:rgba(168,155,204,0.1);border-radius:4px;">3. Checkout</a>
+    <a href="my-program.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.1);border-radius:4px;">4. Program</a>
+    <a href="homepage-mockup.html" style="color:#888;padding:0.3rem 0.6rem;background:rgba(255,255,255,0.05);border-radius:4px;">Homepage</a>
+  </div>
+
+  <script>
+    // Personalize welcome with name from funnel
+    const name = sessionStorage.getItem('st_name');
+    const welcomeEl = document.getElementById('welcomeName');
+    if (name && welcomeEl) {
+      welcomeEl.textContent = name;
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

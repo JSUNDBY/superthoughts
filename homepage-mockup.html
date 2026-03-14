@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Superthoughts – Guided Programs for a Steadier Life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c18;
+      --bg-card: #0e1425;
+      --bg-elevated: #151d32;
+      --text: #edf0f7;
+      --text-muted: #9aa4b8;
+      --text-faint: #4e576b;
+      --blue: #6ab4d4;
+      --blue-muted: rgba(106, 180, 212, 0.12);
+      --accent: #7ba4e8;
+      --accent-muted: rgba(123, 164, 232, 0.1);
+      --sage: #8cc4b0;
+      --sage-muted: rgba(140, 196, 176, 0.1);
+      --lavender: #a89bcc;
+      --lavender-muted: rgba(168, 155, 204, 0.1);
+      --font-display: 'Lora', Georgia, serif;
+      --font-body: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      background-image: linear-gradient(180deg, #080c18 0%, #0a1028 35%, #0c1230 65%, #080c18 100%);
+      background-attachment: fixed;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+
+    /* ===== NAV ===== */
+    .nav {
+      padding: 1.5rem 0;
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: var(--bg) !important;
+      padding: 0.45rem 1.2rem !important;
+      border-radius: 50px;
+      font-weight: 500 !important;
+    }
+
+    .nav-cta:hover { opacity: 0.9; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s var(--ease);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: clamp(6rem, 16vh, 12rem) 0 clamp(4rem, 10vh, 8rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .hero-glow--1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(106, 180, 212, 0.06);
+      top: -15%;
+      right: 5%;
+      animation: glow 10s ease-in-out infinite;
+    }
+
+    .hero-glow--2 {
+      width: 350px;
+      height: 350px;
+      background: rgba(123, 164, 232, 0.05);
+      bottom: -10%;
+      left: 10%;
+      animation: glow 12s ease-in-out infinite reverse;
+    }
+
+    @keyframes glow {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(15px, -20px) scale(1.04); }
+      66% { transform: translate(-10px, 10px) scale(0.96); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--blue);
+      margin-bottom: 2rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.5vw, 4rem);
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--blue);
+    }
+
+    .hero-sub {
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: 60px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 500;
+      border: 1.5px solid transparent;
+      transition: all 0.35s var(--ease);
+      cursor: pointer;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(123, 164, 232, 0.25);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    .btn--ghost:hover {
+      border-color: rgba(255,255,255,0.25);
+      color: var(--text);
+    }
+
+    .btn-arrow { transition: transform 0.3s var(--ease); }
+    .btn:hover .btn-arrow { transform: translateX(3px); }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      border: none;
+      height: 1px;
+      background: rgba(255,255,255,0.04);
+      margin: 0;
+    }
+
+    /* ===== WHAT IS SUPERTHOUGHTS ===== */
+    .about-section {
+      padding: clamp(5rem, 12vw, 8rem) 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+
+    .about-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--sage);
+      margin-bottom: 1.25rem;
+    }
+
+    .about-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-title em {
+      font-style: italic;
+      color: var(--blue);
+    }
+
+    .about-body p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    .about-body strong { color: var(--text); }
+
+    .about-values {
+      list-style: none;
+      margin-top: 2rem;
+    }
+
+    .about-values li {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .about-values li:first-child {
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .value-marker {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      transform: rotate(45deg);
+      flex-shrink: 0;
+      margin-top: 0.5rem;
+    }
+
+    .value-marker--blue { background: var(--blue); }
+    .value-marker--lavender { background: var(--lavender); }
+    .value-marker--sage { background: var(--sage); }
+
+    .value-text h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .value-text p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ===== FEATURED PROGRAM ===== */
+    .featured {
+      padding: clamp(5rem, 12vw, 8rem) 0;
+    }
+
+    .featured-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .featured-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 24px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .featured-image {
+      position: relative;
+      min-height: 400px;
+      overflow: hidden;
+    }
+
+    .featured-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .featured-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--bg-card));
+    }
+
+    .featured-content {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .featured-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .featured-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .featured-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 1.75rem;
+    }
+
+    .featured-details {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .featured-details li {
+      padding: 0.4rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .featured-details li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .featured-quote {
+      margin-top: 2rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .featured-quote blockquote {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+
+    .featured-quote cite {
+      font-style: normal;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+    }
+
+    /* ===== COMING SOON ===== */
+    .upcoming {
+      padding: 0 0 clamp(5rem, 12vw, 8rem);
+    }
+
+    .upcoming-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .upcoming-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .upcoming-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .upcoming-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.3s;
+    }
+
+    .upcoming-card:hover {
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    .upcoming-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 50px;
+      margin-bottom: 1.25rem;
+    }
+
+    .upcoming-badge--blue { background: var(--blue-muted); color: var(--blue); }
+    .upcoming-badge--lavender { background: var(--lavender-muted); color: var(--lavender); }
+    .upcoming-badge--sage { background: var(--sage-muted); color: var(--sage); }
+
+    .upcoming-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 0.65rem;
+    }
+
+    .upcoming-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .notify-link {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .notify-link:hover { color: var(--text-muted); }
+
+    /* ===== PROOF STRIP ===== */
+    .proof {
+      padding: clamp(3rem, 6vw, 4rem) 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .proof-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(2rem, 4vw, 4rem);
+      flex-wrap: wrap;
+    }
+
+    .proof-item {
+      text-align: center;
+    }
+
+    .proof-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .proof-label {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+    }
+
+    .proof-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials {
+      padding: clamp(5rem, 12vw, 8rem) 0;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .testimonials-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--blue);
+      margin-bottom: 1rem;
+    }
+
+    .testimonials-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 500;
+    }
+
+    .testimonials-title em {
+      font-style: italic;
+      color: var(--blue);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .testimonial-card blockquote {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .testimonial-card blockquote strong { color: var(--text); font-style: normal; }
+
+    .testimonial-card cite {
+      font-style: normal;
+      font-size: 0.8rem;
+      color: var(--text-faint);
+    }
+
+    .testimonial-card cite strong {
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      padding: clamp(5rem, 12vw, 8rem) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-cta .hero-glow--1 {
+      top: 20%;
+      right: 15%;
+    }
+
+    .final-cta-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--sage);
+      margin-bottom: 1.25rem;
+    }
+
+    .final-cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .final-cta-title em {
+      font-style: italic;
+      color: var(--blue);
+    }
+
+    .final-cta-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 460px;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 3rem 0 2rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    .footer-tagline {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      margin-top: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--text-muted); }
+
+    .footer-bottom {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-faint);
+    }
+
+    /* ===== REVEAL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-image { min-height: 250px; }
+      .featured-image-overlay { background: linear-gradient(to bottom, transparent 60%, var(--bg-card)); }
+      .upcoming-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      .nav-links.open { opacity: 1; pointer-events: all; }
+      .nav-links a { font-size: 0.85rem; color: var(--text) !important; }
+      .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      .hamburger.open span:nth-child(2) { opacity: 0; }
+      .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .proof-divider { display: none; }
+      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">Superthoughts</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#programs">Programs</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Voices</a>
+        <a href="mailto:josh@superthoughts.com">Contact</a>
+        <a href="#" class="nav-cta">Listen now</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-tag">Guided programs for real, lasting change</p>
+        <h1 class="hero-title">A return to steadiness, clarity, and <em>presence.</em></h1>
+        <p class="hero-sub">Superthoughts is a collection of guided audio programs designed to help you build the habits and awareness that change how you live, eat, sleep, and think.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn--primary">Start with Mindful Eating <span class="btn-arrow">&rarr;</span></a>
+          <a href="#programs" class="btn btn--ghost">Explore programs</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <hr class="divider">
+
+  <!-- What is Superthoughts -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="about-tag">The approach</p>
+          <h2 class="about-title">Your mind is more powerful than you think. <em>Practice proves it.</em></h2>
+          <div class="about-body">
+            <p>Superthoughts creates guided audio programs rooted in mindfulness, awareness, and the science of habit change. Each program is a series of recordings you listen to at your own pace.</p>
+            <p>No courses to sit through. No homework. No rigid schedules. Just <strong>close your eyes, follow the guidance, and notice what shifts.</strong></p>
+          </div>
+        </div>
+        <div class="reveal">
+          <ul class="about-values">
+            <li>
+              <span class="value-marker value-marker--blue"></span>
+              <div class="value-text">
+                <h4>Practice, not theory</h4>
+                <p>Every program is something you do, not something you study. Guided recordings you listen to and practice with in real moments of your day.</p>
+              </div>
+            </li>
+            <li>
+              <span class="value-marker value-marker--lavender"></span>
+              <div class="value-text">
+                <h4>Built to last</h4>
+                <p>These are not quick fixes. Each program builds a skill through repetition and awareness. The kind of change that stays with you.</p>
+              </div>
+            </li>
+            <li>
+              <span class="value-marker value-marker--sage"></span>
+              <div class="value-text">
+                <h4>Your pace, your terms</h4>
+                <p>No deadlines, no schedules. Listen once or come back daily. The practice meets you where you are.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Featured Program -->
+  <section class="featured" id="programs">
+    <div class="container">
+      <p class="featured-tag reveal">Programs</p>
+      <div class="featured-card reveal">
+        <div class="featured-image">
+          <img src="images/mindful-meal.jpg" alt="Happy family sharing a meal outdoors in warm light">
+          <div class="featured-image-overlay"></div>
+        </div>
+        <div class="featured-content">
+          <p class="featured-label">Featured Program</p>
+          <h3 class="featured-title">Mindful Eating</h3>
+          <p class="featured-desc">Realign your relationship with food through seven guided sessions. No diets. No rules. Just the quiet power of awareness.</p>
+          <ul class="featured-details">
+            <li>7 guided recordings (95 minutes total)</li>
+            <li>Lifetime access, one-time purchase</li>
+            <li>Stream or download on any device</li>
+            <li>Trusted by 37,500+ listeners</li>
+          </ul>
+          <div>
+            <a href="#" class="btn btn--primary">Begin the program <span class="btn-arrow">&rarr;</span></a>
+          </div>
+          <div class="featured-quote">
+            <blockquote>"Cultivating intention, rather than a checklist, adds value and meaning to the abundant life I have created."</blockquote>
+            <cite>Natalie S. – Greenville, SC</cite>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coming Soon -->
+  <section class="upcoming">
+    <div class="container">
+      <div class="upcoming-header reveal">
+        <p class="upcoming-title">More programs in development</p>
+      </div>
+      <div class="upcoming-grid">
+        <div class="upcoming-card reveal">
+          <div class="upcoming-badge upcoming-badge--blue">Coming soon</div>
+          <h3>Restful Sleep</h3>
+          <p>A guided practice for letting go of the day and settling into deep, restorative sleep.</p>
+          <a href="#" class="notify-link">Get notified &rarr;</a>
+        </div>
+        <div class="upcoming-card reveal">
+          <div class="upcoming-badge upcoming-badge--lavender">Coming soon</div>
+          <h3>The Abundance Practice</h3>
+          <p>Shift your relationship with money, success, and self-worth through daily guided sessions.</p>
+          <a href="#" class="notify-link">Get notified &rarr;</a>
+        </div>
+        <div class="upcoming-card reveal">
+          <div class="upcoming-badge upcoming-badge--sage">Coming soon</div>
+          <h3>Nervous System Reset</h3>
+          <p>A practice for calming your nervous system and building resilience to daily stress.</p>
+          <a href="#" class="notify-link">Get notified &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof Strip -->
+  <section class="proof">
+    <div class="container">
+      <div class="proof-inner">
+        <div class="proof-item">
+          <div class="proof-value">37,500+</div>
+          <div class="proof-label">Listens worldwide</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <div class="proof-value">4.9 / 5</div>
+          <div class="proof-label">Average rating</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <div class="proof-value">30+</div>
+          <div class="proof-label">Countries</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <div class="proof-value">Minneapolis</div>
+          <div class="proof-label">Based in MN</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="testimonials-header reveal">
+        <p class="testimonials-tag">Voices</p>
+        <h2 class="testimonials-title">What <em>listeners</em> are saying</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <blockquote>"Gentle, soothing voice. Powerful yet subtle. <strong>I moved through my day with ease and clarity.</strong> I felt calm."</blockquote>
+          <cite>
+            <strong>Cher M.</strong>
+            Los Angeles, CA
+          </cite>
+        </div>
+        <div class="testimonial-card reveal">
+          <blockquote>"I found it so grounding, comforting and reassuring. I felt <strong>calm and confident with clarity and purpose.</strong> You have a lovely, warm and sincere voice."</blockquote>
+          <cite>
+            <strong>Alison W.</strong>
+            Scotland, UK
+          </cite>
+        </div>
+        <div class="testimonial-card reveal">
+          <blockquote>"A beautiful meditation that left me feeling <strong>connected and in my power.</strong> Simple and so very practical. Love it."</blockquote>
+          <cite>
+            <strong>Mel D.</strong>
+            Hertfordshire, UK
+          </cite>
+        </div>
+        <div class="testimonial-card reveal">
+          <blockquote>"This made me doze right off. Very much needed after a stressful day."</blockquote>
+          <cite>
+            <strong>Khurty R.</strong>
+            Daily practitioner
+          </cite>
+        </div>
+        <div class="testimonial-card reveal">
+          <blockquote>"Cultivating intention, rather than a checklist, <strong>adds value and meaning</strong> to the abundant life I have created. I appreciate what you do and the gifts you are blessed with."</blockquote>
+          <cite>
+            <strong>Natalie S.</strong>
+            Greenville, SC
+          </cite>
+        </div>
+        <div class="testimonial-card reveal">
+          <blockquote>"Perfect prep for my day which will require calmness and clarity."</blockquote>
+          <cite>
+            <strong>Sue B.</strong>
+            Daily listener
+          </cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+    <div class="container reveal">
+      <p class="final-cta-tag">Begin your practice</p>
+      <h2 class="final-cta-title">Start with <em>Mindful Eating.</em></h2>
+      <p class="final-cta-sub">A complimentary guided session is waiting for you. Six minutes. No commitment. Just presence.</p>
+      <a href="#" class="btn btn--primary">Listen now <span class="btn-arrow">&rarr;</span></a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <p class="footer-brand">Superthoughts</p>
+          <p class="footer-tagline">Guided programs for a steadier life.<br>Minneapolis, Minnesota.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#programs">Programs</a>
+          <a href="#about">About</a>
+          <a href="#testimonials">Voices</a>
+          <a href="mailto:josh@superthoughts.com">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Superthoughts. All rights reserved.</p>
+        <p>josh@superthoughts.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+      });
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('open');
+          navLinks.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
