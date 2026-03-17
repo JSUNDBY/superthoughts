@@ -58,6 +58,13 @@
       background: var(--bg);
       line-height: 1.7;
       overflow-x: hidden;
+      opacity: 0;
+      animation: pageEntrance 0.8s ease-out 0.1s forwards;
+    }
+
+    @keyframes pageEntrance {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     img { max-width: 100%; height: auto; display: block; }
@@ -1246,6 +1253,83 @@
       .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
       .footer-bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
+
+    /* ===== BREATHE OVERLAY ===== */
+    .breathe-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      background: rgba(10, 12, 16, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .breathe-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .breathe-content {
+      text-align: center;
+    }
+
+    .breathe-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid var(--amber);
+      margin: 0 auto 2rem;
+      transition: transform 4s cubic-bezier(0.45, 0, 0.15, 1), opacity 4s;
+      opacity: 0.4;
+    }
+
+    .breathe-circle.inhale {
+      transform: scale(2);
+      opacity: 1;
+    }
+
+    .breathe-circle.exhale {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+
+    .breathe-text {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+      transition: opacity 0.5s;
+    }
+
+    .breathe-close {
+      background: none;
+      border: 1px solid var(--text-faint);
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .breathe-close:hover {
+      border-color: var(--text-muted);
+      color: var(--text-muted);
+    }
+
+    /* ===== MAGNETIC BUTTONS ===== */
+    .btn--primary, .nav-cta {
+      transition: all 0.35s var(--ease), transform 0.2s ease-out;
+    }
   </style>
 </head>
 <body>
@@ -1264,7 +1348,7 @@
 <!-- ===== NAVIGATION ===== -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="/" class="logo">
+    <a href="/" class="logo" onclick="openBreathe(); return false;">
       <span class="logo-text">Superthoughts</span>
     </a>
     <div class="nav-links" id="nav-links">
@@ -1415,15 +1499,15 @@
   <div class="container">
     <div class="proof-inner">
       <div class="proof-stat reveal">
-        <div class="proof-value">40,000+</div>
+        <div class="proof-value" data-count="40000" data-suffix="+" data-format="comma">0</div>
         <div class="proof-label">Listens worldwide</div>
       </div>
       <div class="proof-stat reveal reveal-delay-1">
-        <div class="proof-value">4.9 / 5</div>
+        <div class="proof-value" data-count="4.9" data-suffix=" / 5" data-format="decimal">0</div>
         <div class="proof-label">Average rating</div>
       </div>
       <div class="proof-stat reveal reveal-delay-2">
-        <div class="proof-value">30+</div>
+        <div class="proof-value" data-count="30" data-suffix="+">0</div>
         <div class="proof-label">Countries</div>
       </div>
       <div class="proof-stat reveal reveal-delay-3">
@@ -1608,7 +1692,7 @@
   <div class="container">
     <div class="footer-inner">
       <div>
-        <a href="/" class="logo">
+        <a href="/" class="logo" onclick="openBreathe(); return false;">
           <span class="logo-text">Superthoughts</span>
         </a>
         <p class="footer-tagline">Guided programs for a steadier life. Minneapolis, Minnesota.</p>
@@ -1696,6 +1780,15 @@
   </div>
 </div>
 
+<!-- ===== BREATHE OVERLAY ===== -->
+<div class="breathe-overlay" id="breatheOverlay">
+  <div class="breathe-content">
+    <div class="breathe-circle" id="breatheCircle"></div>
+    <p class="breathe-text" id="breatheText">Breathe in</p>
+    <button class="breathe-close" onclick="closeBreathe()">Done</button>
+  </div>
+</div>
+
 <!-- ===== SCRIPTS ===== -->
 <script>
 // ===== STAR CANVAS =====
@@ -1704,6 +1797,17 @@
   const ctx = canvas.getContext('2d');
   let particles = [];
   let w, h;
+  let mx = -9999, my = -9999;
+
+  window.addEventListener('mousemove', function(e) {
+    mx = e.clientX;
+    my = e.clientY;
+  });
+
+  window.addEventListener('mouseleave', function() {
+    mx = -9999;
+    my = -9999;
+  });
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -1751,6 +1855,16 @@
 
       p.x += p.vx;
       p.y += p.vy;
+
+      // Mouse repulsion
+      var dx = p.x - mx;
+      var dy = p.y - my;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150 && dist > 0) {
+        var force = (1 - dist / 150) * 0.4;
+        p.x += (dx / dist) * force;
+        p.y += (dy / dist) * force;
+      }
 
       if (p.x < -10) p.x = w + 10;
       if (p.x > w + 10) p.x = -10;
@@ -1976,6 +2090,175 @@ function submitContact(e) {
     document.getElementById('contactSuccess').style.display = '';
   }, 800);
 }
+
+// ===== PROOF STRIP COUNTING ANIMATION =====
+(function() {
+  var counted = false;
+  var proofValues = document.querySelectorAll('.proof-value[data-count]');
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function animateCount(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var format = el.getAttribute('data-format') || '';
+    var isDecimal = format === 'decimal';
+    var isComma = format === 'comma';
+    var duration = 2000;
+    var start = performance.now();
+
+    function update(now) {
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = easeOutCubic(progress);
+      var current = eased * target;
+
+      if (isDecimal) {
+        el.textContent = current.toFixed(1) + suffix;
+      } else if (isComma) {
+        el.textContent = Math.round(current).toLocaleString() + suffix;
+      } else {
+        el.textContent = Math.round(current) + suffix;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  var proofObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !counted) {
+        counted = true;
+        proofValues.forEach(function(el) {
+          animateCount(el);
+        });
+        proofObserver.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.3
+  });
+
+  proofValues.forEach(function(el) {
+    proofObserver.observe(el);
+  });
+})();
+
+// ===== BREATHE EASTER EGG =====
+var breatheInterval = null;
+var breatheTimeout = null;
+var breatheCycleCount = 0;
+
+function openBreathe() {
+  var overlay = document.getElementById('breatheOverlay');
+  var circle = document.getElementById('breatheCircle');
+  var text = document.getElementById('breatheText');
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  breatheCycleCount = 0;
+
+  circle.className = 'breathe-circle';
+  text.textContent = 'Breathe in';
+
+  // Start first inhale after a brief moment
+  breatheTimeout = setTimeout(function() {
+    runBreatheCycle();
+  }, 300);
+}
+
+function runBreatheCycle() {
+  var circle = document.getElementById('breatheCircle');
+  var text = document.getElementById('breatheText');
+
+  if (breatheCycleCount >= 3) {
+    closeBreathe();
+    return;
+  }
+
+  // Inhale
+  circle.className = 'breathe-circle inhale';
+  text.textContent = 'Breathe in';
+
+  breatheTimeout = setTimeout(function() {
+    // Exhale
+    circle.className = 'breathe-circle exhale';
+    text.textContent = 'Breathe out';
+
+    breatheTimeout = setTimeout(function() {
+      breatheCycleCount++;
+      runBreatheCycle();
+    }, 4000);
+  }, 4000);
+}
+
+function closeBreathe() {
+  var overlay = document.getElementById('breatheOverlay');
+  var circle = document.getElementById('breatheCircle');
+
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  circle.className = 'breathe-circle';
+
+  if (breatheTimeout) {
+    clearTimeout(breatheTimeout);
+    breatheTimeout = null;
+  }
+  breatheCycleCount = 0;
+}
+
+// Close breathe on overlay click
+document.getElementById('breatheOverlay').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeBreathe();
+  }
+});
+
+// Close breathe on Escape (extend existing handler)
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var breatheOverlay = document.getElementById('breatheOverlay');
+    if (breatheOverlay.classList.contains('active')) {
+      closeBreathe();
+    }
+  }
+});
+
+// ===== MAGNETIC HOVER ON BUTTONS =====
+(function() {
+  if (window.matchMedia('(pointer: fine)').matches === false) return;
+
+  var buttons = document.querySelectorAll('.btn--primary, .nav-cta');
+
+  buttons.forEach(function(btn) {
+    btn.addEventListener('mousemove', function(e) {
+      var rect = btn.getBoundingClientRect();
+      var centerX = rect.left + rect.width / 2;
+      var centerY = rect.top + rect.height / 2;
+      var dx = e.clientX - centerX;
+      var dy = e.clientY - centerY;
+      var maxShift = 4;
+
+      var shiftX = (dx / (rect.width / 2)) * maxShift;
+      var shiftY = (dy / (rect.height / 2)) * maxShift;
+
+      shiftX = Math.max(-maxShift, Math.min(maxShift, shiftX));
+      shiftY = Math.max(-maxShift, Math.min(maxShift, shiftY));
+
+      btn.style.transform = 'translate(' + shiftX + 'px, ' + shiftY + 'px)';
+    });
+
+    btn.addEventListener('mouseleave', function() {
+      btn.style.transform = '';
+    });
+  });
+})();
 </script>
 
 </body>
