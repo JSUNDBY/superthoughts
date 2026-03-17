@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Superthoughts</title>
+  <meta name="description" content="Terms of service for Superthoughts guided audio programs.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230a0c10'/><text x='50' y='72' font-family='Georgia,serif' font-size='68' font-weight='400' font-style='italic' fill='%23d4a853' text-anchor='middle'>S</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg-card: #13151a;
+      --text: #f0ebe4;
+      --text-muted: #a09994;
+      --text-faint: #5c5651;
+      --amber: #d4a853;
+      --sage: #7d9b8a;
+      --font-display: 'Libre Baskerville', Georgia, serif;
+      --font-body: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: 'DM Mono', 'IBM Plex Mono', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      background-image: linear-gradient(180deg, var(--bg) 0%, #0e1014 35%, #121418 65%, var(--bg) 100%);
+      background-attachment: fixed;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+    }
+
+    .headline--md {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      color: var(--text);
+      line-height: 1.08;
+    }
+
+    .nav {
+      position: relative;
+      padding: 1.25rem 0;
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { display: flex; align-items: center; z-index: 10; }
+
+    .logo-text {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+    }
+
+    .back-link {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .back-link:hover { color: var(--amber); }
+
+    .legal-hero { padding: clamp(8rem, 14vh, 10rem) 0 clamp(2rem, 4vh, 3rem); }
+
+    .legal-content {
+      flex: 1;
+      padding: 0 0 clamp(4rem, 8vh, 6rem);
+    }
+
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .legal-content h2:first-child { margin-top: 0; }
+
+    .legal-content p,
+    .legal-content li {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+
+    .legal-content ul {
+      list-style: none;
+      margin-bottom: 1rem;
+    }
+
+    .legal-content ul li {
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .legal-content ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sage);
+    }
+
+    .legal-content a {
+      color: var(--amber);
+      transition: opacity 0.3s;
+    }
+
+    .legal-content a:hover { opacity: 0.8; }
+
+    .legal-updated {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(240, 235, 228, 0.04);
+    }
+
+    .footer {
+      background: var(--bg);
+      border-top: 1px solid rgba(240, 235, 228, 0.06);
+      padding: 2rem 0;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom a {
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .footer-bottom a:hover { color: var(--amber); }
+
+    .footer-bottom a.active { color: var(--amber); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-text">Superthoughts</span>
+      </a>
+      <a href="/" class="back-link">&larr; Home</a>
+    </div>
+  </nav>
+
+  <section class="legal-hero">
+    <div class="container">
+      <p class="tag" style="margin-bottom: 1rem;">Legal</p>
+      <h1 class="headline--md">Terms of Service</h1>
+    </div>
+  </section>
+
+  <section class="legal-content">
+    <div class="container">
+
+      <p>By using the Superthoughts website and purchasing any Superthoughts program, you agree to the following terms.</p>
+
+      <h2>What you are purchasing</h2>
+      <p>Superthoughts programs are sets of pre-recorded guided audio sessions delivered digitally. Upon completing your purchase, you receive immediate, lifetime access to stream and download all sessions in that program. Future recordings added to a program are included at no additional cost.</p>
+
+      <h2>Pricing and payment</h2>
+      <p>Program pricing is listed on each program page. All payments are processed securely through Stripe. Prices are subject to change, but any change will not affect existing purchases.</p>
+
+      <h2>Satisfaction guarantee</h2>
+      <p>We offer a 14-day satisfaction guarantee on all programs. If a program is not right for you, contact us within 14 days of purchase and we will make it right. No questions asked.</p>
+
+      <h2>License and usage</h2>
+      <p>Your purchase grants you a personal, non-transferable license to access the program content for your own private use. You may not:</p>
+      <ul>
+        <li>Redistribute, resell, or share the recordings with others</li>
+        <li>Upload the recordings to any public platform</li>
+        <li>Use the content for commercial purposes</li>
+      </ul>
+      <p>We reserve the right to revoke access if these terms are violated.</p>
+
+      <h2>Not medical advice</h2>
+      <p>Superthoughts programs are educational and personal development resources. They are not medical advice, therapy, or a substitute for professional healthcare. The content is not intended to diagnose, treat, cure, or prevent any medical condition. If you have concerns about your physical or mental health, please consult a qualified healthcare professional. By using any program, you acknowledge that you are participating voluntarily and that results may vary.</p>
+
+      <h2>Intellectual property</h2>
+      <p>All content on this site and within our programs &ndash; including recordings, text, design, and branding &ndash; is the property of Superthoughts (Joshua Sundby) and is protected by copyright. All rights reserved.</p>
+
+      <h2>Limitation of liability</h2>
+      <p>Superthoughts provides programs "as is." We make no guarantees about specific outcomes. To the fullest extent permitted by law, Superthoughts shall not be liable for any indirect, incidental, or consequential damages arising from the use of any program or this website.</p>
+
+      <h2>Account and access</h2>
+      <p>You are responsible for maintaining access to the email address associated with your purchase. If you lose access, contact us and we will help you regain access to your program content.</p>
+
+      <h2>Changes to these terms</h2>
+      <p>We may update these terms from time to time. Continued use of the site or any program after changes constitutes acceptance. We will update the date below when changes are made.</p>
+
+      <h2>Contact</h2>
+      <p>For any questions about these terms, reach out through the contact form on our website.</p>
+
+      <p class="legal-updated">Last updated: March 17, 2026</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container" style="max-width: 860px;">
+      <div class="footer-bottom">
+        <span>&copy; 2026 Superthoughts</span>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html" class="active">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Superthoughts</title>
+  <meta name="description" content="Privacy policy for Superthoughts guided audio programs.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230a0c10'/><text x='50' y='72' font-family='Georgia,serif' font-size='68' font-weight='400' font-style='italic' fill='%23d4a853' text-anchor='middle'>S</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg-card: #13151a;
+      --text: #f0ebe4;
+      --text-muted: #a09994;
+      --text-faint: #5c5651;
+      --amber: #d4a853;
+      --sage: #7d9b8a;
+      --font-display: 'Libre Baskerville', Georgia, serif;
+      --font-body: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: 'DM Mono', 'IBM Plex Mono', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      background-image: linear-gradient(180deg, var(--bg) 0%, #0e1014 35%, #121418 65%, var(--bg) 100%);
+      background-attachment: fixed;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+    }
+
+    .headline--md {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      color: var(--text);
+      line-height: 1.08;
+    }
+
+    .nav {
+      position: relative;
+      padding: 1.25rem 0;
+    }
+
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { display: flex; align-items: center; z-index: 10; }
+
+    .logo-text {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+    }
+
+    .back-link {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .back-link:hover { color: var(--amber); }
+
+    .legal-hero { padding: clamp(8rem, 14vh, 10rem) 0 clamp(2rem, 4vh, 3rem); }
+
+    .legal-content {
+      flex: 1;
+      padding: 0 0 clamp(4rem, 8vh, 6rem);
+    }
+
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    .legal-content h2:first-child { margin-top: 0; }
+
+    .legal-content p,
+    .legal-content li {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+
+    .legal-content ul {
+      list-style: none;
+      margin-bottom: 1rem;
+    }
+
+    .legal-content ul li {
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .legal-content ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sage);
+    }
+
+    .legal-content a {
+      color: var(--amber);
+      transition: opacity 0.3s;
+    }
+
+    .legal-content a:hover { opacity: 0.8; }
+
+    .legal-updated {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(240, 235, 228, 0.04);
+    }
+
+    .footer {
+      background: var(--bg);
+      border-top: 1px solid rgba(240, 235, 228, 0.06);
+      padding: 2rem 0;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom a {
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .footer-bottom a:hover { color: var(--amber); }
+
+    .footer-bottom a.active { color: var(--amber); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-text">Superthoughts</span>
+      </a>
+      <a href="/" class="back-link">&larr; Home</a>
+    </div>
+  </nav>
+
+  <section class="legal-hero">
+    <div class="container">
+      <p class="tag" style="margin-bottom: 1rem;">Legal</p>
+      <h1 class="headline--md">Privacy Policy</h1>
+    </div>
+  </section>
+
+  <section class="legal-content">
+    <div class="container">
+
+      <p>Superthoughts ("we," "us," or "our") respects your privacy. This policy explains what information we collect, how we use it, and your choices.</p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Name and email address</strong> &ndash; When you sign up for notifications or purchase a program, we collect the name and email you provide.</li>
+        <li><strong>Payment information</strong> &ndash; When you purchase a program, payment is processed securely by <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe</a>. We do not store your credit card number. Stripe may collect additional information as described in their privacy policy.</li>
+        <li><strong>Usage data</strong> &ndash; We may collect basic analytics (pages visited, browser type) to understand how people use the site. We do not use invasive tracking or sell data to advertisers.</li>
+      </ul>
+
+      <h2>How we use your information</h2>
+      <ul>
+        <li>To deliver program content you requested or purchased</li>
+        <li>To send you emails related to programs you signed up for (via <a href="https://kit.com/privacy" target="_blank" rel="noopener">Kit</a>, our email service provider)</li>
+        <li>To process your purchase and provide customer support</li>
+        <li>To improve our site and offerings</li>
+      </ul>
+      <p>We will never sell, rent, or share your personal information with third parties for their marketing purposes.</p>
+
+      <h2>Email communication</h2>
+      <p>When you sign up, you will receive emails related to the programs you expressed interest in. Every email includes an unsubscribe link. You can opt out at any time, and we will promptly honor your request.</p>
+
+      <h2>Third-party services</h2>
+      <p>We use the following services to operate:</p>
+      <ul>
+        <li><strong>Kit</strong> (email delivery and subscriber management)</li>
+        <li><strong>Stripe</strong> (payment processing)</li>
+        <li><strong>GitHub Pages</strong> (website hosting)</li>
+      </ul>
+      <p>Each service has its own privacy policy governing how they handle data.</p>
+
+      <h2>Cookies</h2>
+      <p>This site uses minimal cookies necessary for functionality. We do not use advertising cookies or third-party trackers.</p>
+
+      <h2>Data security</h2>
+      <p>We use HTTPS encryption across our entire site. Payment processing is handled by Stripe, which is PCI-DSS compliant. We take reasonable measures to protect your information, though no method of transmission over the internet is 100% secure.</p>
+
+      <h2>Your rights</h2>
+      <p>You may request access to, correction of, or deletion of your personal data at any time by contacting us through the website. We will respond within a reasonable timeframe.</p>
+
+      <h2>Children's privacy</h2>
+      <p>This site and our programs are intended for adults. We do not knowingly collect information from children under 13.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If we make significant changes to this policy, we will update the date below. Your continued use of the site after changes constitutes acceptance of the updated policy.</p>
+
+      <p class="legal-updated">Last updated: March 17, 2026</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container" style="max-width: 860px;">
+      <div class="footer-bottom">
+        <span>&copy; 2026 Superthoughts</span>
+        <a href="privacy.html" class="active">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
