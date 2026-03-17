@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complimentary Mindful Eating Session — Superthoughts</title>
+  <meta name="description" content="Get a complimentary 6-minute guided mindful eating session. Change your relationship with food starting today.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .funnel-page { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .funnel-hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: clamp(7rem, 14vh, 10rem) 0 clamp(4rem, 8vh, 6rem);
+    }
+
+    .funnel-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .funnel-copy .tag { margin-bottom: 1.25rem; }
+    .funnel-copy .headline { margin-bottom: 1.25rem; }
+
+    .funnel-copy .body-lg {
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    .funnel-bullets {
+      list-style: none;
+      margin-bottom: 2.5rem;
+    }
+
+    .funnel-bullets li {
+      padding: 0.55rem 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .funnel-bullets li::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--sage);
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+      transform: rotate(45deg);
+    }
+
+    .funnel-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: clamp(2rem, 4vw, 3rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .funnel-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--sage));
+    }
+
+    .funnel-card-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .funnel-card-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--text);
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .funnel-card-header p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .free-badge {
+      display: inline-block;
+      background: var(--sage-deep);
+      color: var(--sage);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      margin-bottom: 1.25rem;
+    }
+
+    .funnel-form .form-group { margin-bottom: 1rem; }
+
+    .funnel-form .btn {
+      margin-top: 0.5rem;
+    }
+
+    .funnel-form-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-faint);
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    .social-proof {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .social-proof-avatars {
+      display: flex;
+    }
+
+    .social-proof-avatars span {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .social-proof-avatars span:first-child { margin-left: 0; }
+    .social-proof-avatars span:nth-child(1) { background: #1e2d4a; color: #7ba4e8; }
+    .social-proof-avatars span:nth-child(2) { background: #1a2e28; color: #8cc4b0; }
+    .social-proof-avatars span:nth-child(3) { background: #1e2540; color: #9aa4b8; }
+    .social-proof-avatars span:nth-child(4) { background: #252040; color: #a89bcc; }
+
+    .social-proof-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .social-proof-text strong { color: var(--text); }
+
+    /* Floating quote */
+    .funnel-quote {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding: clamp(3rem, 6vw, 5rem) 0;
+    }
+
+    .funnel-quote blockquote {
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .funnel-quote cite {
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--text-faint);
+    }
+
+    .funnel-quote cite strong {
+      color: var(--text-muted);
+    }
+
+    /* Bottom strip */
+    .trust-strip {
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 1.5rem 0;
+      text-align: center;
+    }
+
+    .trust-strip p {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 768px) {
+      .funnel-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .funnel-card { order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="funnel-page">
+
+    <!-- Nav -->
+    <nav class="nav" style="position: relative; background: transparent; border: none; box-shadow: none;">
+      <div class="nav-inner" style="max-width:760px;margin:0 auto;padding:1.5rem clamp(1.5rem,5vw,3rem);">
+        <a href="index.html" style="font-family:'DM Mono',monospace;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.16em;color:var(--text);text-decoration:none;">Superthoughts</a>
+      </div>
+    </nav>
+
+    <!-- Hero / Capture -->
+    <section class="funnel-hero">
+      <div class="hero-glow hero-glow--1"></div>
+      <div class="hero-glow hero-glow--2"></div>
+      <div class="hero-glow hero-glow--3"></div>
+      <div class="container">
+        <div class="funnel-grid">
+
+          <!-- Left: Copy -->
+          <div class="funnel-copy">
+            <p class="tag">Complimentary guided session &middot; 6 minutes</p>
+            <h1 class="headline headline--lg">Your next meal can feel <em>completely different.</em></h1>
+            <p class="body-lg">One short guided recording. That's all it takes to feel the shift. No signup fees, no commitment – just six minutes of your time and an open mind.</p>
+
+            <ul class="funnel-bullets">
+              <li>Learn the one technique that changes how every meal feels</li>
+              <li>Experience what "eating with awareness" actually means (not what you think)</li>
+              <li>Understand why willpower was never the answer</li>
+              <li>Feel calmer around food in under 7 minutes</li>
+            </ul>
+
+            <div class="social-proof">
+              <div class="social-proof-avatars">
+                <span>SM</span>
+                <span>JK</span>
+                <span>DR</span>
+                <span>MT</span>
+              </div>
+              <div class="social-proof-text">
+                <strong>37,500+ people</strong> have listened.<br>Rated 4.9 out of 5.
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Email Capture Card -->
+          <div class="funnel-card">
+            <div class="funnel-card-header">
+              <div class="free-badge">Complimentary</div>
+              <h2>Get your complimentary mindful eating session</h2>
+              <p>Enter your email and listen instantly. No spam, ever.</p>
+            </div>
+
+            <form class="funnel-form" id="funnelForm">
+              <div class="form-group">
+                <label for="funnelName">First name</label>
+                <input type="text" id="funnelName" name="firstName" placeholder="Your first name" required>
+              </div>
+              <div class="form-group">
+                <label for="funnelEmail">Email</label>
+                <input type="email" id="funnelEmail" name="email" placeholder="you@email.com" required>
+              </div>
+              <button type="submit" class="btn btn--primary btn--full btn--lg" id="funnelSubmit">
+                Send me the session <span class="btn-arrow">&rarr;</span>
+              </button>
+              <p class="funnel-form-note">
+                Instant access. Unsubscribe anytime.<br>
+                We respect your inbox.
+              </p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <div class="container">
+      <div class="funnel-quote">
+        <blockquote>"This relieved my stress and tension completely. Simple and so very practical. I love it."</blockquote>
+        <cite><strong>Diba H.</strong> – Ottawa, Canada</cite>
+      </div>
+    </div>
+
+    <!-- Trust Strip -->
+    <div class="trust-strip">
+      <p>A Superthoughts program &middot; Trusted by 37,500+ listeners &middot; Created by Josh Sundby</p>
+    </div>
+
+  </div>
+
+  <!-- DEV NAV: Remove before launch -->
+  <div style="position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid rgba(255,255,255,0.1);padding:0.6rem 1rem;display:flex;gap:1rem;align-items:center;z-index:9999;font-family:monospace;font-size:0.7rem;">
+    <span style="color:#555;margin-right:auto;">DEV NAV</span>
+    <a href="index.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.15);border-radius:4px;">1. Capture</a>
+    <a href="free-session.html" style="color:#8cc4b0;padding:0.3rem 0.6rem;background:rgba(140,196,176,0.1);border-radius:4px;">2. Listen</a>
+    <a href="checkout.html" style="color:#a89bcc;padding:0.3rem 0.6rem;background:rgba(168,155,204,0.1);border-radius:4px;">3. Checkout</a>
+    <a href="my-program.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.1);border-radius:4px;">4. Program</a>
+    <a href="homepage-mockup.html" style="color:#888;padding:0.3rem 0.6rem;background:rgba(255,255,255,0.05);border-radius:4px;">Homepage</a>
+  </div>
+
+  <script>
+    // Email capture → redirect to free session page
+    const form = document.getElementById('funnelForm');
+    const btn = document.getElementById('funnelSubmit');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('funnelName').value.trim();
+      const email = document.getElementById('funnelEmail').value.trim();
+
+      if (!name || !email) return;
+
+      // Store for the next page
+      sessionStorage.setItem('st_name', name);
+      sessionStorage.setItem('st_email', email);
+
+      // Show loading state
+      btn.innerHTML = 'Unlocking your session...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      // TODO: Send email to your email service (ConvertKit, Mailchimp, etc.)
+      // Example:
+      // fetch('https://your-email-api-endpoint', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ name, email })
+      // });
+
+      // Redirect to free session page
+      setTimeout(() => {
+        window.location.href = 'free-session.html';
+      }, 800);
+    });
+  </script>
+
+</body>
+</html>

@@ -3,357 +3,1754 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complimentary Mindful Eating Session — Superthoughts</title>
-  <meta name="description" content="Get a complimentary 6-minute guided mindful eating session. Change your relationship with food starting today.">
+  <title>Superthoughts | Guided programs for real, lasting change</title>
+  <meta name="description" content="Superthoughts is a collection of guided audio programs designed to help you build the habits and awareness that change how you live, eat, sleep, and think.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    .funnel-page { min-height: 100vh; display: flex; flex-direction: column; }
-
-    .funnel-hero {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      padding: clamp(7rem, 14vh, 10rem) 0 clamp(4rem, 8vh, 6rem);
+    /* ===== CUSTOM PROPERTIES ===== */
+    :root {
+      --bg: #0a0c10;
+      --bg-alt: #0e1014;
+      --bg-card: #13151a;
+      --bg-elevated: #1a1c22;
+      --bg-glass: rgba(19, 21, 26, 0.7);
+      --text: #f0ebe4;
+      --text-muted: #a09994;
+      --text-faint: #5c5651;
+      --amber: #d4a853;
+      --amber-light: #e8c677;
+      --amber-deep: rgba(212, 168, 83, 0.12);
+      --sage: #7d9b8a;
+      --sage-deep: rgba(125, 155, 138, 0.1);
+      --rose: #b8929a;
+      --rose-deep: rgba(184, 146, 154, 0.08);
+      --font-display: 'Libre Baskerville', Georgia, serif;
+      --font-body: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: 'DM Mono', 'IBM Plex Mono', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.45, 0, 0.15, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+      --section-pad: clamp(5rem, 12vw, 9rem);
     }
 
-    .funnel-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: clamp(3rem, 6vw, 6rem);
-      align-items: center;
+    /* ===== RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .funnel-copy .tag { margin-bottom: 1.25rem; }
-    .funnel-copy .headline { margin-bottom: 1.25rem; }
-
-    .funnel-copy .body-lg {
-      margin-bottom: 2rem;
-      max-width: 480px;
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      overflow-x: hidden;
     }
 
-    .funnel-bullets {
-      list-style: none;
-      margin-bottom: 2.5rem;
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ===== STAR CANVAS ===== */
+    #star-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .funnel-bullets li {
-      padding: 0.55rem 0;
-      font-size: 0.95rem;
+    /* ===== FILM GRAIN ===== */
+    .grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.025;
+    }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .container--narrow { max-width: 800px; }
+    .container--wide { max-width: 1400px; }
+
+    /* ===== TYPOGRAPHY ===== */
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+    }
+
+    .headline {
+      font-family: var(--font-display);
+      font-weight: 400;
+      line-height: 1.08;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .headline--xl { font-size: clamp(3rem, 7.5vw, 6rem); }
+    .headline--lg { font-size: clamp(2.25rem, 5vw, 4rem); }
+    .headline--md { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+
+    .headline em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .body-lg {
+      font-size: clamp(1.1rem, 1.6vw, 1.3rem);
       color: var(--text-muted);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      line-height: 1.6;
+      line-height: 1.75;
     }
 
-    .funnel-bullets li::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 2px;
-      background: var(--sage);
-      flex-shrink: 0;
-      margin-top: 0.45rem;
-      transform: rotate(45deg);
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.95rem 2.25rem;
+      border-radius: 60px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      border: 1.5px solid transparent;
+      transition: all 0.35s var(--ease);
     }
 
-    .funnel-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 24px;
-      padding: clamp(2rem, 4vw, 3rem);
-      position: relative;
-      overflow: hidden;
+    .btn--primary {
+      background: var(--amber);
+      color: var(--bg);
+      border-color: var(--amber);
     }
 
-    .funnel-card::before {
-      content: '';
-      position: absolute;
+    .btn--primary:hover {
+      background: var(--amber-light);
+      border-color: var(--amber-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(212, 168, 83, 0.25);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--text-faint);
+    }
+
+    .btn--outline:hover {
+      border-color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn--lg {
+      padding: 1.1rem 2.75rem;
+      font-size: 1rem;
+    }
+
+    .btn-arrow {
+      transition: transform 0.3s var(--ease);
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(3px);
+    }
+
+    /* ===== NAVIGATION ===== */
+    .nav {
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--sage));
+      z-index: 1000;
+      padding: 1.25rem 0;
+      transition: all 0.4s var(--ease);
     }
 
-    .funnel-card-header {
-      text-align: center;
+    .nav.scrolled {
+      background: rgba(10, 12, 16, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 10;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--amber), var(--sage));
+      opacity: 0.9;
+    }
+
+    .logo-text {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--amber) !important;
+      color: var(--bg) !important;
+      padding: 0.5rem 1.35rem !important;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      transition: all 0.3s var(--ease) !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--amber-light) !important;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 4px;
+      z-index: 10;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s var(--ease);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: clamp(8rem, 18vh, 12rem) 0 clamp(4rem, 10vh, 8rem);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .hero-glow--1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(212, 168, 83, 0.10);
+      top: -10%;
+      right: 10%;
+      animation: glowFloat 10s ease-in-out infinite;
+    }
+
+    .hero-glow--2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(125, 155, 138, 0.07);
+      bottom: 0;
+      left: -5%;
+      animation: glowFloat 12s ease-in-out infinite reverse;
+    }
+
+    @keyframes glowFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -30px) scale(1.05); }
+      66% { transform: translate(-15px, 15px) scale(0.95); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+    }
+
+    .hero-content .tag { margin-bottom: 1.75rem; }
+    .hero-content .headline { margin-bottom: 1.5rem; }
+
+    .hero-sub {
+      max-width: 580px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: var(--section-pad) 0;
+    }
+
+    .section--alt { background: var(--bg-alt); }
+
+    /* ===== APPROACH ===== */
+    .approach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .approach-left .headline {
+      margin-top: 1.25rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .approach-left .body-lg {
+      margin-bottom: 1.25rem;
+    }
+
+    .approach-left .body-lg strong {
+      color: var(--text);
+    }
+
+    .value-items {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+      padding-top: 0.5rem;
+    }
+
+    .value-item {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .value-diamond {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 0.35rem;
+      transform: rotate(45deg);
+    }
+
+    .value-diamond--amber { background: var(--amber); }
+    .value-diamond--rose { background: var(--rose); }
+    .value-diamond--sage { background: var(--sage); }
+
+    .value-item h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .value-item p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    /* ===== FEATURED PROGRAM ===== */
+    .featured-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(240, 235, 228, 0.04);
+      border-radius: 20px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: clamp(2rem, 4vw, 3rem);
+    }
+
+    .featured-image {
+      position: relative;
+      min-height: 400px;
+      overflow: hidden;
+    }
+
+    .featured-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    .featured-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 50%, var(--bg-card));
+      pointer-events: none;
+    }
+
+    .featured-content {
+      padding: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .featured-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      margin-bottom: 0.75rem;
+    }
+
+    .featured-content h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .featured-content > p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .featured-details {
+      list-style: none;
       margin-bottom: 2rem;
     }
 
-    .funnel-card-header h2 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--text);
-      font-weight: 400;
-      margin-bottom: 0.5rem;
-    }
-
-    .funnel-card-header p {
-      font-size: 0.88rem;
+    .featured-details li {
+      padding: 0.45rem 0;
+      font-size: 0.92rem;
       color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    .free-badge {
+    .featured-details li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .featured-quote {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(240, 235, 228, 0.04);
+    }
+
+    .featured-quote blockquote {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .featured-quote cite {
+      font-style: normal;
+      font-size: 0.82rem;
+      color: var(--text-faint);
+    }
+
+    /* ===== COMING SOON ===== */
+    .coming-header {
+      text-align: center;
+      margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .coming-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .coming-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(240, 235, 228, 0.04);
+      border-radius: 20px;
+      padding: 2.25rem;
+      transition: all 0.4s var(--ease);
+    }
+
+    .coming-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(240, 235, 228, 0.08);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    }
+
+    .coming-badge {
       display: inline-block;
-      background: var(--sage-deep);
-      color: var(--sage);
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.62rem;
       font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 0.35rem 0.85rem;
+      letter-spacing: 0.15em;
+      padding: 0.3rem 0.75rem;
       border-radius: 50px;
       margin-bottom: 1.25rem;
     }
 
-    .funnel-form .form-group { margin-bottom: 1rem; }
-
-    .funnel-form .btn {
-      margin-top: 0.5rem;
+    .coming-badge--amber {
+      color: var(--amber);
+      background: var(--amber-deep);
     }
 
-    .funnel-form-note {
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-faint);
-      margin-top: 1rem;
-      line-height: 1.5;
+    .coming-badge--rose {
+      color: var(--rose);
+      background: var(--rose-deep);
     }
 
-    .social-proof {
+    .coming-badge--sage {
+      color: var(--sage);
+      background: var(--sage-deep);
+    }
+
+    .coming-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+    }
+
+    .coming-card > p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .coming-card .card-link {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--amber);
+      transition: color 0.3s;
+    }
+
+    .coming-card .card-link:hover {
+      color: var(--amber-light);
+    }
+
+    /* ===== PROOF STRIP ===== */
+    .proof-strip {
+      position: relative;
+      z-index: 1;
+      padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+      border-top: 1px solid rgba(240, 235, 228, 0.06);
+      border-bottom: 1px solid rgba(240, 235, 228, 0.06);
+    }
+
+    .proof-inner {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
-      margin-top: 2.5rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
     }
 
-    .social-proof-avatars {
+    .proof-stat {
+      text-align: center;
+      flex: 1;
+    }
+
+    .proof-stat + .proof-stat {
+      border-left: 1px solid rgba(240, 235, 228, 0.06);
+    }
+
+    .proof-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .proof-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== ABOUT JOSH ===== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: clamp(2.5rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .about-photo {
+      width: 280px;
+      height: 320px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(240, 235, 228, 0.06);
+      flex-shrink: 0;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .about-content .tag { margin-bottom: 1rem; }
+
+    .about-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-content p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+      max-width: 580px;
+    }
+
+    .about-links {
       display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
     }
 
-    .social-proof-avatars span {
-      width: 32px;
-      height: 32px;
+    .about-links a {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--amber);
+      transition: color 0.3s;
+    }
+
+    .about-links a:hover {
+      color: var(--amber-light);
+    }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+
+    .testimonials-header .tag { margin-bottom: 1rem; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .testimonial {
+      background: var(--bg-card);
+      border: 1px solid rgba(240, 235, 228, 0.04);
+      border-radius: 20px;
+      padding: 2.25rem;
+    }
+
+    .testimonial-stars {
+      color: var(--amber);
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      margin-bottom: 1.25rem;
+    }
+
+    .testimonial blockquote {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      font-style: normal;
+    }
+
+    .testimonial blockquote strong {
+      color: var(--text);
+    }
+
+    .testimonial-author {
+      font-size: 0.85rem;
+    }
+
+    .testimonial-author strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    .testimonial-author span {
+      color: var(--text-faint);
+      font-size: 0.78rem;
+    }
+
+    /* ===== FINAL CTA ===== */
+    .cta-section {
+      position: relative;
+      z-index: 1;
+      padding: var(--section-pad) 0;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-section .headline { margin-bottom: 1.25rem; }
+
+    .cta-section .body-lg {
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .cta-glow {
+      position: absolute;
       border-radius: 50%;
-      border: 2px solid var(--bg);
-      margin-left: -8px;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .cta-glow--1 {
+      width: 400px;
+      height: 400px;
+      background: rgba(212, 168, 83, 0.08);
+      top: 20%;
+      left: 10%;
+      animation: glowFloat 10s ease-in-out infinite;
+    }
+
+    .cta-glow--2 {
+      width: 350px;
+      height: 350px;
+      background: rgba(125, 155, 138, 0.06);
+      bottom: 10%;
+      right: 15%;
+      animation: glowFloat 12s ease-in-out infinite reverse;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      position: relative;
+      z-index: 1;
+      background: var(--bg);
+      border-top: 1px solid rgba(240, 235, 228, 0.06);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 2rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(240, 235, 228, 0.04);
+    }
+
+    .footer .logo-text { font-size: 0.82rem; }
+
+    .footer-tagline {
+      font-size: 0.82rem;
+      color: var(--text-faint);
+      margin-top: 0.75rem;
+      line-height: 1.6;
+      max-width: 250px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--amber); }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-bottom-links a {
+      color: var(--text-faint);
+      transition: color 0.3s;
+    }
+
+    .footer-bottom-links a:hover { color: var(--amber); }
+
+    /* ===== RESEARCH / SCIENCE ===== */
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .research-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(240, 235, 228, 0.04);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .research-card:hover {
+      border-color: rgba(240, 235, 228, 0.08);
+    }
+
+    .research-card-header {
+      padding: 1.75rem 2rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .research-card-source {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .research-card:nth-child(1) .research-card-source { color: var(--amber); }
+    .research-card:nth-child(2) .research-card-source { color: var(--sage); }
+    .research-card:nth-child(3) .research-card-source { color: var(--rose); }
+    .research-card:nth-child(4) .research-card-source { color: var(--amber); }
+
+    .research-card:nth-child(1) { border-left: 2px solid var(--amber); }
+    .research-card:nth-child(2) { border-left: 2px solid var(--sage); }
+    .research-card:nth-child(3) { border-left: 2px solid var(--rose); }
+    .research-card:nth-child(4) { border-left: 2px solid var(--amber); }
+
+    .research-card-summary {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .research-card-summary strong {
+      color: var(--text);
+    }
+
+    .research-toggle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--text-faint);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.65rem;
-      font-weight: 600;
-    }
-
-    .social-proof-avatars span:first-child { margin-left: 0; }
-    .social-proof-avatars span:nth-child(1) { background: #1e2d4a; color: #7ba4e8; }
-    .social-proof-avatars span:nth-child(2) { background: #1a2e28; color: #8cc4b0; }
-    .social-proof-avatars span:nth-child(3) { background: #1e2540; color: #9aa4b8; }
-    .social-proof-avatars span:nth-child(4) { background: #252040; color: #a89bcc; }
-
-    .social-proof-text {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .social-proof-text strong { color: var(--text); }
-
-    /* Floating quote */
-    .funnel-quote {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: center;
-      padding: clamp(3rem, 6vw, 5rem) 0;
-    }
-
-    .funnel-quote blockquote {
-      font-family: var(--font-display);
-      font-size: clamp(1.15rem, 2vw, 1.5rem);
-      color: var(--text-muted);
-      line-height: 1.6;
-      font-style: italic;
-      margin-bottom: 1rem;
-    }
-
-    .funnel-quote cite {
-      font-style: normal;
-      font-size: 0.85rem;
+      flex-shrink: 0;
+      font-size: 0.9rem;
       color: var(--text-faint);
+      transition: all 0.3s;
+      margin-top: 0.25rem;
     }
 
-    .funnel-quote cite strong {
+    .research-card.open .research-toggle {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+      transform: rotate(45deg);
+    }
+
+    .research-card-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s var(--ease);
+    }
+
+    .research-card-detail-inner {
+      padding: 0 2rem 2rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
+      line-height: 1.8;
     }
 
-    /* Bottom strip */
-    .trust-strip {
-      border-top: 1px solid rgba(255,255,255,0.04);
-      padding: 1.5rem 0;
-      text-align: center;
+    .research-card-detail-inner p {
+      margin-bottom: 0.75rem;
     }
 
-    .trust-strip p {
-      font-size: 0.78rem;
-      color: var(--text-faint);
-      letter-spacing: 0.02em;
+    .research-card-detail-inner p:last-child {
+      margin-bottom: 0;
     }
 
     @media (max-width: 768px) {
-      .funnel-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+      .research-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== TEXT REVEAL ===== */
+    .text-reveal {
+      overflow: hidden;
+      display: block;
+    }
+
+    .text-reveal-inner {
+      display: block;
+      transform: translateY(110%);
+      transition: transform 0.9s var(--ease);
+    }
+
+    .text-reveal.visible .text-reveal-inner {
+      transform: translateY(0);
+    }
+
+    /* ===== MARQUEE / TRUST STRIP ===== */
+    .marquee {
+      padding: 1.25rem 0;
+      background: var(--bg-alt);
+      border-top: 1px solid rgba(240, 235, 228, 0.03);
+      border-bottom: 1px solid rgba(240, 235, 228, 0.03);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 35s linear infinite;
+    }
+
+    .marquee-content {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      padding-right: 3rem;
+      white-space: nowrap;
+    }
+
+    .marquee-content span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+    }
+
+    .marquee-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--amber);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== SECTION DIVIDERS ===== */
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.15), transparent);
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== CARD GLOW ON HOVER ===== */
+    .coming-card, .research-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .coming-card::after, .research-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(212, 168, 83, 0.06), transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .coming-card:hover::after, .research-card:hover::after {
+      opacity: 1;
+    }
+
+    /* ===== ABOUT PHOTO FLOAT ===== */
+    @keyframes photoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .about-photo {
+      animation: photoFloat 6s ease-in-out infinite;
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .coming-grid { grid-template-columns: repeat(2, 1fr); }
+      .coming-grid .coming-card:last-child {
+        grid-column: span 2;
+        max-width: 50%;
+        margin: 0 auto;
+      }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-image { min-height: 240px; }
+      .featured-image-overlay { background: linear-gradient(to bottom, transparent 50%, var(--bg-card)); }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+
+      .nav-links {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        z-index: 5;
       }
 
-      .funnel-card { order: -1; }
+      .nav-links.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .nav-links a {
+        font-size: 1.2rem;
+        color: var(--text) !important;
+      }
+
+      .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      .hamburger.open span:nth-child(2) { opacity: 0; }
+      .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+      .approach-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-image { min-height: 200px; }
+      .coming-grid { grid-template-columns: 1fr; }
+      .coming-grid .coming-card:last-child { grid-column: span 1; max-width: 100%; }
+
+      .proof-inner { flex-direction: column; gap: 2rem; }
+      .proof-stat + .proof-stat { border-left: none; border-top: 1px solid rgba(240, 235, 228, 0.06); padding-top: 2rem; }
+
+      .about-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+      .about-content p { margin-left: auto; margin-right: auto; }
+      .about-links { justify-content: center; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-tagline { margin-left: auto; margin-right: auto; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+      .footer-bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <div class="funnel-page">
+<!-- Star Canvas -->
+<canvas id="star-canvas"></canvas>
 
-    <!-- Minimal Nav -->
-    <nav class="nav scrolled" style="position: relative; background: transparent; border: none; box-shadow: none;">
-      <div class="nav-inner">
-        <a href="index.html" style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.16em;color:var(--text);text-decoration:none;">Superthoughts</a>
+<!-- Film Grain -->
+<svg class="grain" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <filter id="grain-filter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#grain-filter)"/>
+</svg>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-mark"></div>
+      <span class="logo-text">Superthoughts</span>
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a href="#programs">Programs</a>
+      <a href="#about">About</a>
+      <a href="#voices">Voices</a>
+      <a href="mailto:josh@superthoughts.com">Contact</a>
+      <a href="https://mindful-eating.superthoughts.com" class="nav-cta">Listen free</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-glow hero-glow--1"></div>
+  <div class="hero-glow hero-glow--2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="tag reveal">Guided programs for real, lasting change</p>
+      <h1 class="headline headline--xl reveal reveal-delay-1">
+        <span class="text-reveal"><span class="text-reveal-inner">A return to steadiness,</span></span>
+        <span class="text-reveal"><span class="text-reveal-inner">clarity, and <em>presence.</em></span></span>
+      </h1>
+      <p class="body-lg hero-sub reveal reveal-delay-2">Superthoughts is a collection of guided audio programs designed to help you build the habits and awareness that change how you live, eat, sleep, and think.</p>
+      <div class="hero-actions reveal reveal-delay-3">
+        <a href="https://mindful-eating.superthoughts.com" class="btn btn--primary btn--lg">Start with Mindful Eating <span class="btn-arrow">&rarr;</span></a>
+        <a href="#programs" class="btn btn--outline btn--lg">Explore programs</a>
       </div>
-    </nav>
+    </div>
+  </div>
+</section>
 
-    <!-- Hero / Capture -->
-    <section class="funnel-hero">
-      <div class="hero-glow hero-glow--1"></div>
-      <div class="hero-glow hero-glow--2"></div>
-      <div class="hero-glow hero-glow--3"></div>
-      <div class="container">
-        <div class="funnel-grid">
+<!-- ===== MARQUEE TRUST STRIP ===== -->
+<hr class="section-divider">
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="marquee-content">
+      <span>40,000+ listeners</span>
+      <div class="marquee-dot"></div>
+      <span>4.9 out of 5 rating</span>
+      <div class="marquee-dot"></div>
+      <span>Listeners in 30+ countries</span>
+      <div class="marquee-dot"></div>
+      <span>25+ years of mindfulness practice</span>
+      <div class="marquee-dot"></div>
+      <span>Created by Josh Sundby</span>
+      <div class="marquee-dot"></div>
+    </div>
+    <div class="marquee-content" aria-hidden="true">
+      <span>40,000+ listeners</span>
+      <div class="marquee-dot"></div>
+      <span>4.9 out of 5 rating</span>
+      <div class="marquee-dot"></div>
+      <span>Listeners in 30+ countries</span>
+      <div class="marquee-dot"></div>
+      <span>25+ years of mindfulness practice</span>
+      <div class="marquee-dot"></div>
+      <span>Created by Josh Sundby</span>
+      <div class="marquee-dot"></div>
+    </div>
+  </div>
+</div>
 
-          <!-- Left: Copy -->
-          <div class="funnel-copy">
-            <p class="tag">Complimentary guided session &middot; 6 minutes</p>
-            <h1 class="headline headline--lg">Your next meal can feel <em>completely different.</em></h1>
-            <p class="body-lg">One short guided recording. That's all it takes to feel the shift. No signup fees, no commitment – just six minutes of your time and an open mind.</p>
-
-            <ul class="funnel-bullets">
-              <li>Learn the one technique that changes how every meal feels</li>
-              <li>Experience what "eating with awareness" actually means (not what you think)</li>
-              <li>Understand why willpower was never the answer</li>
-              <li>Feel calmer around food in under 7 minutes</li>
-            </ul>
-
-            <div class="social-proof">
-              <div class="social-proof-avatars">
-                <span>SM</span>
-                <span>JK</span>
-                <span>DR</span>
-                <span>MT</span>
-              </div>
-              <div class="social-proof-text">
-                <strong>37,500+ people</strong> have listened.<br>Rated 4.9 out of 5.
-              </div>
-            </div>
+<!-- ===== APPROACH ===== -->
+<section class="section" id="approach">
+  <div class="container">
+    <div class="approach-grid">
+      <div class="approach-left">
+        <p class="tag reveal">The approach</p>
+        <h2 class="headline headline--md reveal reveal-delay-1">Your mind is more powerful than you think. <em>Practice proves it.</em></h2>
+        <p class="body-lg reveal reveal-delay-2">Superthoughts creates guided audio programs rooted in mindfulness, awareness, and the science of habit change. Each program is a series of recordings you listen to at your own pace.</p>
+        <p class="body-lg reveal reveal-delay-3">No courses to sit through. No homework. No rigid schedules. Just <strong>close your eyes, follow the guidance, and notice what shifts.</strong></p>
+      </div>
+      <div class="value-items">
+        <div class="value-item reveal">
+          <div class="value-diamond value-diamond--amber"></div>
+          <div>
+            <h4>Practice, not theory</h4>
+            <p>Every program is something you do, not something you study. Guided recordings you listen to and practice with in real moments of your day.</p>
           </div>
-
-          <!-- Right: Email Capture Card -->
-          <div class="funnel-card">
-            <div class="funnel-card-header">
-              <div class="free-badge">Complimentary</div>
-              <h2>Get your complimentary mindful eating session</h2>
-              <p>Enter your email and listen instantly. No spam, ever.</p>
-            </div>
-
-            <form class="funnel-form" id="funnelForm">
-              <div class="form-group">
-                <label for="funnelName">First name</label>
-                <input type="text" id="funnelName" name="firstName" placeholder="Your first name" required>
-              </div>
-              <div class="form-group">
-                <label for="funnelEmail">Email</label>
-                <input type="email" id="funnelEmail" name="email" placeholder="you@email.com" required>
-              </div>
-              <button type="submit" class="btn btn--primary btn--full btn--lg" id="funnelSubmit">
-                Send me the session <span class="btn-arrow">&rarr;</span>
-              </button>
-              <p class="funnel-form-note">
-                Instant access. Unsubscribe anytime.<br>
-                We respect your inbox.
-              </p>
-            </form>
+        </div>
+        <div class="value-item reveal reveal-delay-1">
+          <div class="value-diamond value-diamond--rose"></div>
+          <div>
+            <h4>Built to last</h4>
+            <p>These are not quick fixes. Each program builds a skill through repetition and awareness. The kind of change that stays with you.</p>
           </div>
-
+        </div>
+        <div class="value-item reveal reveal-delay-2">
+          <div class="value-diamond value-diamond--sage"></div>
+          <div>
+            <h4>Your pace, your terms</h4>
+            <p>No deadlines, no schedules. Listen once or come back daily. The practice meets you where you are.</p>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- Testimonial -->
-    <div class="container">
-      <div class="funnel-quote">
-        <blockquote>"This relieved my stress and tension completely. Simple and so very practical. I love it."</blockquote>
-        <cite><strong>Diba H.</strong> – Ottawa, Canada</cite>
+<hr class="section-divider">
+
+<!-- ===== FEATURED PROGRAM ===== -->
+<section class="section section--alt" id="programs">
+  <div class="container">
+    <p class="tag reveal">Programs</p>
+    <div class="featured-card reveal reveal-delay-1">
+      <div class="featured-image">
+          <img src="images/mindful-meal.jpg" alt="A warm, sunlit meal shared with presence" loading="lazy">
+          <div class="featured-image-overlay"></div>
+        </div>
+      <div class="featured-content">
+        <p class="featured-label">Featured Program</p>
+        <h3>Mindful Eating</h3>
+        <p>Realign your relationship with food through seven guided sessions. No diets. No rules. Just the quiet power of awareness.</p>
+        <ul class="featured-details">
+          <li>7 guided recordings (74 minutes total)</li>
+          <li>Lifetime access, one-time purchase</li>
+          <li>Stream or download on any device</li>
+          <li>Trusted by 40,000+ listeners</li>
+        </ul>
+        <a href="https://mindful-eating.superthoughts.com" class="btn btn--primary">Begin the program <span class="btn-arrow">&rarr;</span></a>
+        <div class="featured-quote">
+          <blockquote>"Cultivating intention, rather than a checklist, adds value and meaning to the abundant life I have created."</blockquote>
+          <cite>Natalie S., Greenville, SC</cite>
+        </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Trust Strip -->
-    <div class="trust-strip">
-      <p>A Superthoughts program &middot; Trusted by 37,500+ listeners &middot; Created by Josh Sundby</p>
+<!-- ===== COMING SOON ===== -->
+<section class="section">
+  <div class="container">
+    <div class="coming-header">
+      <h2 class="headline headline--md reveal">More programs in development</h2>
+    </div>
+    <div class="coming-grid">
+      <div class="coming-card reveal">
+        <span class="coming-badge coming-badge--amber">Coming soon</span>
+        <h3>Restful Sleep</h3>
+        <p>A guided practice for letting go of the day and settling into deep, restorative sleep.</p>
+        <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20about%20Restful%20Sleep" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
+      </div>
+      <div class="coming-card reveal reveal-delay-1">
+        <span class="coming-badge coming-badge--rose">Coming soon</span>
+        <h3>The Abundance Practice</h3>
+        <p>Shift your relationship with money, success, and self-worth through daily guided sessions.</p>
+        <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20about%20The%20Abundance%20Practice" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
+      </div>
+      <div class="coming-card reveal reveal-delay-2">
+        <span class="coming-badge coming-badge--sage">Coming soon</span>
+        <h3>Nervous System Reset</h3>
+        <p>A practice for calming your nervous system and building resilience to daily stress.</p>
+        <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20about%20Nervous%20System%20Reset" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ===== PROOF STRIP ===== -->
+<div class="proof-strip">
+  <div class="container">
+    <div class="proof-inner">
+      <div class="proof-stat reveal">
+        <div class="proof-value">40,000+</div>
+        <div class="proof-label">Listens worldwide</div>
+      </div>
+      <div class="proof-stat reveal reveal-delay-1">
+        <div class="proof-value">4.9 / 5</div>
+        <div class="proof-label">Average rating</div>
+      </div>
+      <div class="proof-stat reveal reveal-delay-2">
+        <div class="proof-value">30+</div>
+        <div class="proof-label">Countries</div>
+      </div>
+      <div class="proof-stat reveal reveal-delay-3">
+        <div class="proof-value">Minneapolis</div>
+        <div class="proof-label">Based in MN</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESEARCH / SCIENCE ===== -->
+<section class="section section--alt" id="research">
+  <div class="container">
+    <div style="text-align: center;">
+      <p class="tag reveal">Backed by research</p>
+      <h2 class="headline headline--md reveal reveal-delay-1" style="max-width: 650px; margin: 1rem auto 0;">This isn't just a feeling. <em>The science is clear.</em></h2>
     </div>
 
+    <div class="research-grid">
+      <div class="research-card reveal" onclick="toggleResearch(this)">
+        <div class="research-card-header">
+          <div>
+            <p class="research-card-source">The Nutrition Source</p>
+            <p class="research-card-summary">Mindful eating leads to <strong>greater psychological wellbeing, increased pleasure when eating, and body satisfaction.</strong></p>
+          </div>
+          <div class="research-toggle">+</div>
+        </div>
+        <div class="research-card-detail">
+          <div class="research-card-detail-inner">
+            <p>Research from Harvard's Nutrition Source shows that mindful eating addresses shame and guilt by promoting a non-judgmental attitude toward food. It builds the skill of distinguishing emotional hunger from physical hunger, leading to more intentional food choices and a healthier relationship with eating.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="research-card reveal reveal-delay-1" onclick="toggleResearch(this)">
+        <div class="research-card-header">
+          <div>
+            <p class="research-card-source">PubMed, 68 studies reviewed</p>
+            <p class="research-card-summary">Mindfulness-based approaches are <strong>most effective at addressing binge eating, emotional eating, and eating in response to external cues.</strong></p>
+          </div>
+          <div class="research-toggle">+</div>
+        </div>
+        <div class="research-card-detail">
+          <div class="research-card-detail-inner">
+            <p>A structured review of 68 published studies found that mindfulness-based interventions consistently outperform traditional approaches for reducing binge eating and emotional eating behaviors. The evidence suggests that awareness-based practices create lasting changes in how people relate to food and hunger signals.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="research-card reveal reveal-delay-2" onclick="toggleResearch(this)">
+        <div class="research-card-header">
+          <div>
+            <p class="research-card-source">Springer</p>
+            <p class="research-card-summary">Mindful eating has been associated with <strong>reduced anxiety, depression, and increased confidence.</strong></p>
+          </div>
+          <div class="research-toggle">+</div>
+        </div>
+        <div class="research-card-detail">
+          <div class="research-card-detail-inner">
+            <p>Published research in Springer journals demonstrates that cultivating awareness around eating contributes to broader mental health outcomes. Participants in mindful eating programs showed measurable improvements in overall psychological wellbeing, not just their relationship with food.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="research-card reveal reveal-delay-3" onclick="toggleResearch(this)">
+        <div class="research-card-header">
+          <div>
+            <p class="research-card-source">Nature</p>
+            <p class="research-card-summary">Greater amounts of mindfulness practice lead to <strong>increased behavioral flexibility,</strong> breaking compulsive patterns.</p>
+          </div>
+          <div class="research-toggle">+</div>
+        </div>
+        <div class="research-card-detail">
+          <div class="research-card-detail-inner">
+            <p>Research published in Nature found that consistent mindfulness practice increases the brain's capacity for behavioral flexibility. This means a greater ability to pause, choose, and respond rather than react. For eating, this translates to breaking automatic patterns and making choices from clarity rather than compulsion.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <!-- DEV NAV: Remove before launch -->
-  <div style="position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid rgba(255,255,255,0.1);padding:0.6rem 1rem;display:flex;gap:1rem;align-items:center;z-index:9999;font-family:monospace;font-size:0.7rem;">
-    <span style="color:#555;margin-right:auto;">DEV NAV</span>
-    <a href="index.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.15);border-radius:4px;">1. Capture</a>
-    <a href="free-session.html" style="color:#8cc4b0;padding:0.3rem 0.6rem;background:rgba(140,196,176,0.1);border-radius:4px;">2. Listen</a>
-    <a href="checkout.html" style="color:#a89bcc;padding:0.3rem 0.6rem;background:rgba(168,155,204,0.1);border-radius:4px;">3. Checkout</a>
-    <a href="my-program.html" style="color:#7ba4e8;padding:0.3rem 0.6rem;background:rgba(123,164,232,0.1);border-radius:4px;">4. Program</a>
-    <a href="homepage-mockup.html" style="color:#888;padding:0.3rem 0.6rem;background:rgba(255,255,255,0.05);border-radius:4px;">Homepage</a>
+<hr class="section-divider">
+
+<!-- ===== ABOUT JOSH ===== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-photo"><img src="images/josh-sundby.webp" alt="Josh Sundby" loading="lazy"></div>
+      <div class="about-content">
+        <p class="tag reveal">Your guide</p>
+        <h2 class="reveal reveal-delay-1">Josh Sundby</h2>
+        <p class="reveal reveal-delay-2">Meditation guide, hypnotherapist, and ambient musician based in Minneapolis. Over 25 years of mindfulness practice. 40,000+ guided sessions on Insight Timer with a 4.9 rating. Creator of Superthoughts.</p>
+        <p class="reveal reveal-delay-3">Every session is designed around one idea: your mind already knows how to do this. The practice just helps you remember.</p>
+        <div class="about-links reveal reveal-delay-4">
+          <a href="https://insighttimer.com/superthoughts">Insight Timer <span class="btn-arrow">&rarr;</span></a>
+          <a href="https://youtube.com/superthoughts">YouTube <span class="btn-arrow">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <script>
-    // Email capture → redirect to free session page
-    const form = document.getElementById('funnelForm');
-    const btn = document.getElementById('funnelSubmit');
+<hr class="section-divider">
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section section--alt" id="voices">
+  <div class="container">
+    <div class="testimonials-header">
+      <p class="tag reveal">Voices</p>
+      <h2 class="headline headline--lg reveal reveal-delay-1">What <em>listeners</em> are saying</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"Gentle, soothing voice. Powerful yet subtle. <strong>I moved through my day with ease and clarity.</strong> I felt calm."</blockquote>
+        <div class="testimonial-author">
+          <strong>Cher M.</strong>
+          <span>Los Angeles, CA</span>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-1">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"I found it so grounding, comforting and reassuring. I felt <strong>calm and confident with clarity and purpose.</strong> You have a lovely, warm and sincere voice."</blockquote>
+        <div class="testimonial-author">
+          <strong>Alison W.</strong>
+          <span>Scotland, UK</span>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-2">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"A beautiful meditation that left me feeling <strong>connected and in my power.</strong> Simple and so very practical. Love it."</blockquote>
+        <div class="testimonial-author">
+          <strong>Mel D.</strong>
+          <span>Hertfordshire, UK</span>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"This made me doze right off. Very much needed after a stressful day."</blockquote>
+        <div class="testimonial-author">
+          <strong>Khurty R.</strong>
+          <span>Daily practitioner</span>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-1">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"Cultivating intention, rather than a checklist, <strong>adds value and meaning</strong> to the abundant life I have created."</blockquote>
+        <div class="testimonial-author">
+          <strong>Natalie S.</strong>
+          <span>Greenville, SC</span>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-2">
+        <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>"Perfect prep for my day which will require calmness and clarity."</blockquote>
+        <div class="testimonial-author">
+          <strong>Sue B.</strong>
+          <span>Daily listener</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      const name = document.getElementById('funnelName').value.trim();
-      const email = document.getElementById('funnelEmail').value.trim();
+<!-- ===== FINAL CTA ===== -->
+<section class="cta-section">
+  <div class="cta-glow cta-glow--1"></div>
+  <div class="cta-glow cta-glow--2"></div>
+  <div class="container">
+    <div class="cta-inner">
+      <p class="tag reveal">Begin your practice</p>
+      <h2 class="headline headline--lg reveal reveal-delay-1" style="margin-top: 1rem;">Start with <em>Mindful Eating.</em></h2>
+      <p class="body-lg reveal reveal-delay-2" style="max-width: 520px; margin: 0 auto 2.5rem;">A complimentary guided session is waiting for you. Six minutes. No commitment. Just presence.</p>
+      <a href="https://mindful-eating.superthoughts.com" class="btn btn--primary btn--lg reveal reveal-delay-3">Listen now <span class="btn-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
 
-      if (!name || !email) return;
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <a href="/" class="logo">
+          <div class="logo-mark"></div>
+          <span class="logo-text">Superthoughts</span>
+        </a>
+        <p class="footer-tagline">Guided programs for a steadier life. Minneapolis, Minnesota.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#programs">Programs</a>
+        <a href="#about">About</a>
+        <a href="#voices">Voices</a>
+        <a href="mailto:josh@superthoughts.com">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Superthoughts. All rights reserved.</span>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <a href="mailto:josh@superthoughts.com">josh@superthoughts.com</a>
+        <div class="footer-bottom-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
-      // Store for the next page
-      sessionStorage.setItem('st_name', name);
-      sessionStorage.setItem('st_email', email);
+<!-- ===== SCRIPTS ===== -->
+<script>
+// ===== STAR CANVAS =====
+(function() {
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let w, h;
 
-      // Show loading state
-      btn.innerHTML = 'Unlocking your session...';
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
 
-      // TODO: Send email to your email service (ConvertKit, Mailchimp, etc.)
-      // Example:
-      // fetch('https://your-email-api-endpoint', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name, email })
-      // });
+  function createParticles() {
+    particles = [];
+    for (let i = 0; i < 120; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 1.2 + 0.8,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        opacity: Math.random() * 0.6 + 0.2,
+        twinkleSpeed: Math.random() * 0.008 + 0.003,
+        twinkleOffset: Math.random() * Math.PI * 2,
+        isAmber: Math.random() < 0.2,
+        isBright: false
+      });
+    }
+    // Add 8 larger bright stars
+    for (let i = 0; i < 8; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 1.2 + 2,
+        vx: (Math.random() - 0.5) * 0.08,
+        vy: (Math.random() - 0.5) * 0.08,
+        opacity: Math.random() * 0.3 + 0.55,
+        twinkleSpeed: Math.random() * 0.003 + 0.001,
+        twinkleOffset: Math.random() * Math.PI * 2,
+        isAmber: Math.random() < 0.4,
+        isBright: true
+      });
+    }
+  }
 
-      // Redirect to free session page
-      setTimeout(() => {
-        window.location.href = 'free-session.html';
-      }, 800);
+  function draw(time) {
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < -10) p.x = w + 10;
+      if (p.x > w + 10) p.x = -10;
+      if (p.y < -10) p.y = h + 10;
+      if (p.y > h + 10) p.y = -10;
+
+      const twinkle = Math.sin(time * p.twinkleSpeed + p.twinkleOffset);
+      const alpha = p.opacity + twinkle * 0.25;
+
+      if (p.isAmber) {
+        ctx.fillStyle = 'rgba(212, 168, 83, ' + Math.max(0.05, Math.min(alpha, 0.85)) + ')';
+      } else {
+        ctx.fillStyle = 'rgba(240, 235, 228, ' + Math.max(0.05, Math.min(alpha, 0.8)) + ')';
+      }
+
+      // Draw soft glow behind bright stars
+      if (p.isBright) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0.02, Math.min(alpha * 0.15, 0.12));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', function() {
+    resize();
+  });
+
+  resize();
+  createParticles();
+  requestAnimationFrame(draw);
+})();
+
+// ===== RESEARCH TOGGLE =====
+function toggleResearch(card) {
+  const detail = card.querySelector('.research-card-detail');
+  const isOpen = card.classList.contains('open');
+
+  // Close all others
+  document.querySelectorAll('.research-card.open').forEach(function(openCard) {
+    if (openCard !== card) {
+      openCard.classList.remove('open');
+      openCard.querySelector('.research-card-detail').style.maxHeight = null;
+    }
+  });
+
+  if (isOpen) {
+    card.classList.remove('open');
+    detail.style.maxHeight = null;
+  } else {
+    card.classList.add('open');
+    detail.style.maxHeight = detail.scrollHeight + 'px';
+  }
+}
+
+// ===== SCROLL NAV =====
+(function() {
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+})();
+
+// ===== MOBILE MENU =====
+(function() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
     });
-  </script>
+  });
+})();
+
+// ===== SCROLL REVEAL =====
+(function() {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // Text reveal animations
+  var textRevealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  document.querySelectorAll('.text-reveal').forEach(function(el) {
+    textRevealObserver.observe(el);
+  });
+})();
+</script>
 
 </body>
 </html>
