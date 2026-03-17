@@ -351,6 +351,10 @@
 
     .section--alt { background: var(--bg-alt); }
 
+    section[id] {
+      scroll-margin-top: 5rem;
+    }
+
     /* ===== APPROACH ===== */
     .approach-grid {
       display: grid;
@@ -1268,7 +1272,7 @@
       <a href="#about">About</a>
       <a href="#voices">Voices</a>
       <a href="#" onclick="openContact(); return false;">Contact</a>
-      <a href="#programs" class="nav-cta">Programs</a>
+      <a href="#" onclick="openNotify('Superthoughts Programs'); return false;" class="nav-cta">Get notified</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span>
@@ -1442,14 +1446,14 @@
       <div class="research-card reveal" onclick="toggleResearch(this)">
         <div class="research-card-header">
           <div>
-            <p class="research-card-source">The Nutrition Source</p>
-            <p class="research-card-summary">Mindful eating leads to <strong>greater psychological wellbeing, increased pleasure when eating, and body satisfaction.</strong></p>
+            <p class="research-card-source">Harvard Gazette</p>
+            <p class="research-card-summary">Regular meditation practice leads to <strong>measurable changes in brain regions associated with memory, sense of self, and empathy.</strong></p>
           </div>
           <div class="research-toggle">+</div>
         </div>
         <div class="research-card-detail">
           <div class="research-card-detail-inner">
-            <p>Research from Harvard's Nutrition Source shows that mindful eating addresses shame and guilt by promoting a non-judgmental attitude toward food. It builds the skill of distinguishing emotional hunger from physical hunger, leading to more intentional food choices and a healthier relationship with eating.</p>
+            <p>Research from Harvard-affiliated scientists at Massachusetts General Hospital found that eight weeks of meditation practice produced measurable changes in brain structure. MRI scans showed increased grey-matter density in the hippocampus (learning and memory) and decreased density in the amygdala (stress and anxiety).</p>
           </div>
         </div>
       </div>
@@ -1457,14 +1461,14 @@
       <div class="research-card reveal reveal-delay-1" onclick="toggleResearch(this)">
         <div class="research-card-header">
           <div>
-            <p class="research-card-source">PubMed, 68 studies reviewed</p>
-            <p class="research-card-summary">Mindfulness-based approaches are <strong>most effective at addressing binge eating, emotional eating, and eating in response to external cues.</strong></p>
+            <p class="research-card-source">JAMA Internal Medicine, 47 trials reviewed</p>
+            <p class="research-card-summary">Mindfulness meditation programs show <strong>moderate evidence of improving anxiety, depression, and pain.</strong></p>
           </div>
           <div class="research-toggle">+</div>
         </div>
         <div class="research-card-detail">
           <div class="research-card-detail-inner">
-            <p>A structured review of 68 published studies found that mindfulness-based interventions consistently outperform traditional approaches for reducing binge eating and emotional eating behaviors. The evidence suggests that awareness-based practices create lasting changes in how people relate to food and hunger signals.</p>
+            <p>A systematic review of 47 clinical trials published in JAMA Internal Medicine found consistent evidence that mindfulness meditation programs reduce anxiety, depression, and pain. The improvements were comparable to those seen with antidepressant medications, without the side effects.</p>
           </div>
         </div>
       </div>
@@ -1472,14 +1476,14 @@
       <div class="research-card reveal reveal-delay-2" onclick="toggleResearch(this)">
         <div class="research-card-header">
           <div>
-            <p class="research-card-source">Springer</p>
-            <p class="research-card-summary">Mindful eating has been associated with <strong>reduced anxiety, depression, and increased confidence.</strong></p>
+            <p class="research-card-source">Psychoneuroendocrinology</p>
+            <p class="research-card-summary">Brief daily mindfulness practice <strong>lowers cortisol levels and reduces the biological markers of chronic stress.</strong></p>
           </div>
           <div class="research-toggle">+</div>
         </div>
         <div class="research-card-detail">
           <div class="research-card-detail-inner">
-            <p>Published research in Springer journals demonstrates that cultivating awareness around eating contributes to broader mental health outcomes. Participants in mindful eating programs showed measurable improvements in overall psychological wellbeing, not just their relationship with food.</p>
+            <p>Published research in Psychoneuroendocrinology demonstrated that consistent mindfulness practice significantly reduces cortisol, the body's primary stress hormone. Participants showed lower baseline cortisol and improved stress recovery, indicating real physiological changes from regular practice.</p>
           </div>
         </div>
       </div>
@@ -1487,14 +1491,14 @@
       <div class="research-card reveal reveal-delay-3" onclick="toggleResearch(this)">
         <div class="research-card-header">
           <div>
-            <p class="research-card-source">Nature</p>
-            <p class="research-card-summary">Greater amounts of mindfulness practice lead to <strong>increased behavioral flexibility,</strong> breaking compulsive patterns.</p>
+            <p class="research-card-source">Nature, Neuroscience Reviews</p>
+            <p class="research-card-summary">Greater amounts of mindfulness practice lead to <strong>increased behavioral flexibility,</strong> breaking compulsive patterns and automatic reactions.</p>
           </div>
           <div class="research-toggle">+</div>
         </div>
         <div class="research-card-detail">
           <div class="research-card-detail-inner">
-            <p>Research published in Nature found that consistent mindfulness practice increases the brain's capacity for behavioral flexibility. This means a greater ability to pause, choose, and respond rather than react. For eating, this translates to breaking automatic patterns and making choices from clarity rather than compulsion.</p>
+            <p>Research published in Nature found that consistent mindfulness practice increases the brain's capacity for behavioral flexibility. This means a greater ability to pause, choose, and respond rather than react automatically. This translates to breaking habitual patterns across eating, sleep, anxiety, and daily decision-making.</p>
           </div>
         </div>
       </div>
