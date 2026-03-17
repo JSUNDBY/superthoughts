@@ -530,6 +530,10 @@
       gap: 1.5rem;
     }
 
+    .coming-grid--4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
     .coming-card {
       background: var(--bg-card);
       border: 1px solid rgba(240, 235, 228, 0.04);
@@ -1086,12 +1090,7 @@
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
-      .coming-grid { grid-template-columns: repeat(2, 1fr); }
-      .coming-grid .coming-card:last-child {
-        grid-column: span 2;
-        max-width: 50%;
-        margin: 0 auto;
-      }
+      .coming-grid, .coming-grid--4 { grid-template-columns: repeat(2, 1fr); }
       .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
       .featured-card { grid-template-columns: 1fr; }
       .featured-image { min-height: 240px; }
@@ -1184,7 +1183,7 @@
       <a href="#about">About</a>
       <a href="#voices">Voices</a>
       <a href="mailto:josh@superthoughts.com">Contact</a>
-      <a href="https://mindful-eating.superthoughts.com" class="nav-cta">Listen free</a>
+      <a href="#programs" class="nav-cta">Programs</a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span>
@@ -1207,8 +1206,8 @@
       </h1>
       <p class="body-lg hero-sub reveal reveal-delay-2">Superthoughts is a collection of guided audio programs designed to help you build the habits and awareness that change how you live, eat, sleep, and think.</p>
       <div class="hero-actions reveal reveal-delay-3">
-        <a href="https://mindful-eating.superthoughts.com" class="btn btn--primary btn--lg">Start with Mindful Eating <span class="btn-arrow">&rarr;</span></a>
-        <a href="#programs" class="btn btn--outline btn--lg">Explore programs</a>
+        <a href="#programs" class="btn btn--primary btn--lg">Explore programs <span class="btn-arrow">&rarr;</span></a>
+        <a href="#about" class="btn btn--outline btn--lg">About Superthoughts</a>
       </div>
     </div>
   </div>
@@ -1284,55 +1283,33 @@
 
 <hr class="section-divider">
 
-<!-- ===== FEATURED PROGRAM ===== -->
+<!-- ===== PROGRAMS ===== -->
 <section class="section section--alt" id="programs">
   <div class="container">
-    <p class="tag reveal">Programs</p>
-    <div class="featured-card reveal reveal-delay-1">
-      <div class="featured-image">
-          <img src="images/mindful-meal.jpg" alt="A warm, sunlit meal shared with presence" loading="lazy">
-          <div class="featured-image-overlay"></div>
-        </div>
-      <div class="featured-content">
-        <p class="featured-label">Featured Program</p>
-        <h3>Mindful Eating</h3>
-        <p>Realign your relationship with food through seven guided sessions. No diets. No rules. Just the quiet power of awareness.</p>
-        <ul class="featured-details">
-          <li>7 guided recordings (74 minutes total)</li>
-          <li>Lifetime access, one-time purchase</li>
-          <li>Stream or download on any device</li>
-          <li>Trusted by 40,000+ listeners</li>
-        </ul>
-        <a href="https://mindful-eating.superthoughts.com" class="btn btn--primary">Begin the program <span class="btn-arrow">&rarr;</span></a>
-        <div class="featured-quote">
-          <blockquote>"Cultivating intention, rather than a checklist, adds value and meaning to the abundant life I have created."</blockquote>
-          <cite>Natalie S., Greenville, SC</cite>
-        </div>
-      </div>
+    <div style="text-align: center; margin-bottom: clamp(2.5rem, 5vw, 4rem);">
+      <p class="tag reveal">Programs</p>
+      <h2 class="headline headline--md reveal reveal-delay-1" style="margin-top: 1rem;">Programs in development</h2>
     </div>
-  </div>
-</section>
-
-<!-- ===== COMING SOON ===== -->
-<section class="section">
-  <div class="container">
-    <div class="coming-header">
-      <h2 class="headline headline--md reveal">More programs in development</h2>
-    </div>
-    <div class="coming-grid">
+    <div class="coming-grid coming-grid--4">
       <div class="coming-card reveal">
         <span class="coming-badge coming-badge--amber">Coming soon</span>
+        <h3>Mindful Eating</h3>
+        <p>Realign your relationship with food through seven guided sessions. No diets. No rules. Just the quiet power of awareness.</p>
+        <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20about%20Mindful%20Eating" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
+      </div>
+      <div class="coming-card reveal reveal-delay-1">
+        <span class="coming-badge coming-badge--sage">Coming soon</span>
         <h3>Restful Sleep</h3>
         <p>A guided practice for letting go of the day and settling into deep, restorative sleep.</p>
         <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20about%20Restful%20Sleep" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
       </div>
-      <div class="coming-card reveal reveal-delay-1">
+      <div class="coming-card reveal reveal-delay-2">
         <span class="coming-badge coming-badge--rose">Coming soon</span>
         <h3>The Abundance Practice</h3>
         <p>Shift your relationship with money, success, and self-worth through daily guided sessions.</p>
         <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20about%20The%20Abundance%20Practice" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
       </div>
-      <div class="coming-card reveal reveal-delay-2">
+      <div class="coming-card reveal reveal-delay-3">
         <span class="coming-badge coming-badge--sage">Coming soon</span>
         <h3>Nervous System Reset</h3>
         <p>A practice for calming your nervous system and building resilience to daily stress.</p>
@@ -1529,10 +1506,10 @@
   <div class="cta-glow cta-glow--2"></div>
   <div class="container">
     <div class="cta-inner">
-      <p class="tag reveal">Begin your practice</p>
-      <h2 class="headline headline--lg reveal reveal-delay-1" style="margin-top: 1rem;">Start with <em>Mindful Eating.</em></h2>
-      <p class="body-lg reveal reveal-delay-2" style="max-width: 520px; margin: 0 auto 2.5rem;">A complimentary guided session is waiting for you. Six minutes. No commitment. Just presence.</p>
-      <a href="https://mindful-eating.superthoughts.com" class="btn btn--primary btn--lg reveal reveal-delay-3">Listen now <span class="btn-arrow">&rarr;</span></a>
+      <p class="tag reveal">Stay close</p>
+      <h2 class="headline headline--lg reveal reveal-delay-1" style="margin-top: 1rem;">Something good is <em>coming.</em></h2>
+      <p class="body-lg reveal reveal-delay-2" style="max-width: 520px; margin: 0 auto 2.5rem;">Programs are in development now. Get notified when the first one launches.</p>
+      <a href="mailto:josh@superthoughts.com?subject=Notify%20me%20when%20programs%20launch" class="btn btn--primary btn--lg reveal reveal-delay-3">Get notified <span class="btn-arrow">&rarr;</span></a>
     </div>
   </div>
 </section>
