@@ -1195,32 +1195,48 @@
     }
 
     @media (max-width: 768px) {
-      .hamburger { display: flex; }
+      .hamburger {
+        display: flex;
+        z-index: 9999;
+        position: relative;
+      }
 
       .nav-links {
-        display: none;
         position: fixed;
-        inset: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
         background: var(--bg);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 2rem;
+        gap: 2.5rem;
+        z-index: 9998;
+        visibility: hidden;
         opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s;
-        z-index: 5;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
       }
 
       .nav-links.open {
-        display: flex;
+        visibility: visible;
         opacity: 1;
-        pointer-events: all;
+        display: flex;
       }
 
       .nav-links a {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         color: var(--text) !important;
+        font-family: var(--font-display);
+        font-weight: 400;
+      }
+
+      .nav-links .nav-cta {
+        margin-top: 1rem;
+        font-family: var(--font-body) !important;
+        font-size: 1rem !important;
+        padding: 0.75rem 2rem !important;
       }
 
       .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
@@ -1945,18 +1961,33 @@ function toggleResearch(card) {
 
 // ===== MOBILE MENU =====
 (function() {
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('nav-links');
+  var hamburger = document.getElementById('hamburger');
+  var navLinks = document.getElementById('nav-links');
 
-  hamburger.addEventListener('click', function() {
-    hamburger.classList.toggle('open');
-    navLinks.classList.toggle('open');
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openMenu() {
+    hamburger.classList.add('open');
+    navLinks.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  hamburger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (navLinks.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
   navLinks.querySelectorAll('a').forEach(function(link) {
     link.addEventListener('click', function() {
-      hamburger.classList.remove('open');
-      navLinks.classList.remove('open');
+      closeMenu();
     });
   });
 })();
