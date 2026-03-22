@@ -537,6 +537,8 @@
       color: var(--amber);
       line-height: 1;
       margin-bottom: 0.35rem;
+      font-variant-numeric: tabular-nums;
+      min-width: max-content;
     }
 
     .proof-label {
@@ -2140,6 +2142,16 @@ function submitContact(e) {
     var isDecimal = format === 'decimal';
     var isComma = format === 'comma';
     var duration = 2000;
+
+    // Lock width to final value so layout never shifts during counting
+    var finalText = isDecimal ? target.toFixed(1) + suffix
+      : isComma ? target.toLocaleString() + suffix
+      : Math.round(target) + suffix;
+    el.textContent = finalText;
+    el.style.display = 'inline-block';
+    el.style.minWidth = el.offsetWidth + 'px';
+    el.textContent = '0';
+
     var start = performance.now();
 
     function update(now) {
