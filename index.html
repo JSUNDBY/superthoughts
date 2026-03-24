@@ -454,6 +454,25 @@
       box-shadow: 0 16px 48px rgba(0,0,0,0.3);
     }
 
+    .coming-card--available {
+      background: linear-gradient(160deg, rgba(212, 168, 83, 0.08), var(--bg-card) 60%);
+      border-color: rgba(212, 168, 83, 0.2);
+      box-shadow: 0 0 40px rgba(212, 168, 83, 0.06);
+    }
+
+    .coming-card--available:hover {
+      border-color: rgba(212, 168, 83, 0.35);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3), 0 0 50px rgba(212, 168, 83, 0.1);
+    }
+
+    .coming-card--dimmed {
+      opacity: 0.5;
+    }
+
+    .coming-card--dimmed:hover {
+      opacity: 0.7;
+    }
+
     .coming-badge {
       display: inline-block;
       font-family: var(--font-mono);
@@ -1484,25 +1503,25 @@
       <h2 class="headline headline--md reveal reveal-delay-1" style="margin-top: 1rem;">Guided programs</h2>
     </div>
     <div class="coming-grid coming-grid--4">
-      <div class="coming-card reveal" style="border-color: rgba(212, 168, 83, 0.15);">
+      <div class="coming-card coming-card--available reveal">
         <span class="coming-badge coming-badge--amber">Available now</span>
         <h3>Mindful Eating</h3>
         <p>Realign your relationship with food through seven guided sessions. No diets. No rules. Just the quiet power of awareness.</p>
         <a href="https://mindful-eating.superthoughts.com" class="card-link" style="color: var(--amber);">Try it free <span class="btn-arrow">&rarr;</span></a>
       </div>
-      <div class="coming-card reveal reveal-delay-1" style="border-color: rgba(212, 168, 83, 0.15);">
+      <div class="coming-card coming-card--available reveal reveal-delay-1">
         <span class="coming-badge coming-badge--amber">Available now</span>
         <h3>Deep Sleep</h3>
         <p>Eight guided sessions to help you let go of the day and settle into deep, restorative sleep. No pills. No screens. Just your mind.</p>
         <a href="https://deep-sleep.superthoughts.com" class="card-link" style="color: var(--amber);">Try it free <span class="btn-arrow">&rarr;</span></a>
       </div>
-      <div class="coming-card reveal reveal-delay-2">
+      <div class="coming-card coming-card--dimmed reveal reveal-delay-2">
         <span class="coming-badge coming-badge--rose">Coming soon</span>
         <h3>The Abundance Practice</h3>
         <p>Shift your relationship with money, success, and self-worth through daily guided sessions.</p>
         <a href="#" onclick="openNotify('The Abundance Practice'); return false;" class="card-link">Get notified <span class="btn-arrow">&rarr;</span></a>
       </div>
-      <div class="coming-card reveal reveal-delay-3">
+      <div class="coming-card coming-card--dimmed reveal reveal-delay-3">
         <span class="coming-badge coming-badge--sage">Coming soon</span>
         <h3>Nervous System Reset</h3>
         <p>A practice for calming your nervous system and building resilience to daily stress.</p>
