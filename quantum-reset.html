@@ -364,6 +364,11 @@
     }
     requestAnimationFrame(draw);
 
+    var allScreens = ['intro', 'playing-ui', 'tap-zone', 'paused', 'ended'];
+    function hideAll() {
+      allScreens.forEach(function(id) { document.getElementById(id).classList.add('hidden'); });
+      document.getElementById('pause-wrap').classList.remove('visible');
+    }
     function show(id) { document.getElementById(id).classList.remove('hidden'); }
     function hide(id) { document.getElementById(id).classList.add('hidden'); }
 
@@ -424,7 +429,7 @@
       if (audioCtx.state === 'suspended') audioCtx.resume();
       audio.play();
       phase = 'playing';
-      hide('intro'); hide('paused'); hide('ended');
+      hideAll();
       show('tap-zone');
       fadeOutUI();
       goFullscreen();
@@ -445,15 +450,14 @@
         audio.pause();
         phase = 'paused';
         clearFadeTimers();
-        hide('tap-zone'); hide('playing-ui');
-        document.getElementById('pause-wrap').classList.remove('visible');
+        hideAll();
         show('paused');
         releaseWakeLock();
       } else if (phase === 'paused') {
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         audio.play();
         phase = 'playing';
-        hide('paused');
+        hideAll();
         show('tap-zone');
         fadeOutUI();
         requestWakeLock();
@@ -462,8 +466,8 @@
 
     function showEnded() {
       phase = 'ended';
-      hide('tap-zone'); hide('playing-ui');
-      document.getElementById('pause-wrap').classList.remove('visible');
+      clearFadeTimers();
+      hideAll();
       show('ended');
       releaseWakeLock();
       if (document.fullscreenElement) document.exitFullscreen().catch(function(){});
