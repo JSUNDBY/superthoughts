@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Open to Receive | Superthoughts</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Open to Receive | Superthoughts">
+  <meta property="og:description" content="A 20-minute guided session for releasing old patterns around scarcity and opening to what's available.">
+  <meta property="og:image" content="https://superthoughts.com/images/og-open-to-receive.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://superthoughts.com/open-to-receive">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Open to Receive | Superthoughts">
+  <meta name="twitter:description" content="A 20-minute guided session for releasing old patterns around scarcity and opening to what's available.">
+  <meta name="twitter:image" content="https://superthoughts.com/images/og-open-to-receive.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230a0a08'/><text x='50' y='72' font-family='Georgia,serif' font-size='68' font-weight='400' font-style='italic' fill='%23d4a853' text-anchor='middle'>S</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a08;
+      color: #fff;
+      font-family: 'Source Sans 3', sans-serif;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .display { font-family: 'Libre Baskerville', serif; }
+    canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    .screen {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 1.5rem;
+    }
+    .screen.hidden { display: none !important; }
+    #intro { cursor: pointer; }
+    #intro .brand { color: rgba(212,168,83,0.35); font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    #intro h1 { font-size: clamp(2rem,6vw,3.2rem); color: rgba(255,255,255,0.82); letter-spacing: 0.04em; margin-bottom: 0.75rem; text-align: center; }
+    #intro .sub { color: rgba(255,255,255,0.25); font-size: 1rem; margin-bottom: 4rem; }
+    .play-circle {
+      width: 4rem; height: 4rem; border-radius: 50%;
+      border: 1px solid rgba(212,168,83,0.25);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.7s ease;
+    }
+    .play-circle:hover { border-color: rgba(212,168,83,0.5); box-shadow: 0 0 40px rgba(212,168,83,0.1); }
+    .play-circle svg { color: rgba(212,168,83,0.6); margin-left: 2px; }
+    #intro .hint { color: rgba(255,255,255,0.12); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 1.25rem; }
+    #playing-ui .title { font-size: clamp(1.6rem,5vw,2.4rem); color: rgba(255,255,255,0.6); letter-spacing: 0.04em; margin-bottom: 0.75rem; text-align: center; }
+    #playing-ui .message { color: rgba(255,255,255,0.2); font-size: 0.875rem; }
+    #pause-wrap {
+      position: fixed; bottom: 2.5rem; left: 0; right: 0;
+      display: flex; justify-content: center; z-index: 15;
+      opacity: 0; transition: opacity 0.8s ease; pointer-events: none;
+    }
+    #pause-wrap.visible { opacity: 1; }
+    #pause-btn {
+      width: 3rem; height: 3rem; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1); background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; pointer-events: auto; color: rgba(255,255,255,0.3);
+      transition: all 0.5s ease;
+    }
+    #pause-btn:hover { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.2); }
+    #paused { cursor: pointer; }
+    #paused .label { color: rgba(255,255,255,0.2); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    #paused h1 { font-size: clamp(1.6rem,5vw,2.4rem); color: rgba(255,255,255,0.5); letter-spacing: 0.04em; margin-bottom: 2.5rem; text-align: center; }
+    #paused .resume-circle { width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 1px solid rgba(212,168,83,0.2); display: flex; align-items: center; justify-content: center; }
+    #paused .resume-circle svg { color: rgba(212,168,83,0.45); margin-left: 2px; }
+    #paused .hint { color: rgba(255,255,255,0.1); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 1rem; }
+    #ended { animation: fadeIn 3s ease forwards; }
+    #ended .label { color: rgba(255,255,255,0.25); font-size: 0.875rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2rem; }
+    #ended h1 { font-size: clamp(1.6rem,5vw,2.4rem); color: rgba(255,255,255,0.5); letter-spacing: 0.04em; margin-bottom: 3rem; text-align: center; }
+    #ended button {
+      padding: 0.625rem 2rem; border-radius: 9999px;
+      border: 1px solid rgba(212,168,83,0.2); background: none;
+      color: rgba(212,168,83,0.45); font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.875rem; cursor: pointer; transition: all 0.7s ease;
+    }
+    #ended button:hover { color: rgba(212,168,83,0.75); border-color: rgba(212,168,83,0.4); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <audio id="audio" src="https://superthoughts-audio.b-cdn.net/open-to-receive/open-to-receive.mp3" preload="auto" crossorigin="anonymous"></audio>
+  <canvas id="canvas"></canvas>
+
+  <div id="intro" class="screen" onclick="beginSession()">
+    <div class="brand">Superthoughts</div>
+    <h1 class="display">Open to Receive</h1>
+    <div class="sub">20-minute guided session</div>
+    <div class="play-circle">
+      <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><path d="M2 1.5L16 11L2 20.5V1.5Z" fill="currentColor"/></svg>
+    </div>
+    <div class="hint">Tap to begin</div>
+  </div>
+
+  <div id="playing-ui" class="screen hidden">
+    <h1 class="display title">Open to Receive</h1>
+    <div class="message">Find a comfortable position and let your hands rest open</div>
+  </div>
+
+  <div id="tap-zone" class="screen hidden" style="background:none" onclick="revealPause()"></div>
+
+  <div id="pause-wrap">
+    <button id="pause-btn" onclick="event.stopPropagation(); togglePause()" aria-label="Pause">
+      <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><rect x="1" y="1" width="4" height="14" rx="1"/><rect x="9" y="1" width="4" height="14" rx="1"/></svg>
+    </button>
+  </div>
+
+  <div id="paused" class="screen hidden" onclick="togglePause()">
+    <div class="label">Paused</div>
+    <h1 class="display">Open to Receive</h1>
+    <div class="resume-circle">
+      <svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M2 1.5L14 10L2 18.5V1.5Z" fill="currentColor"/></svg>
+    </div>
+    <div class="hint">Tap to resume</div>
+  </div>
+
+  <div id="ended" class="screen hidden">
+    <div class="label">Session complete</div>
+    <h1 class="display">Open to Receive</h1>
+    <button onclick="replay()">Listen Again</button>
+  </div>
+
+  <script>
+    var audio = document.getElementById('audio');
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var audioCtx, analyser, wakeLock;
+    var phase = 'intro';
+    var controlsTimer = null;
+    var fadeTimers = [];
+    var allScreens = ['intro','playing-ui','tap-zone','paused','ended'];
+
+    // Particles — warm, golden, organic
+    var particles = [];
+    (function() {
+      var cx = 0.5, cy = 0.45;
+      // Inner glow particles — warm gold
+      for (var i = 0; i < 60; i++) {
+        var a = (i/60)*Math.PI*2 + Math.random()*0.4;
+        var r = 0.06 + Math.random()*0.05;
+        particles.push({ x:0, y:0, bx: cx+Math.cos(a)*r, by: cy+Math.sin(a)*r,
+          sz: Math.random()*1.6+0.6, ph: a, sp: 0.00012+Math.random()*0.0002,
+          or: r, hue: 35+Math.random()*20, sat: 70+Math.random()*20, op: Math.random()*0.5+0.3 });
+      }
+      // Mid ring — amber/rose
+      for (var i = 0; i < 80; i++) {
+        var a = (i/80)*Math.PI*2 + Math.random()*0.5;
+        var r = 0.13 + Math.random()*0.1;
+        particles.push({ x:0, y:0, bx: cx+Math.cos(a)*r, by: cy+Math.sin(a)*r,
+          sz: Math.random()*1.1+0.3, ph: a+Math.random(), sp: 0.00005+Math.random()*0.00012,
+          or: r, hue: 25+Math.random()*30, sat: 60+Math.random()*30, op: Math.random()*0.35+0.15 });
+      }
+      // Outer field — scattered warmth
+      for (var i = 0; i < 45; i++) {
+        particles.push({ x:0, y:0, bx: Math.random(), by: Math.random(),
+          sz: Math.random()*0.7+0.2, ph: Math.random()*Math.PI*2,
+          sp: 0.00002+Math.random()*0.00005, or: 0.012+Math.random()*0.025,
+          hue: 30+Math.random()*25, sat: 50+Math.random()*40, op: Math.random()*0.18+0.06 });
+      }
+    })();
+
+    var dpr = window.devicePixelRatio || 1;
+    function resize() {
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function draw() {
+      var w = window.innerWidth, h = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
+      var now = Date.now();
+      var bass = 0, mid = 0, high = 0;
+
+      if (analyser) {
+        var fd = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(fd);
+        var bc = fd.length;
+        for (var i = 0; i < bc/6; i++) bass += fd[i];
+        bass /= bc/6;
+        for (var i = Math.floor(bc/6); i < bc/3; i++) mid += fd[i];
+        mid /= bc/6;
+        for (var i = Math.floor(bc/3); i < (bc*2)/3; i++) high += fd[i];
+        high /= bc/3;
+        bass /= 255; mid /= 255; high /= 255;
+      }
+
+      var amplitude = (bass + mid + high) / 3;
+      var cx = w * 0.5, cy = h * 0.45;
+      var breath = Math.sin(now * 0.00035) * 0.5 + 0.5;
+      var energy = Math.max(amplitude, breath * 0.12);
+
+      // Deep warm background glow
+      var bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, w * 0.55);
+      bg.addColorStop(0, 'rgba(212,168,83,' + (0.025 + energy * 0.03) + ')');
+      bg.addColorStop(0.2, 'rgba(180,120,60,' + (0.015 + energy * 0.018) + ')');
+      bg.addColorStop(0.45, 'rgba(140,80,40,' + (0.006) + ')');
+      bg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Core glow — golden, honey-like
+      var cr = Math.min(w, h) * (0.045 + energy * 0.03);
+      var cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, cr * 4);
+      cg.addColorStop(0, 'rgba(230,190,100,' + (0.12 + energy * 0.1) + ')');
+      cg.addColorStop(0.2, 'rgba(212,168,83,' + (0.07 + energy * 0.06) + ')');
+      cg.addColorStop(0.5, 'rgba(180,130,70,' + (0.02 + bass * 0.02) + ')');
+      cg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = cg;
+      ctx.beginPath();
+      ctx.arc(cx, cy, cr * 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Slow expanding rings — warm
+      for (var r = 0; r < 4; r++) {
+        var rp = (now * 0.00015 + r * 1.4) % (Math.PI * 2);
+        var rr = cr * (2 + r * 1.6 + Math.sin(rp) * 0.35);
+        var ra = (0.035 - r * 0.008 + mid * 0.025) * (1 - (r / 4) * 0.5);
+        if (ra <= 0) continue;
+        ctx.beginPath();
+        ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+        ctx.strokeStyle = 'hsla(' + (35 + r * 8) + ',70%,65%,' + ra + ')';
+        ctx.lineWidth = 0.4 + energy * 0.4;
+        ctx.stroke();
+      }
+
+      // Particles
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        var t = now * p.sp + p.ph;
+        var wm = 1 + energy * 0.25;
+        var px = (p.bx + Math.cos(t) * p.or * 0.22 * wm) * w;
+        var py = (p.by + Math.sin(t * 1.15) * p.or * 0.22 * wm) * h;
+        p.x = px; p.y = py;
+        var tw = Math.sin(now * 0.0012 + p.ph) * 0.3 + 0.7;
+        var al = p.op * tw * (0.55 + energy * 0.4);
+        var sz = p.sz * (1 + energy * 0.35);
+        ctx.shadowBlur = 5 + energy * 5;
+        ctx.shadowColor = 'hsla(' + p.hue + ',' + p.sat + '%,65%,0.35)';
+        ctx.beginPath();
+        ctx.arc(px, py, sz, 0, Math.PI * 2);
+        ctx.fillStyle = 'hsla(' + p.hue + ',' + p.sat + '%,70%,' + al + ')';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // Subtle golden connections — inner ring
+      ctx.lineWidth = 0.2;
+      for (var i = 0; i < 60; i++) {
+        for (var j = i + 1; j < 60; j++) {
+          var a = particles[i], b = particles[j];
+          var dx = a.x - b.x, dy = a.y - b.y;
+          var d = Math.sqrt(dx*dx + dy*dy);
+          var th = 45 + energy * 25;
+          if (d < th) {
+            var la = (1 - d/th) * 0.08 * (0.4 + energy * 0.35);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = 'hsla(40,80%,75%,' + la + ')';
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+
+    function hideAll() {
+      allScreens.forEach(function(id) { document.getElementById(id).classList.add('hidden'); });
+      document.getElementById('pause-wrap').classList.remove('visible');
+    }
+    function show(id) { document.getElementById(id).classList.remove('hidden'); }
+
+    function goFullscreen() {
+      try {
+        var el = document.documentElement;
+        if (el.requestFullscreen) el.requestFullscreen().catch(function(){});
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      } catch(e) {}
+    }
+
+    async function requestWakeLock() {
+      try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+    }
+    function releaseWakeLock() {
+      if (wakeLock) { wakeLock.release().catch(function(){}); wakeLock = null; }
+    }
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible' && phase === 'playing' && !wakeLock) requestWakeLock();
+    });
+
+    function setupMediaSession() {
+      if (!('mediaSession' in navigator)) return;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'Open to Receive', artist: 'Superthoughts', album: 'Guided Sessions'
+      });
+      navigator.mediaSession.setActionHandler('play', function() { audio.play(); phase = 'playing'; });
+      navigator.mediaSession.setActionHandler('pause', function() { audio.pause(); phase = 'paused'; });
+      navigator.mediaSession.setActionHandler('stop', function() { audio.pause(); audio.currentTime = 0; showEnded(); });
+    }
+
+    function clearFadeTimers() { fadeTimers.forEach(clearTimeout); fadeTimers = []; }
+
+    function fadeOutUI() {
+      clearFadeTimers();
+      show('playing-ui');
+      var ui = document.getElementById('playing-ui');
+      ui.style.opacity = '1';
+      ui.style.transition = 'opacity 2s ease';
+      fadeTimers.push(
+        setTimeout(function() { ui.style.opacity = '0.5'; }, 600),
+        setTimeout(function() { ui.style.opacity = '0.15'; }, 2000),
+        setTimeout(function() { ui.classList.add('hidden'); }, 4000)
+      );
+    }
+
+    function beginSession() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+        var src = audioCtx.createMediaElementSource(audio);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 512;
+        analyser.smoothingTimeConstant = 0.85;
+        src.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      audio.play();
+      phase = 'playing';
+      hideAll();
+      show('tap-zone');
+      fadeOutUI();
+      goFullscreen();
+      requestWakeLock();
+      setupMediaSession();
+    }
+
+    function revealPause() {
+      if (phase !== 'playing') return;
+      var wrap = document.getElementById('pause-wrap');
+      wrap.classList.add('visible');
+      if (controlsTimer) clearTimeout(controlsTimer);
+      controlsTimer = setTimeout(function() { wrap.classList.remove('visible'); }, 4000);
+    }
+
+    function togglePause() {
+      if (phase === 'playing') {
+        audio.pause();
+        phase = 'paused';
+        clearFadeTimers();
+        hideAll();
+        show('paused');
+        releaseWakeLock();
+      } else if (phase === 'paused') {
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        audio.play();
+        phase = 'playing';
+        hideAll();
+        show('tap-zone');
+        fadeOutUI();
+        requestWakeLock();
+      }
+    }
+
+    function showEnded() {
+      phase = 'ended';
+      clearFadeTimers();
+      hideAll();
+      show('ended');
+      releaseWakeLock();
+      if (document.fullscreenElement) document.exitFullscreen().catch(function(){});
+    }
+
+    function replay() { audio.currentTime = 0; beginSession(); }
+
+    audio.addEventListener('ended', function() {
+      if (phase === 'playing') showEnded();
+    });
+  </script>
+</body>
+</html>
