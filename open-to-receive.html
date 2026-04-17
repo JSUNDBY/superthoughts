@@ -83,6 +83,33 @@
       font-size: 0.875rem; cursor: pointer; transition: all 0.7s ease;
     }
     #ended button:hover { color: rgba(212,168,83,0.75); border-color: rgba(212,168,83,0.4); }
+    /* Breathing intro */
+    #breathing-in { background: #0a0a08; }
+    .breath-ring {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 1px solid rgba(212,168,83,0.0);
+      box-shadow: 0 0 0 rgba(212,168,83,0);
+      animation: breathExpand 5s ease-in-out forwards;
+    }
+    .breath-title {
+      font-size: clamp(1.8rem,5vw,2.8rem);
+      color: rgba(255,255,255,0);
+      letter-spacing: 0.04em;
+      margin-top: 2.5rem;
+      text-align: center;
+      animation: titleReveal 5s ease forwards;
+    }
+    @keyframes breathExpand {
+      0%   { width: 40px; height: 40px; border-color: rgba(212,168,83,0); box-shadow: 0 0 0px rgba(212,168,83,0); }
+      30%  { width: 100px; height: 100px; border-color: rgba(212,168,83,0.25); box-shadow: 0 0 60px rgba(212,168,83,0.06); }
+      60%  { width: 130px; height: 130px; border-color: rgba(212,168,83,0.15); box-shadow: 0 0 90px rgba(212,168,83,0.08); }
+      100% { width: 160px; height: 160px; border-color: rgba(212,168,83,0.08); box-shadow: 0 0 120px rgba(212,168,83,0.1); }
+    }
+    @keyframes titleReveal {
+      0%   { color: rgba(255,255,255,0); transform: translateY(8px); }
+      40%  { color: rgba(255,255,255,0); transform: translateY(8px); }
+      100% { color: rgba(255,255,255,0.7); transform: translateY(0); }
+    }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
@@ -98,6 +125,11 @@
       <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><path d="M2 1.5L16 11L2 20.5V1.5Z" fill="currentColor"/></svg>
     </div>
     <div class="hint">Tap to begin</div>
+  </div>
+
+  <div id="breathing-in" class="screen hidden">
+    <div class="breath-ring"></div>
+    <h1 class="display breath-title">Open to Receive</h1>
   </div>
 
   <div id="playing-ui" class="screen hidden">
@@ -136,7 +168,7 @@
     var phase = 'intro';
     var controlsTimer = null;
     var fadeTimers = [];
-    var allScreens = ['intro','playing-ui','tap-zone','paused','ended'];
+    var allScreens = ['intro','breathing-in','playing-ui','tap-zone','paused','ended'];
 
     // Particles — warm, golden, organic
     var particles = [];
@@ -336,14 +368,23 @@
         analyser.connect(audioCtx.destination);
       }
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      audio.play();
-      phase = 'playing';
-      hideAll();
-      show('tap-zone');
-      fadeOutUI();
+
       goFullscreen();
       requestWakeLock();
       setupMediaSession();
+
+      // Show breathing intro for 5 seconds, then start audio
+      phase = 'breathing';
+      hideAll();
+      show('breathing-in');
+
+      setTimeout(function() {
+        audio.play();
+        phase = 'playing';
+        hideAll();
+        show('tap-zone');
+        fadeOutUI();
+      }, 5000);
     }
 
     function revealPause() {
