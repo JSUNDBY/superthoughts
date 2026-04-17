@@ -475,7 +475,10 @@
 
     function replay() { audio.currentTime = 0; beginSession(); }
 
-    audio.addEventListener('ended', showEnded);
+    audio.addEventListener('ended', function() {
+      // Only show ended screen if we were actually playing
+      if (phase === 'playing') showEnded();
+    });
   </script>
 </body>
 </html>
