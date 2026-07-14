@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Reset: Release Jaw Tension | Superthoughts</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Daily Reset: Release Jaw Tension">
+  <meta property="og:description" content="A six-minute guided meditation to soften the jaw and let the day out of your body. Press play whenever you need it.">
+  <meta property="og:type" content="music.song">
+  <meta property="og:url" content="https://superthoughts.com/release-jaw-tension">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230a0c10'/><text x='50' y='72' font-family='Georgia,serif' font-size='68' font-weight='400' font-style='italic' fill='%23d4a853' text-anchor='middle'>S</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg2: #13151a;
+      --panel: #1a1c22;
+      --cream: #f0ebe4;
+      --muted: #a09994;
+      --gold: #d4a853;
+      --gold-soft: #e8c677;
+      --sage: #7d9b8a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Source Sans 3', sans-serif;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+    /* soft breathing aura behind the card */
+    .aura {
+      position: fixed;
+      top: 50%; left: 50%;
+      width: 120vmin; height: 120vmin;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at center, rgba(212,168,83,0.10), rgba(125,155,138,0.05) 42%, transparent 68%);
+      z-index: 0;
+      animation: breathe 11s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: translate(-50%,-50%) scale(0.92); opacity: 0.75; }
+      50%      { transform: translate(-50%,-50%) scale(1.08); opacity: 1; }
+    }
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      background: linear-gradient(180deg, var(--panel), var(--bg2));
+      border: 1px solid rgba(240,235,228,0.08);
+      border-radius: 22px;
+      padding: 40px 34px 34px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-weight: 400;
+      font-size: 28px;
+      line-height: 1.28;
+      margin-bottom: 16px;
+    }
+    .intro {
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.62;
+      margin-bottom: 30px;
+    }
+    /* player */
+    .player { margin-top: 6px; }
+    .play-btn {
+      width: 78px; height: 78px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at 34% 30%, var(--gold-soft), var(--gold));
+      color: #16130b;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(212,168,83,0.32);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .play-btn:hover { transform: scale(1.05); }
+    .play-btn:active { transform: scale(0.97); }
+    .play-btn svg { width: 30px; height: 30px; display: block; margin-left: 2px; }
+    .play-btn.playing svg { margin-left: 0; }
+    .scrub {
+      margin: 26px 4px 8px;
+      height: 6px;
+      background: rgba(240,235,228,0.12);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+    .fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--sage), var(--gold));
+      border-radius: 3px;
+    }
+    .knob {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--cream);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+    .times {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .signoff {
+      margin-top: 32px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(240,235,228,0.08);
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .signoff .name {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      color: var(--cream);
+    }
+    .signoff a { color: var(--gold); text-decoration: none; }
+    .signoff a:hover { text-decoration: underline; }
+    @media (max-width: 400px) {
+      .card { padding: 34px 24px 28px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="aura"></div>
+  <main class="card">
+    <div class="eyebrow">Daily Reset</div>
+    <h1>Release Jaw Tension</h1>
+    <p class="intro">A six-minute guided meditation to soften the jaw, drop the shoulders, and let the day out of your body. Find somewhere comfortable, and press play whenever you need it.</p>
+
+    <div class="player">
+      <button class="play-btn" id="playBtn" aria-label="Play">
+        <svg id="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="scrub" id="scrub">
+        <div class="fill" id="fill"></div>
+        <div class="knob" id="knob"></div>
+      </div>
+      <div class="times">
+        <span id="cur">0:00</span>
+        <span id="dur">6:05</span>
+      </div>
+    </div>
+
+    <p class="signoff">Made for you, with care.<br><span class="name">Josh</span> · <a href="https://superthoughts.com">Superthoughts</a></p>
+  </main>
+
+  <audio id="audio" src="audio/release-jaw-tension.mp3" preload="metadata"></audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const icon = document.getElementById('icon');
+    const fill = document.getElementById('fill');
+    const knob = document.getElementById('knob');
+    const scrub = document.getElementById('scrub');
+    const curEl = document.getElementById('cur');
+    const durEl = document.getElementById('dur');
+
+    const PLAY = 'M8 5v14l11-7z';
+    const PAUSE = 'M6 5h4v14H6zM14 5h4v14h-4z';
+
+    function fmt(s) {
+      if (!isFinite(s)) return '0:00';
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) audio.play(); else audio.pause();
+    });
+    audio.addEventListener('play', () => {
+      icon.querySelector('path').setAttribute('d', PAUSE);
+      playBtn.classList.add('playing');
+      playBtn.setAttribute('aria-label', 'Pause');
+    });
+    audio.addEventListener('pause', () => {
+      icon.querySelector('path').setAttribute('d', PLAY);
+      playBtn.classList.remove('playing');
+      playBtn.setAttribute('aria-label', 'Play');
+    });
+    audio.addEventListener('loadedmetadata', () => { durEl.textContent = fmt(audio.duration); });
+    audio.addEventListener('timeupdate', () => {
+      const p = (audio.currentTime / audio.duration) * 100 || 0;
+      fill.style.width = p + '%';
+      knob.style.left = p + '%';
+      curEl.textContent = fmt(audio.currentTime);
+    });
+    audio.addEventListener('ended', () => {
+      icon.querySelector('path').setAttribute('d', PLAY);
+      playBtn.classList.remove('playing');
+    });
+
+    function seek(e) {
+      const rect = scrub.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const ratio = Math.max(0, Math.min(1, x / rect.width));
+      if (isFinite(audio.duration)) audio.currentTime = ratio * audio.duration;
+    }
+    let dragging = false;
+    scrub.addEventListener('mousedown', (e) => { dragging = true; seek(e); });
+    window.addEventListener('mousemove', (e) => { if (dragging) seek(e); });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    scrub.addEventListener('touchstart', (e) => { seek(e); }, { passive: true });
+    scrub.addEventListener('touchmove', (e) => { seek(e); }, { passive: true });
+  </script>
+</body>
+</html>
