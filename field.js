@@ -1,5 +1,6 @@
 // The field: one framed rectangle painted by the session's voice.
-// Idle: breathes on an 11s cycle. Playing: analyser bands drive swell, drift, shimmer.
+// At rest it breathes on an 11s cycle, like ink settling in water under window light.
+// Playing: low band swells the form, mids move the current, highs sharpen the filaments.
 // Reduced motion: renders one frame and stops. No WebGL: leaves the fog tint block.
 (function () {
   const canvas = document.getElementById('canvas');
@@ -13,55 +14,65 @@
 
   const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
   const fs = `
-    precision mediump float;
+    precision highp float;
     uniform vec2 uRes; uniform float uTime, uLow, uMid, uHigh, uLevel;
 
-    float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+    vec2 hash2(vec2 p){ p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3))); return -1.0 + 2.0 * fract(sin(p) * 43758.5453123); }
     float noise(vec2 p){
-      vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
-      return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y);
+      vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f);
+      return mix(mix(dot(hash2(i), f), dot(hash2(i+vec2(1,0)), f-vec2(1,0)), u.x),
+                 mix(dot(hash2(i+vec2(0,1)), f-vec2(0,1)), dot(hash2(i+vec2(1,1)), f-vec2(1,1)), u.x), u.y);
     }
     float fbm(vec2 p){
-      float v = 0.0, a = 0.5;
-      for (int i = 0; i < 5; i++) { v += a * noise(p); p = p * 2.03 + 11.7; a *= 0.5; }
-      return v;
+      float v = 0.0, a = 0.5; mat2 m = mat2(0.8, 0.6, -0.6, 0.8);
+      for (int i = 0; i < 6; i++) { v += a * noise(p); p = m * p * 2.02 + 3.7; a *= 0.5; }
+      return 0.5 + 0.5 * v;
     }
+    float hash1(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+
     void main(){
       vec2 uv = gl_FragCoord.xy / uRes;
-      vec2 q = uv; q.x *= uRes.x / uRes.y;
+      vec2 q = (uv - 0.5) * vec2(uRes.x / uRes.y, 1.0);
 
       float breath = 0.5 + 0.5 * sin(uTime * 6.2831853 / 11.0);
-      float t = uTime * 0.035;
-      float swell = 0.75 + 0.35 * breath + uLow * 0.6;
+      float t = uTime * 0.02 * (1.0 + uMid * 1.5);
+      float swell = 0.92 + 0.10 * breath + uLow * 0.35;
 
-      vec2 w1 = vec2(fbm(q * 1.4 + t), fbm(q * 1.4 - t * 0.8 + 3.1));
-      vec2 w2 = vec2(fbm(q * 2.2 + w1 * 1.6 + uMid * 0.8), fbm(q * 2.2 - w1 * 1.3 + 5.2));
-      float n = fbm(q * 1.1 * swell + w2 * 1.2);
-      float s = fbm(q * 6.0 + w2 * 2.0 + t * 2.0) * uHigh;
+      // two layers of domain warp: slow current, then fine eddies
+      vec2 w1 = vec2(fbm(q * 1.3 * swell + vec2(0.0, t)), fbm(q * 1.3 * swell + vec2(5.2, 1.3) - t * 0.7));
+      vec2 w2 = vec2(fbm(q * 2.1 + 2.6 * w1 + vec2(1.7, 9.2) + t * 0.5), fbm(q * 2.1 + 2.6 * w1 + vec2(8.3, 2.8) - t * 0.4));
+      float n = fbm(q * 1.15 + 2.4 * w2);
 
-      // paper-side palette: fog, birch, moss, clay. Muted, but present.
-      vec3 fog   = vec3(0.800, 0.804, 0.776);
-      vec3 birch = vec3(0.910, 0.894, 0.851);
-      vec3 moss  = vec3(0.596, 0.651, 0.569);
-      vec3 clay  = vec3(0.741, 0.620, 0.541);
+      // filaments: ridged noise, sharpened by the voice's highs
+      float f = fbm(q * 2.8 + 1.8 * w2 + t * 0.6);
+      float ridge = 1.0 - abs(2.0 * f - 1.0);
+      float fil = pow(ridge, 7.0 - uHigh * 3.0);
 
-      vec3 c = mix(fog, birch, smoothstep(0.28, 0.60, n));
-      c = mix(c, moss, smoothstep(0.42, 0.78, n) * (0.60 + 0.40 * breath));
-      c = mix(c, clay, smoothstep(0.58, 0.92, n + uLevel * 0.25) * 0.75);
-      c = mix(c, fog * 0.92, smoothstep(0.30, 0.05, n) * 0.6);
-      c += s * 0.08;
+      // palette: slate in the depths, moss, fog, paper in the light, a breath of clay
+      vec3 paper = vec3(0.930, 0.922, 0.900);
+      vec3 fog   = vec3(0.790, 0.792, 0.760);
+      vec3 moss  = vec3(0.520, 0.590, 0.505);
+      vec3 slate = vec3(0.250, 0.310, 0.275);
+      vec3 clay  = vec3(0.735, 0.610, 0.520);
 
-      // light from the upper left, like a window
-      float light = smoothstep(1.6, 0.0, distance(q, vec2(0.25, 0.85)));
-      c = mix(c, birch, light * 0.35 * (0.6 + 0.4 * breath));
+      float nn = n + uLevel * 0.12;
+      vec3 c = mix(slate, moss, smoothstep(0.22, 0.46, nn));
+      c = mix(c, fog,   smoothstep(0.44, 0.60, nn));
+      c = mix(c, paper, smoothstep(0.58, 0.82, nn));
+      c = mix(c, clay,  smoothstep(0.62, 0.92, w2.x) * 0.22);
+      c += vec3(0.96, 0.94, 0.90) * fil * (0.16 + 0.18 * breath + uHigh * 0.3) * smoothstep(0.30, 0.55, nn);
 
-      // vignette held soft
-      float v = smoothstep(1.35, 0.35, distance(uv, vec2(0.5)));
-      c = mix(c * 0.94, c, v);
+      // window light from the upper left, soft
+      float light = smoothstep(1.9, 0.0, distance(q, vec2(-0.55, 0.55)));
+      c = mix(c, paper, light * 0.18 * (0.7 + 0.3 * breath));
 
-      // grain
-      float g = hash(gl_FragCoord.xy + fract(uTime)) - 0.5;
-      c += g * 0.028;
+      // held vignette so the edges settle into the frame
+      float v = smoothstep(1.25, 0.30, length(uv - 0.5));
+      c = mix(c * 0.93, c, v);
+
+      // paper grain
+      float g = hash1(gl_FragCoord.xy + fract(uTime * 0.37)) - 0.5;
+      c += g * 0.022;
 
       gl_FragColor = vec4(c, 1.0);
     }`;
@@ -83,7 +94,7 @@
   function resize() {
     const r = canvas.getBoundingClientRect();
     const dpr = Math.min(devicePixelRatio || 1, 1.5);
-    const w = Math.min(Math.round(r.width * dpr), 1440), h = Math.round(w * r.height / r.width);
+    const w = Math.min(Math.round(r.width * dpr), 1600), h = Math.round(w * r.height / r.width);
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); }
     gl.uniform2f(U.uRes, w, h);
   }
@@ -115,13 +126,17 @@
   }
 
   const t0 = performance.now();
+  let visible = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; if (visible && !reduced) requestAnimationFrame(frame); }, { threshold: 0 }).observe(canvas);
+  }
   function frame() {
     resize(); sample();
     gl.uniform1f(U.uTime, (performance.now() - t0) / 1000);
     gl.uniform1f(U.uLow, band.low); gl.uniform1f(U.uMid, band.mid);
     gl.uniform1f(U.uHigh, band.high); gl.uniform1f(U.uLevel, band.level);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-    if (!reduced) requestAnimationFrame(frame);
+    if (!reduced && visible) requestAnimationFrame(frame);
   }
   frame();
 
