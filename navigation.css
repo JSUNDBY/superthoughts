@@ -1,0 +1,44 @@
+/* Paths into the existing listening catalog. */
+.collection-nav{padding:12px 0 74px}
+.collection-nav .eyebrow{margin-bottom:18px}
+.collection-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.collection-links a{display:flex;flex-direction:column;gap:15px;min-height:186px;padding:27px 22px 22px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-decoration:none;transition:background .2s}
+.collection-links a:first-child{border-left:1px solid var(--line)}
+.collection-links a:hover{background:#ffffff09}
+.collection-links a>span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage)}
+.collection-links strong{font-size:clamp(17px,1.8vw,25px);font-weight:400;line-height:1.2;letter-spacing:-.04em}
+.collection-links strong span{font-size:16px;color:var(--copper);white-space:nowrap}
+.collection-links small{margin-top:auto;color:var(--muted);font-size:12px;line-height:1.5}
+.card-listen{display:inline-block;align-self:flex-start;text-decoration:none}
+.page-session .site-header,.page-session .welcome,.page-session .collection-nav,.page-session .library,.page-session .practice,.page-session .pilot-feedback,.page-session .site-footer,.page-session .listening-intro{display:none!important}
+.page-session #main{width:100%;max-width:none}
+.page-session .listening{border:0;padding:0;margin:0}
+.page-session .player-shell{position:relative;display:block;width:100%;height:100svh;min-height:100svh;border:0;background:#151d1b;overflow:hidden}
+.page-session .player-field{position:absolute;inset:0;width:100%;height:100%;min-height:0}
+.page-session .player-panel{position:absolute;left:50%;bottom:0;z-index:8;transform:translateX(-50%);width:min(100%,660px);max-height:min(70svh,700px);min-height:0;overflow:auto;padding:56px 32px 24px;background:linear-gradient(transparent,rgba(15,20,20,.94) 22%);border:0}
+.page-session .player-panel-top{margin-bottom:24px}
+.page-session .field-center{top:40%}
+.page-session .field-words{bottom:29%}
+.page-session .focus-toggle{display:none}
+.page-session.focus-listening .player-shell{position:relative;inset:auto;display:block;grid-template-columns:none}
+.page-session.focus-listening .player-field{height:100%;min-height:0}
+.page-session.focus-listening .player-panel{max-height:min(70svh,700px);justify-content:initial}
+.session-toolbar{position:absolute;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 26px;pointer-events:none;transition:opacity 1.8s ease}
+.session-toolbar>*{pointer-events:auto;background:#101916aa;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:10px 16px;text-decoration:none;font-size:12px;backdrop-filter:blur(12px)}
+.session-toolbar a:hover,.session-toolbar button:hover{background:#28352f}
+.page-session.bath-idle .session-toolbar{opacity:0;pointer-events:none}
+.page-session.bath-idle .session-toolbar>*{pointer-events:none}
+.page-session .player-shell:fullscreen,.page-session .player-shell:-webkit-full-screen{width:100%;height:100svh}
+.page-session.css-fullscreen .player-shell{position:fixed;inset:0;z-index:50;height:100svh}
+.page-session.css-fullscreen{overflow:hidden}
+.page-practice .welcome,.page-practice .collection-nav,.page-practice .listening,.page-practice .practice,.page-practice .pilot-feedback{display:none!important}
+.page-practice .library{margin-top:0;padding-top:64px;border-top:0}
+.page-practice .site-footer{margin-top:80px}
+@media(max-width:900px){.collection-links{grid-template-columns:repeat(2,minmax(0,1fr))}.collection-links a:nth-child(3){border-left:1px solid var(--line)}}
+@media(max-width:750px){.page-session .player-panel,.page-session.focus-listening .player-panel{width:100%;max-height:54svh;padding:40px 22px 20px}.page-session .player-field,.page-session.focus-listening .player-field{height:100%}.page-session .field-center{top:34%}.page-session .field-words{bottom:39%;left:8%;right:8%}.page-session .session-toolbar{padding:12px}}
+@media(max-width:560px){.collection-links{grid-template-columns:1fr}.collection-links a{min-height:135px;border-left:1px solid var(--line);gap:8px}.collection-links a:nth-child(3){border-left:1px solid var(--line)}.collection-nav{padding-bottom:60px}.page-session .session-toolbar>*{font-size:11px}.page-session .player-panel,.page-session.focus-listening .player-panel{max-height:52svh;padding:36px 19px 18px}.page-session .player-panel-top{margin-bottom:15px}.page-session .field-center{top:31%}.page-practice .library{padding-top:44px}}
+
+.page-session .field-top{top:82px}
+@media(prefers-reduced-motion:reduce){.session-toolbar{transition:none}}
+
+body:not(.page-session) .listening{display:none}

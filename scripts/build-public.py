@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'_site'
 if OUT.exists():shutil.rmtree(OUT)
 OUT.mkdir()
-files=['index.html','privacy.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
+files=['index.html','session.html','practice.html','navigation.css','collections.js','privacy.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
  'pilot.css','pilot.js','pilot-visuals.js','pilot-catalog.js','pilot-progress.mjs','pilot-offline.js','pilot-feedback.js','pilot-sw.js','pilot.webmanifest',
  'CNAME','images/favicon.svg','images/superthoughts-symbol.svg','robots.txt','sitemap.xml']
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'fonts').iterdir() if p.is_file()]
@@ -13,7 +13,8 @@ files += [str(p.relative_to(ROOT)) for p in (ROOT/'fonts').iterdir() if p.is_fil
 if (ROOT/'homepage.js').is_file():files.append('homepage.js')
 if (ROOT/'images/og-listening.png').is_file():files.append('images/og-listening.png')
 catalog=json.loads(subprocess.check_output(['node','-e',"global.window={};require('./pilot-catalog.js');console.log(JSON.stringify(window.STCatalog))"],cwd=ROOT))
-assert len(catalog)==8
+assert len(catalog)>=8
+assert len({item["id"] for item in catalog})==len(catalog)
 for item in catalog:
  files.append(item['src'])
  if item['cues']:

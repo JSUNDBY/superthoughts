@@ -1,11 +1,11 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v9';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v10';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
-  'index.html', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
+  'index.html', 'session.html', 'practice.html', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
   'pilot-visuals.js', 'pilot-progress.mjs', 'pilot-offline.js',
   'pilot-feedback.js', 'pilot.webmanifest',
   'images/favicon.svg', 'images/superthoughts-symbol.svg',
@@ -19,7 +19,9 @@ const SESSION_FILES = new Map([
   ['audio/pilot-begin-day-v2.mp3', 'audio/pilot-begin-day-v2-cues.json'],
   ['audio/pilot-warmth-v1.mp3', null],
   ['audio/pilot-open-space-v1.mp3', null],
-  ['audio/pilot-drift-v1.mp3', null]
+  ['audio/pilot-drift-v1.mp3', null],
+  ['audio/afterglow-v1.mp3', null],
+  ['audio/first-light-v1.mp3', null]
 ]);
 
 const pathFor = relative => new URL(relative, ROOT).pathname;
@@ -77,7 +79,7 @@ self.addEventListener('activate', event => {
 async function shellResponse(request, isNavigation) {
   const cache = await caches.open(SHELL_CACHE);
   const requestPath = new URL(request.url).pathname;
-  const canonical = urlFor(isNavigation ? 'index.html' :
+  const canonical = urlFor(isNavigation ? (['session.html', 'practice.html'].find(file => pathFor(file) === requestPath) || 'index.html') :
     SHELL_FILES.find(file => pathFor(file) === requestPath));
   try {
     const response = await fetch(request, { cache: 'no-cache' });
@@ -145,7 +147,8 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.origin !== ROOT.origin || url.hash) return;
   if ((url.pathname === ROOT.pathname || url.pathname === indexPath ||
-       url.pathname === pilotPath) && request.mode === 'navigate') {
+       url.pathname === pilotPath || url.pathname === pathFor('session.html') ||
+       url.pathname === pathFor('practice.html')) && request.mode === 'navigate') {
     event.respondWith(shellResponse(request, true));
   } else if (url.search) {
     return;

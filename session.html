@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#131716">
   <meta name="description" content="A quiet place to listen. Explore guided practices and sound from Superthoughts.">
-  <link rel="canonical" href="https://superthoughts.com/">
+  <link rel="canonical" href="https://superthoughts.com/session.html">
   <meta property="og:image" content="https://superthoughts.com/images/og-listening.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://superthoughts.com/images/og-listening.png">
@@ -13,14 +13,14 @@
   <meta property="og:url" content="https://superthoughts.com/">
   <meta property="og:title" content="Superthoughts · Get out of your head. Come back to you.">
   <meta property="og:description" content="A quiet place to listen. Explore guided practices and sound from Superthoughts.">
-  <title>Superthoughts · Get out of your head. Come back to you.</title>
+  <title>Listen · Superthoughts</title>
   <link rel="manifest" href="pilot.webmanifest">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="stylesheet" href="fonts/fonts.css">
   <link rel="stylesheet" href="pilot.css">
   <link rel="stylesheet" href="navigation.css">
 </head>
-<body>
+<body class="page-session">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header"><div class="shell header-inner">
     <a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" alt="" width="36" height="36"><span>superthoughts<span class="brand-dot">.</span></span></a>
@@ -41,7 +41,7 @@
 
     <section class="listening" id="listen" aria-labelledby="listen-title">
       <div class="section-intro listening-intro"><div><p class="eyebrow">Your listening room</p><h2 id="listen-title">Settle in.</h2></div><p>Listen with the light, or let the screen rest. The audio is always yours to control.</p></div>
-      <div class="player-shell" id="player-shell">
+      <div class="player-shell" id="player-shell"><div class="session-toolbar"><a id="session-back" href="index.html#library">← Back to library</a><button id="fullscreen-button" type="button" aria-pressed="false">Enter full screen</button></div>
         <div class="player-field" id="player-field"><canvas id="field-canvas" aria-hidden="true"></canvas><div class="field-wash" aria-hidden="true"></div><div class="field-top"><span id="field-kicker">ROOM BETWEEN THINGS</span><span id="field-duration">3 MIN</span></div><div class="field-center"><p class="field-overline">YOUR MOMENT</p><h3 id="player-title">A little reset</h3><p id="player-description">A short pause to feel your feet, find your breath, and begin again.</p></div><p id="field-words" class="field-words" aria-hidden="true"></p><span class="field-index" aria-hidden="true">S / T</span></div>
         <div class="player-panel">
           <div class="player-panel-top"><div><p class="eyebrow">The listening room</p><p id="player-type" class="player-type">Guided practice · 3 min</p></div><button id="player-favorite" class="icon-button heart-button" type="button" aria-label="Save session to favorites" aria-pressed="false" title="Save to favorites"><span aria-hidden="true">♡</span></button></div>
@@ -78,5 +78,6 @@
   <script type="module" src="pilot.js"></script>
   <script src="pilot-offline.js" defer></script>
   <script src="pilot-feedback.js" defer></script>
+  <script type="module" src="collections.js"></script>
 </body>
 </html>

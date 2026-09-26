@@ -4,14 +4,17 @@ const catalog = Array.isArray(window.STCatalog) ? window.STCatalog : [];
 const byId = new Map(catalog.map(item => [item.id, item]));
 const $ = id => document.getElementById(id);
 const audio = $('pilot-audio');
+const isSessionPage = document.body.classList.contains('page-session');
+const isPracticePage = document.body.classList.contains('page-practice');
 let browserStorage = null;
 try { browserStorage = window.localStorage; } catch {}
 const store = createPracticeStore(browserStorage, () => new Date());
 const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, onComplete: acknowledgeCompletion });
 const scene = typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('field-canvas')) : null;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const heroScene = typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
+const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
 const cardScenes = [];
+const sessionUrl = id => `session.html?session=${encodeURIComponent(id)}`;
 heroScene?.setScene('wind-down');
 if (heroScene) { heroScene.elapsed = 38; heroScene.render(); heroScene.setPlaying(true); }
 let active = null;
@@ -49,8 +52,9 @@ function pickDaily() {
 }
 
 function renderLibrary() {
+  if (isSessionPage) return;
   const saved = new Set(snapshot().favorites || []);
-  const shown = catalog.filter(item => filter === 'all' || (filter === 'favorites' ? saved.has(item.id) : item.category === filter));
+  const shown = catalog.filter(item => filter === 'all' || (filter === 'favorites' ? saved.has(item.id) : filter === 'sound' ? item.type === 'sound' : item.category === filter));
   const grid = $('session-grid');
   const focused = document.activeElement;
   const focusedId = focused?.closest('.session-card')?.dataset.id;
@@ -74,8 +78,7 @@ function renderLibrary() {
     const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = `${item.type === 'sound' ? 'Sound' : 'Guided'} · ${durationText(item.duration)}`;
     const title = document.createElement('h3'); title.textContent = item.title;
     const description = document.createElement('p'); description.textContent = item.description;
-    const listen = document.createElement('button'); listen.className = 'card-listen'; listen.type = 'button'; listen.innerHTML = 'Listen <span aria-hidden="true">↗</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
-    listen.addEventListener('click', () => { select(item.id, { play: true, scroll: true }); });
+    const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = 'Listen <span aria-hidden="true">↗</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
     body.append(meta, title, description, listen); card.append(art, body); grid.append(card);
     if (typeof window.SuperthoughtsField === 'function') {
       const field = new window.SuperthoughtsField(artCanvas);
@@ -125,6 +128,7 @@ function updateTransport() {
   $('play-toggle').setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${active?.title || 'selected session'}`);
   $('play-icon').textContent = playing ? 'Ⅱ' : '▶';
   scene?.setPlaying(playing);
+  if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch {} }
 }
 
 function updateTime() {
@@ -136,6 +140,9 @@ function updateTime() {
   $('seek-range').value = Math.min(Math.floor(current), Number($('seek-range').max));
   $('seek-range').disabled = !audio.seekable.length && audio.readyState < 1;
   $('seek-range').setAttribute('aria-valuetext', `${formatTime(current)} of ${formatTime(duration)}`);
+  if ('mediaSession' in navigator && navigator.mediaSession.setPositionState && Number.isFinite(duration) && duration > 0) {
+    try { navigator.mediaSession.setPositionState({ duration, playbackRate: audio.playbackRate || 1, position: Math.min(duration, Math.max(0, current)) }); } catch {}
+  }
   const line = cues.find(cue => current >= cue.start - .8 && current < cue.end + 2);
   if (line) $('field-words').textContent = line.text;
   const smooth = x => { x = Math.min(1, Math.max(0,x));return x*x*(3-2*x); };
@@ -196,10 +203,10 @@ function select(id, options = {}) {
   audio.load();
   scene?.setScene(item.visual || item.id);
   updateMediaSession(item);
-  updateFavoriteButton(); renderLibrary(); updateTime(); updateTransport();
+  updateFavoriteButton(); if (!isSessionPage) renderLibrary(); updateTime(); updateTransport();
   setStatus('Ready to listen');
   loadCues(item);
-  try { const url = new URL(location.href); url.searchParams.set('session', id); history.replaceState(null, '', url); } catch {}
+  if (isSessionPage) { try { const url = new URL(location.href); url.searchParams.set('session', id); history.replaceState(null, '', url); } catch {} }
   if (options.scroll) { $('listen').scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth' }); $('play-toggle').focus({preventScroll:true}); }
   if (options.play) playAudio();
 }
@@ -229,8 +236,10 @@ function acknowledgeCompletion(id) {
 }
 
 const daily = pickDaily();
-if (daily) { $('daily-meta').textContent = `${daily.title} · ${durationText(daily.duration)}`; $('daily-play').addEventListener('click', () => select(daily.id, { play: true, scroll: true })); }
+if (daily) { $('daily-meta').textContent = `${daily.title} · ${durationText(daily.duration)}`; $('daily-play').addEventListener('click', () => { location.href = sessionUrl(daily.id); }); }
 else { $('daily-play').disabled = true; $('daily-meta').textContent = 'Sessions will appear here soon.'; }
+const requestedPractice = new URLSearchParams(location.search).get('practice');
+if (isPracticePage && ['morning', 'reset', 'evening', 'sound'].includes(requestedPractice)) filter = requestedPractice;
 for (const button of document.querySelectorAll('[data-filter]')) button.addEventListener('click', () => { filter = button.dataset.filter; for (const other of document.querySelectorAll('[data-filter]')) other.setAttribute('aria-pressed', String(other === button)); renderLibrary(); });
 $('play-toggle').addEventListener('click', togglePlay);
 $('replay-button').addEventListener('click', () => { if (!active) return; restartRun(); setStatus('Ready from the beginning'); if (audio.paused) playAudio(); });
@@ -239,7 +248,7 @@ $('player-favorite').addEventListener('click', () => { if (!active) return; stor
 $('transcript-toggle').addEventListener('click', () => { const panel = $('transcript-panel'); panel.hidden = !panel.hidden; $('transcript-toggle').setAttribute('aria-expanded', String(!panel.hidden)); });
 $('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); scene?.setDim(dimmed); updateTime(); });
 $('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; scene?.setMotion(!motionPaused); });
-$('share-button').addEventListener('click', async () => { if (!active) return; const url = new URL(location.href); url.searchParams.set('session', active.id); try { if (navigator.share) await navigator.share({ title: active.title, url: url.href }); else { await navigator.clipboard.writeText(url.href); setStatus('Session link copied.'); } } catch (error) { if (error?.name !== 'AbortError') setStatus('The link could not be shared here.'); } });
+$('share-button').addEventListener('click', async () => { if (!active) return; const url = new URL(sessionUrl(active.id), location.href); try { if (navigator.share) await navigator.share({ title: active.title, url: url.href }); else { await navigator.clipboard.writeText(url.href); setStatus('Session link copied.'); } } catch (error) { if (error?.name !== 'AbortError') setStatus('The link could not be shared here.'); } });
 $('goal-select').addEventListener('change', event => { store.setGoal(Number(event.target.value)); renderPractice(); });
 $('clear-history').addEventListener('click', () => { $('clear-confirm').hidden = false; $('clear-cancel').focus(); });
 $('clear-cancel').addEventListener('click', () => { $('clear-confirm').hidden = true; $('clear-history').focus(); });
@@ -250,10 +259,11 @@ audio.addEventListener('canplay', () => { if (audio.paused && $('play-status').t
 audio.addEventListener('timeupdate', updateTime);
 audio.addEventListener('durationchange', updateTime);
 audio.addEventListener('loadstart', () => { if (active) setStatus('Loading audio…'); });
-audio.addEventListener('waiting', () => { if (active && !audio.paused) setStatus('Buffering audio…'); });
+audio.addEventListener('waiting', () => { if (active && !audio.paused) setStatus('Audio interrupted. Reconnecting…'); });
+audio.addEventListener('stalled', () => { if (active && !audio.paused) setStatus('Audio interrupted. Check your connection.'); });
 audio.addEventListener('playing', () => { setStatus('Playing'); updateTransport(); });
-audio.addEventListener('pause', () => { if (active && !audio.ended && !audio.error) setStatus('Paused'); updateTransport(); });
-audio.addEventListener('ended', () => { updateTransport(); const earned = earnedCompletionId === active?.id; setStatus(earned ? 'A moment well spent. Thank you for making this time for yourself.' : 'You are welcome back whenever you like.'); $('resume-message').hidden = false; $('resume-message').textContent = earned ? 'A practice you can return to whenever you like.' : 'Your listening time has been saved on this device.'; });
+audio.addEventListener('pause', () => { if (active && !audio.ended && !audio.error) setStatus('Paused. Press play to continue.'); updateTransport(); });
+audio.addEventListener('ended', () => { updateTransport(); if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch {} } const earned = earnedCompletionId === active?.id; setStatus(earned ? 'A moment well spent. Thank you for making this time for yourself.' : 'You are welcome back whenever you like.'); $('resume-message').hidden = false; $('resume-message').textContent = earned ? 'A practice you can return to whenever you like.' : 'Your listening time has been saved on this device.'; });
 audio.addEventListener('error', () => { if (active) setStatus('This audio is unavailable right now. Please try again later.'); updateTransport(); });
 window.addEventListener('pagehide', () => tracker.flush());
 if ('mediaSession' in navigator) {
@@ -273,6 +283,8 @@ renderPractice();
 if (snapshot().hasHistory) $('welcome-back').hidden = false;
 const requested = new URLSearchParams(location.search).get('session');
 select(byId.has(requested) ? requested : daily?.id || catalog[0]?.id);
+for (const button of document.querySelectorAll('[data-filter]')) button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
+if (isPracticePage) renderLibrary();
 window.addEventListener('beforeunload', () => { tracker.destroy(); scene?.destroy(); heroScene?.destroy(); cardScenes.forEach(field => field.destroy()); });
 
 // Enhance only after initialization; the native player remains a fallback without JS.
@@ -286,7 +298,7 @@ function setFocusView(enabled) {
   focusButton.setAttribute('aria-pressed',String(enabled));
   focusButton.textContent = enabled ? 'Back to the library ↙' : 'Enter listening view ↗';
   outside.forEach(element => { element.inert = enabled; });
-  focusButton.focus({preventScroll:true});
+  (isSessionPage ? $('session-back') : focusButton).focus({preventScroll:true});
   document.body.classList.toggle('bath-view', enabled && active?.type === 'sound');
   revealBath();
 }
@@ -317,8 +329,8 @@ $('player-shell').addEventListener('pointermove', revealBath, {passive:true});
 $('player-shell').addEventListener('pointerdown', revealBath, {passive:true});
 document.addEventListener('keydown', revealBath, true);
 audio.addEventListener('play', () => {
-  if (active?.type === 'sound') setFocusView(true);
+  if (active?.type === 'sound' && !isPracticePage) setFocusView(true);
 });
-audio.addEventListener('pause', revealBath);
+audio.addEventListener('pause', () => { if (isSessionPage) setFocusView(false); revealBath(); });
 audio.addEventListener('ended', revealBath);
 audio.addEventListener('error', revealBath);

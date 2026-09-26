@@ -6,7 +6,7 @@
   const FRAME_MS = 1000 / 24;
   const SCENES = new Set([
     'gratitude', 'whole-body', 'wind-down', 'reset',
-    'begin-day', 'warmth', 'open-space', 'drift'
+    'begin-day', 'warmth', 'open-space', 'drift', 'afterglow', 'first-light'
   ]);
 
   class SuperthoughtsField {
@@ -126,6 +126,8 @@
         case 'warmth': this.warmth(t); break;
         case 'open-space': this.openSpace(t); break;
         case 'drift': this.drift(t); break;
+        case 'afterglow': this.afterglow(t); break;
+        case 'first-light': this.firstLight(t); break;
       }
       // Dimming is a CSS veil, so it fades even while rendering is paused.
       this.vignette();
@@ -367,6 +369,47 @@
         c.lineWidth = .001;
         c.stroke();
       }
+    }
+
+    afterglow(t) {
+      const c = this.ctx;
+      this.background([[0, '#140e2e'], [.5, '#48233e'], [1, '#191d3e']]);
+      this.glow(.28 + Math.sin(t*.025)*.12, .6, .65, '231,94,115', .38);
+      this.glow(.77, .35 + Math.cos(t*.021)*.08, .5, '108,92,224', .38);
+      for(let i=0;i<9;i++) {
+        const y=.12+i*.095, sway=Math.sin(t*.028+i*.35)*.12;
+        const g=c.createLinearGradient(0,y-.15,1,y+.2);
+        g.addColorStop(0,'rgba(249,134,99,0)');
+        g.addColorStop(.4,'rgba(250,139,115,.10)');
+        g.addColorStop(.7,'rgba(172,117,236,.16)');
+        g.addColorStop(1,'rgba(115,152,220,0)');
+        c.beginPath();c.moveTo(-.1,y);
+        c.bezierCurveTo(.24,y-.25+sway,.54,y+.25-sway,1.1,y-.04);
+        c.bezierCurveTo(.6,y+.39-sway,.23,y-.1+sway,-.1,y+.07);
+        c.closePath();c.fillStyle=g;c.fill();
+      }
+    }
+
+    firstLight(t) {
+      const c=this.ctx;
+      this.background([[0,'#162341'],[.55,'#3f315d'],[1,'#70434e']]);
+      this.glow(.52,.7,.62,'248,165,114',.48);
+      this.glow(.19,.25,.48,'73,180,191',.32);
+      this.glow(.85,.25,.46,'179,112,218',.32);
+      c.save();c.translate(.5+Math.sin(t*.02)*.04,.68);
+      c.rotate(Math.sin(t*.015)*.12);
+      for(let i=0;i<12;i++) {
+        c.save();c.rotate((i-6)*.16);
+        const g=c.createLinearGradient(0,0,0,-1);
+        g.addColorStop(0,'rgba(255,199,141,.02)');
+        g.addColorStop(.45,i%2?'rgba(128,215,223,.13)':'rgba(235,156,230,.15)');
+        g.addColorStop(1,'rgba(255,196,155,0)');
+        c.beginPath();c.moveTo(0,.1);
+        c.bezierCurveTo(-.12,-.25,-.15,-.7,0,-1.1);
+        c.bezierCurveTo(.17,-.65,.08,-.2,0,.1);
+        c.fillStyle=g;c.fill();c.restore();
+      }
+      c.restore();
     }
 
     destroy() {

@@ -198,3 +198,17 @@ test('message validation rejects foreign origins, mismatched cues, and path trav
   }
   assert.equal(sw.fetchCalls.length, 0);
 });
+
+
+test('focused session and practice query routes retain their own shell offline', async () => {
+  const sw = worker({fetcher: async input => new Response(String(typeof input === 'string' ? input : input.url))});
+  await sw.install();
+  for (const page of ['session.html', 'practice.html']) {
+    await sw.route(origin + page, {mode:'navigate'});
+  }
+  sw.setFetcher(async () => { throw Error('offline'); });
+  for (const page of ['session.html', 'practice.html']) {
+    const response = await sw.route(origin + page + '?session=warmth', {mode:'navigate'});
+    assert.equal(await response.text(), origin + page);
+  }
+});
