@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://superthoughts.com/sitemap.xml

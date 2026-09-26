@@ -1,0 +1,18 @@
+{
+  "name": "Superthoughts",
+  "short_name": "Superthoughts",
+  "description": "A quiet place to listen.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#12192b",
+  "theme_color": "#12192b",
+  "icons": [
+    {
+      "src": "images/superthoughts-symbol.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

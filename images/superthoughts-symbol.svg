@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Superthoughts</title>
+  <g stroke="#F6F0E6" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48.5 11.8C38.2 4.5 22.8 5.7 13.4 15.5 3.2 26.1 4.9 43.2 17.1 52.8 29.8 62.9 47.7 60.2 55.9 47.7"/>
+    <path d="M17.6 19.3C24.2 13.4 34.5 11.8 42.7 16.2 51.6 21 54.7 32.7 49.6 41.5 45.1 49.4 34.8 53.8 25.8 50.9 19.2 48.8 14.9 43.7 13.8 37.9"/>
+    <path d="M38.3 25.3C34.2 22.4 28.3 23.6 25.1 27.7 21.5 32.4 22.8 38.8 27.9 41.4 33.1 44 39.5 42.5 42.3 37.9"/>
+  </g>
+  <circle cx="32" cy="33" r="2.4" fill="#F6F0E6"/>
+</svg>

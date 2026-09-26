@@ -21,9 +21,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify listening controls
+        run: node --test tests/pilot-progress.test.mjs tests/pilot-offline.test.mjs
+      - name: Build public listening site
+        run: python3 scripts/build-public.py
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

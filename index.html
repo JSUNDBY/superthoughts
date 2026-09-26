@@ -1,252 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Superthoughts | Guided programs for real, lasting change</title>
-<meta name="description" content="Guided audio programs by Josh Sundby. Mindful Eating, Deep Sleep, and more. Press play on a complimentary three-minute reset and notice what settles.">
-<link rel="canonical" href="https://superthoughts.com/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://superthoughts.com/">
-<meta property="og:title" content="Superthoughts | Guided programs for real, lasting change">
-<meta property="og:description" content="Guided audio programs by Josh Sundby. Mindful Eating, Deep Sleep, and more.">
-<meta property="og:image" content="https://superthoughts.com/images/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F3EF'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23161615' stroke-width='1.5'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="superthoughts.css">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S151YE55PJ"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S151YE55PJ');</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#131716">
+  <meta name="description" content="A quiet place to listen. Explore guided practices and sound from Superthoughts.">
+  <link rel="canonical" href="https://superthoughts.com/">
+  <meta property="og:image" content="https://superthoughts.com/images/og-listening.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://superthoughts.com/images/og-listening.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://superthoughts.com/">
+  <meta property="og:title" content="Superthoughts · Get out of your head. Come back to you.">
+  <meta property="og:description" content="A quiet place to listen. Explore guided practices and sound from Superthoughts.">
+  <title>Superthoughts · Get out of your head. Come back to you.</title>
+  <link rel="manifest" href="pilot.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="pilot.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" alt="" width="36" height="36"><span>superthoughts<span class="brand-dot">.</span></span></a>
+    <span class="pilot-label">Early listening collection</span>
+    <nav aria-label="On this page"><a href="#library">Library</a><a href="#practice">Your practice</a></nav>
+  </div></header>
 
-<header class="wrap">
-  <nav class="nav" aria-label="Primary">
-    <a class="wordmark" href="/">Superthoughts</a>
-    <ul>
-      <li><a href="#programs">Programs</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#listen">Listen</a></li>
-    </ul>
-  </nav>
-</header>
+  <main id="main" class="shell">
+    <section class="welcome" aria-labelledby="welcome-title">
+      <div class="welcome-copy"><p class="eyebrow"><span class="eyebrow-line"></span> A moment for today</p><h1 id="welcome-title"><span class="hero-first-line">Get out of your head.</span><em>Come back to you.</em></h1><p>Whatever this moment holds, there is a place to begin. Find a guided moment, or disappear into sound.</p><p id="welcome-back" class="welcome-back" hidden>Welcome back. Your listening space is here whenever you need it.</p><button id="daily-play" class="button button-primary" type="button"><span class="button-icon" aria-hidden="true">▶</span><span>Listen to today’s pick</span></button><p id="daily-meta" class="quiet">A gentle place to start.</p></div>
+      <div class="welcome-art" aria-hidden="true"><canvas id="welcome-canvas"></canvas><span class="art-corner art-corner-top">SUPERTHOUGHTS / A SPACE TO LISTEN</span><span class="art-corner art-corner-bottom">A LITTLE SPACE TO LISTEN</span></div>
+    </section>
 
-<main id="main" class="wrap">
+    <section class="library" id="library" aria-labelledby="library-title"><div class="section-intro"><div><p class="eyebrow">Explore at your pace</p><h2 id="library-title">The library<span class="title-period">.</span></h2></div><p>Short practices, longer listening, and sound to make room for your own thoughts.</p></div><div class="library-toolbar"><div class="filters" role="group" aria-label="Filter sessions"><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="morning" aria-pressed="false">Morning</button><button type="button" data-filter="reset" aria-pressed="false">Reset</button><button type="button" data-filter="evening" aria-pressed="false">Evening</button><button type="button" data-filter="sound" aria-pressed="false">Sound</button><button type="button" data-filter="favorites" aria-pressed="false">Saved <span aria-hidden="true">♡</span></button></div><span id="library-count" class="library-count"></span></div><div id="session-grid" class="session-grid"></div><p id="library-empty" class="library-empty" hidden>No sessions here yet. Save a favorite and it will appear in this space.</p></section>
 
-  <section class="hero grid" id="listen">
-    <h1 class="rise">A return to steadiness, clarity, and presence.</h1>
-    <p class="lede rise">Superthoughts is a collection of guided audio programs that help you build the habits and awareness that change how you live, eat, sleep, and think. Press play, close your eyes, and notice what settles.</p>
 
-    <div class="work rise">
-      <div class="field" id="field" aria-hidden="true"><canvas id="canvas"></canvas></div>
-      <div class="labelrow">
-        <div class="meta">
-          <span class="title">Three Minute Reset</span>
-          <span class="small">3:11</span>
-          <span class="small">Complimentary</span>
-          <span class="small status" id="status" aria-live="polite">Idle</span>
+    <section class="listening" id="listen" aria-labelledby="listen-title">
+      <div class="section-intro listening-intro"><div><p class="eyebrow">Your listening room</p><h2 id="listen-title">Settle in.</h2></div><p>Listen with the light, or let the screen rest. The audio is always yours to control.</p></div>
+      <div class="player-shell" id="player-shell">
+        <div class="player-field" id="player-field"><canvas id="field-canvas" aria-hidden="true"></canvas><div class="field-wash" aria-hidden="true"></div><div class="field-top"><span id="field-kicker">ROOM BETWEEN THINGS</span><span id="field-duration">3 MIN</span></div><div class="field-center"><p class="field-overline">YOUR MOMENT</p><h3 id="player-title">A little reset</h3><p id="player-description">A short pause to feel your feet, find your breath, and begin again.</p></div><p id="field-words" class="field-words" aria-hidden="true"></p><span class="field-index" aria-hidden="true">S / T</span></div>
+        <div class="player-panel">
+          <div class="player-panel-top"><div><p class="eyebrow">The listening room</p><p id="player-type" class="player-type">Guided practice · 3 min</p></div><button id="player-favorite" class="icon-button heart-button" type="button" aria-label="Save session to favorites" aria-pressed="false" title="Save to favorites"><span aria-hidden="true">♡</span></button></div>
+          <div class="transport"><button id="play-toggle" class="play-toggle" type="button" aria-label="Play selected session"><span id="play-icon" aria-hidden="true">▶</span></button><div class="transport-copy"><strong id="transport-title">A little reset</strong><span id="play-status" role="status" aria-live="polite">Ready to listen</span></div><button id="replay-button" class="text-icon-button" type="button" aria-label="Restart from beginning" title="Restart from beginning"><span aria-hidden="true">↺</span></button></div>
+          <div class="seek"><label class="sr-only" for="seek-range">Seek through session</label><input id="seek-range" type="range" min="0" max="100" value="0" step="1" aria-valuetext="0 minutes" disabled><div class="time-row"><span id="time-current">0:00</span><span id="time-total">0:00</span></div></div>
+          <audio id="pilot-audio" controls preload="metadata" src="audio/pilot-reset-v2.mp3" aria-label="A little reset"></audio>
+          <p id="resume-message" class="resume-message" hidden></p>
+          <div class="player-extras"><button id="transcript-toggle" type="button" aria-expanded="false" aria-controls="transcript-panel">Read transcript <span aria-hidden="true">↗</span></button><button id="share-button" type="button">Share session <span aria-hidden="true">↗</span></button></div>
+          <div class="offline-options"><button id="offline-button" type="button" disabled>Save for offline</button><button id="install-button" type="button" hidden>Install Superthoughts</button><p id="offline-note" role="status">Offline saving is getting ready.</p></div>
+          <button id="focus-toggle" class="focus-toggle" type="button" aria-pressed="false">Enter listening view <span aria-hidden="true">↗</span></button>
+          <div class="ambient-options" aria-label="Visual preferences"><button id="dim-toggle" type="button" aria-pressed="false">Dim visuals</button><button id="motion-toggle" type="button" aria-pressed="false">Pause motion</button></div>
+          <div id="transcript-panel" class="transcript-panel" hidden><p class="eyebrow">Transcript</p><div id="transcript-content"></div></div>
         </div>
-        <button class="play" id="play" aria-pressed="false" aria-label="Play Three Minute Reset">
-          <svg class="go" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2.5v13l11-6.5z"/></svg>
-          <svg class="pause" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 3h3.5v12H4zM10.5 3H14v12h-3.5z"/></svg>
-        </button>
       </div>
-      <audio id="audio" src="audio/3-minute-reset.mp3" preload="metadata"></audio>
-    </div>
-  </section>
+    </section>
 
-  <section class="approach grid" id="approach">
-    <div class="lead">
-      <h2>Your mind is more powerful than you think. Practice proves it.</h2>
-    </div>
-    <div class="body measure">
-      <p>Superthoughts creates guided audio programs rooted in mindfulness, awareness, and the science of habit change. Each program is a series of recordings you listen to at your own pace.</p>
-      <p>No courses to sit through. No homework. No rigid schedules. Close your eyes, follow the guidance, and notice what shifts.</p>
-    </div>
-    <ul class="list">
-      <li>
-        <div class="k"><h3>Practice, not theory</h3></div>
-        <div class="v"><p>Every program is something you do, not something you study. Guided recordings you listen to and practice with in real moments of your day.</p></div>
-      </li>
-      <li>
-        <div class="k"><h3>Built to last</h3></div>
-        <div class="v"><p>These are not quick fixes. Each program builds a skill through repetition and awareness. The kind of change that stays with you.</p></div>
-      </li>
-      <li>
-        <div class="k"><h3>Your pace, your terms</h3></div>
-        <div class="v"><p>No deadlines, no schedules. Listen once or come back daily. The practice meets you where you are.</p></div>
-      </li>
-    </ul>
-  </section>
-
-  <section class="programs grid" id="programs">
-    <div class="lead"><h2>Guided programs</h2></div>
-    <div class="body measure"><p>Two programs are live now. Two more are in production. Each one opens with a complimentary session so you can hear the practice before you decide.</p></div>
-    <ol class="index">
-      <li class="row">
-        <span class="n label">01</span>
-        <h3 class="t">Mindful Eating</h3>
-        <div class="d"><p>Realign your relationship with food through seven guided sessions. No diets. No rules. The quiet power of awareness.</p><a href="https://mindful-eating.superthoughts.com">Try the complimentary session</a> <a href="https://mindful-eating.superthoughts.com/checkout.html" style="margin-left:24px">Get the program</a></div>
-        <span class="dur small">Seven sessions, $49</span>
-      </li>
-      <li class="row">
-        <span class="n label">02</span>
-        <h3 class="t">Deep Sleep</h3>
-        <div class="d"><p>Eight guided sessions to help you let go of the day and settle into deep, restorative sleep. No pills. No screens. Your own mind.</p><a href="https://deep-sleep.superthoughts.com">Try the complimentary session</a> <a href="https://buy.stripe.com/14AeVf6RWaq00140pK3Je01" style="margin-left:24px">Get the program</a></div>
-        <span class="dur small">Eight sessions, $49</span>
-      </li>
-      <li class="row">
-        <span class="n label">03</span>
-        <h3 class="t">The Abundance Practice</h3>
-        <div class="d"><p>Shift your relationship with money, success, and self-worth through daily guided sessions.</p><a href="#notify">Get notified</a></div>
-        <span class="dur small">In production</span>
-      </li>
-      <li class="row">
-        <span class="n label">04</span>
-        <h3 class="t">Nervous System Reset</h3>
-        <div class="d"><p>A practice for calming your nervous system and building resilience to daily stress.</p><a href="#notify">Get notified</a></div>
-        <span class="dur small">In production</span>
-      </li>
-    </ol>
-  </section>
-
-  <section class="custom grid" id="custom">
-    <div class="lead"><h2>A session recorded for you.</h2></div>
-    <div class="body measure">
-      <p>Some things need more than a program. A custom session is written and recorded for one person: your situation, your language, the pace your nervous system actually wants. You tell me what you're working with. I write it, record it in my voice, and send you a finished session you can keep.</p>
-      <p>Custom recorded sessions start at $499.</p>
-      <p><a href="mailto:josh@superthoughts.com?subject=Custom%20session%20inquiry">Inquire about a custom session</a></p>
-    </div>
-  </section>
-
-  <section class="inperson grid" id="in-person">
-    <div class="lead"><h2>In person, at Watershed Spa.</h2></div>
-    <div class="body measure">
-      <p>Some of this work is better in a room. I see people one to one at Watershed Spa, the communal bathhouse on the Mississippi in Minneapolis. Same voice, same pace, with the water and the quiet of the building around it.</p>
-      <p>Sessions are booked directly through Watershed.</p>
-      <p><a href="https://watershedspa.com" rel="noopener">Book at Watershed Spa</a></p>
-    </div>
-  </section>
-
-  <section class="research grid" id="research">
-    <div class="lead"><h2>This isn't just a feeling. The science is clear.</h2></div>
-    <div class="body measure"><p>Four findings from the research on mindfulness practice, with the source named for each.</p></div>
-    <ul class="list">
-      <li>
-        <div class="k"><span class="label src">Harvard Gazette</span><p>Regular meditation practice leads to measurable changes in brain regions associated with memory, sense of self, and empathy.</p></div>
-        <div class="v"><p>Research from Harvard-affiliated scientists at Massachusetts General Hospital found that eight weeks of meditation practice produced measurable changes in brain structure. MRI scans showed increased grey-matter density in the hippocampus, which handles learning and memory, and decreased density in the amygdala, which handles stress and anxiety.</p></div>
-      </li>
-      <li>
-        <div class="k"><span class="label src">JAMA Internal Medicine, 47 trials reviewed</span><p>Mindfulness meditation programs show moderate evidence of improving anxiety, depression, and pain.</p></div>
-        <div class="v"><p>A systematic review of 47 clinical trials found consistent evidence that mindfulness meditation programs reduce anxiety, depression, and pain. The improvements were comparable to those seen with antidepressant medication, without the side effects.</p></div>
-      </li>
-      <li>
-        <div class="k"><span class="label src">Psychoneuroendocrinology</span><p>Brief daily mindfulness practice lowers cortisol and reduces the biological markers of chronic stress.</p></div>
-        <div class="v"><p>Published research demonstrated that consistent mindfulness practice significantly reduces cortisol, the body's primary stress hormone. Participants showed lower baseline cortisol and improved stress recovery, indicating real physiological change from regular practice.</p></div>
-      </li>
-      <li>
-        <div class="k"><span class="label src">Nature, neuroscience reviews</span><p>More mindfulness practice leads to more behavioral flexibility: fewer compulsive patterns and automatic reactions.</p></div>
-        <div class="v"><p>Research published in Nature found that consistent mindfulness practice increases the brain's capacity for behavioral flexibility. That means a greater ability to pause, choose, and respond rather than react. It shows up across eating, sleep, anxiety, and daily decisions.</p></div>
-      </li>
-    </ul>
-  </section>
-
-  <section class="josh grid" id="about">
-    <figure>
-      <img src="images/josh-sundby.webp" alt="Josh Sundby, seated, looking toward the camera." width="1200" height="1500">
-      <figcaption class="label">Josh Sundby, Minneapolis</figcaption>
-    </figure>
-    <div class="text measure">
-      <h2>Your guide</h2>
-      <p>I'm Josh Sundby. Meditation guide, hypnotherapist, and ambient musician in Minneapolis. I've been practicing for more than twenty-five years and guiding for most of them.</p>
-      <p>I trained as a hypnotherapist at HMI, the Hypnosis Motivation Institute in California, the first nationally accredited college of hypnotherapy. My practice took shape through Reiki, time spent with Thai monks, and the heart-coherence work of HeartMath. What stayed with me from all of it is the same thing: the body already knows how to settle. The guidance helps you get out of its way.</p>
-      <p>Around a hundred thousand people have listened to my sessions on Insight Timer, from more than thirty countries, and they hold a 4.8 rating. I also lead enterSTELLAR, a weekly sound bath at Casket Arts in Northeast Minneapolis, and I build projection and sound installations for spaces around the city.</p>
-      <p>Every session rests on one idea: your mind already knows how to do this. The practice helps you remember.</p>
-      <div class="links">
-        <a href="https://insig.ht/JoshSundby" rel="noopener">Insight Timer</a>
-        <a href="https://www.youtube.com/superthoughts" rel="noopener">YouTube</a>
-        <a href="https://iamenterstellar.com" rel="noopener">enterSTELLAR</a>
-        <a href="mailto:josh@superthoughts.com">josh@superthoughts.com</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="voices grid" id="voices">
-    <div class="lead"><h2>What listeners are saying</h2></div>
-    <div class="body measure"><p>From reviews left on Insight Timer.</p></div>
-    <ul class="quotes">
-      <li><blockquote><p>"Gentle, soothing voice. Powerful yet subtle. I moved through my day with ease and clarity. I felt calm."</p><footer class="label">Cher M., Los Angeles</footer></blockquote></li>
-      <li><blockquote><p>"I found it so grounding, comforting and reassuring. I felt calm and confident with clarity and purpose. You have a lovely, warm and sincere voice."</p><footer class="label">Alison W., Scotland</footer></blockquote></li>
-      <li><blockquote><p>"A beautiful meditation that left me feeling connected and in my power. Simple and so very practical. Love it."</p><footer class="label">Mel D., Hertfordshire</footer></blockquote></li>
-      <li><blockquote><p>"This made me doze right off. Very much needed after a stressful day."</p><footer class="label">Khurty R., daily practitioner</footer></blockquote></li>
-      <li><blockquote><p>"Cultivating intention, rather than a checklist, adds value and meaning to the abundant life I have created."</p><footer class="label">Natalie S., Greenville</footer></blockquote></li>
-      <li><blockquote><p>"Perfect prep for my day which will require calmness and clarity."</p><footer class="label">Sue B., daily listener</footer></blockquote></li>
-    </ul>
-  </section>
-
-  <section class="notify grid" id="notify">
-    <div class="lead"><h2>New programs, when they're ready.</h2></div>
-    <div class="body">
-      <p class="measure">Leave your name and email and I'll write when the next program opens. No newsletters, no schedule, no spam.</p>
-      <form id="notifyForm" novalidate>
-        <div class="fieldset">
-          <label>First name<input type="text" name="first_name" id="firstName" autocomplete="given-name" required></label>
-          <label>Email<input type="email" name="email_address" id="email" autocomplete="email" required></label>
-        </div>
-        <button class="submit" type="submit" id="notifyBtn">Notify me</button>
-        <p class="small" style="margin-top:16px">Unsubscribe any time.</p>
-      </form>
-      <p class="ok" id="notifyOk">You're on the list. I'll be in touch when the next program opens.</p>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site wrap">
-  <div class="grid">
-    <div class="a"><span class="wordmark">Superthoughts</span><p class="small">Guided programs for a steadier life. Minneapolis, Minnesota.</p></div>
-    <ul class="b small">
-      <li><a href="#programs">Programs</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#custom">Custom sessions</a></li>
-      <li><a href="#in-person">In person</a></li>
-      <li><a href="#voices">Listeners</a></li>
-      <li><a href="#notify">Get notified</a></li>
-    </ul>
-    <ul class="c small">
-      <li><a href="mailto:josh@superthoughts.com">josh@superthoughts.com</a></li>
-      <li><a href="https://insig.ht/JoshSundby" rel="noopener">Insight Timer</a></li>
-    </ul>
-    <ul class="d small">
-      <li><a href="privacy.html">Privacy</a></li>
-      <li><a href="terms.html">Terms</a></li>
-    </ul>
-  </div>
-</footer>
-
-<script src="field.js" defer></script>
-<script>
-  (function () {
-    var form = document.getElementById('notifyForm');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var name = document.getElementById('firstName').value.trim();
-      var email = document.getElementById('email').value.trim();
-      if (!name || !email || email.indexOf('@') < 0) { form.reportValidity(); return; }
-      var btn = document.getElementById('notifyBtn');
-      btn.textContent = 'Sending'; btn.disabled = true;
-      fetch('https://app.kit.com/forms/9204882/subscriptions', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email_address: email, first_name: name, fields: { note: 'Notify: homepage' } })
-      }).catch(function () {});
-      setTimeout(function () { document.getElementById('notify').classList.add('done'); }, 600);
-    });
-  })();
-</script>
+    <section class="practice" id="practice" aria-labelledby="practice-title"><div class="section-intro"><div><p class="eyebrow">A gentle record</p><h2 id="practice-title">Your practice<span class="title-period">.</span></h2></div><p>Every minute counts. This record stays on this device, and it is here only for you.</p></div><div class="practice-layout"><div class="practice-card"><p class="practice-card-label">Time together</p><strong id="total-minutes" class="practice-number">0 <small>min</small></strong><p class="practice-foot">Time spent listening</p></div><div class="practice-card"><p class="practice-card-label">Sessions completed</p><strong id="session-count" class="practice-number">0</strong><p class="practice-foot">At your own pace</p></div><div class="practice-card"><p class="practice-card-label">Days you made space</p><strong id="practice-days" class="practice-number">0</strong><p class="practice-foot">Whenever they happened</p></div><div class="goal-card"><div class="goal-head"><div><p class="practice-card-label">A little space today</p><strong id="today-minutes" class="goal-number">0 <small>min</small></strong></div><div class="goal-control"><label for="goal-select">Daily intention</label><select id="goal-select"><option value="0">No goal</option><option value="3">3 min</option><option value="5">5 min</option><option value="10">10 min</option></select></div></div><div id="goal-track" class="goal-track" aria-hidden="true"><span id="goal-fill"></span></div><p id="goal-caption" class="practice-foot">The time you make is enough.</p></div></div><div class="privacy-row"><p id="storage-note">Your favorites and listening history stay in this browser.</p><button id="clear-history" type="button">Clear listening history</button></div><div id="clear-confirm" class="confirm-box" hidden><p>Clear your listening time, saved places, and favorites on this device?</p><div><button id="clear-cancel" type="button">Keep my history</button><button id="clear-yes" type="button">Clear history</button></div></div></section>
+    <section class="pilot-feedback" aria-labelledby="feedback-heading">
+      <details><summary id="feedback-heading">Help shape this space <span aria-hidden="true">↗</span></summary>
+        <p class="feedback-intro">What felt good? What would you change? These optional notes stay on your device. Export a copy whenever you want to share them.</p>
+        <form id="feedback-form">
+          <label>Experience<select id="feedback-session" name="session" required></select></label>
+          <label>How did the sound feel?<select name="sound" required><option value="">Choose one</option><option value="comfortable">Comfortable and balanced</option><option value="too-strong">A little too strong</option><option value="too-quiet">A little too quiet</option><option value="uneven">Uneven or distracting</option></select></label>
+          <label>Would you come back to this one?<select name="returnTo" required><option value="">Choose one</option><option value="yes">Yes</option><option value="maybe">Maybe</option><option value="no">It wasn't for me</option></select></label>
+          <label class="feedback-note">Anything else? <span class="quiet">Optional</span><textarea name="note" maxlength="600" rows="3" placeholder="A word about the voice, music, visuals, or pacing…"></textarea></label>
+          <button type="submit" class="button button-primary">Save my note</button>
+        </form><p id="feedback-status" role="status"></p><div class="feedback-export-row"><span id="feedback-count"></span><button type="button" id="feedback-export" disabled>Export my notes</button></div>
+      </details>
+    </section>
+  </main>
+  <footer class="site-footer shell"><div class="footer-brand"><img src="images/superthoughts-symbol.svg" width="28" height="28" alt=""><span>superthoughts<span class="brand-dot">.</span></span></div><p>A small space to return to, anytime.</p><div><a href="#library">Explore the library</a><a href="privacy.html">Your data</a><a href="mailto:josh@superthoughts.com">Contact</a></div><span>© 2026 Superthoughts</span></footer>
+  <script src="pilot-catalog.js"></script>
+  <script src="pilot-visuals.js"></script>
+  <script type="module" src="pilot.js"></script>
+  <script src="pilot-offline.js" defer></script>
+  <script src="pilot-feedback.js" defer></script>
 </body>
 </html>
