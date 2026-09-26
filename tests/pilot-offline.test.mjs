@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const source = readFileSync(new URL('../pilot-sw.js', import.meta.url), 'utf8');
 const origin = 'http://localhost:8846/';
-const guided = { src: 'audio/gratitude-v4.mp3', cues: 'audio/gratitude-v4-cues.json' };
+const guided = { src: 'audio/gratitude-v5.mp3', cues: 'audio/gratitude-v5-cues.json' };
 const sound = { src: 'audio/pilot-warmth-v1.mp3', cues: null };
 const saved = response => Array.from(response.saved);
 
@@ -136,7 +136,7 @@ test('main shell uses live assets, then index fallback for root and pilot aliase
   assert.equal(await cachedAsset.text(), 'network shell');
   const dataNote = await sw.route(origin + 'privacy.html', { mode: 'navigate' });
   assert.equal(await dataNote.text(), 'cached pilot');
-  assert.equal(await sw.route(origin + 'terms.html', { mode: 'navigate' }), undefined);
+  assert.equal(await (await sw.route(origin + 'terms.html', { mode: 'navigate' })).text(), 'cached pilot');
   assert.equal(await sw.route(origin + 'audio/gratitude-v3.mp3'), undefined);
   assert.equal(await sw.route(origin + 'pilot.css?v=2'), undefined);
   assert.equal(await sw.route('https://elsewhere.example/pilot.html', { mode: 'navigate' }), undefined);
@@ -183,12 +183,12 @@ test('failed cue, incomplete audio, and storage quota failures never report a ne
 test('message validation rejects foreign origins, mismatched cues, and path traversal', async () => {
   const sw = worker();
   const bad = [
-    { src: 'https://elsewhere.example/audio/gratitude-v4.mp3', cues: guided.cues },
-    { src: '../audio/gratitude-v4.mp3', cues: guided.cues },
-    { src: 'audio/../audio/gratitude-v4.mp3', cues: guided.cues },
-    { src: 'audio/%2e%2e/audio/gratitude-v4.mp3', cues: guided.cues },
+    { src: 'https://elsewhere.example/audio/gratitude-v5.mp3', cues: guided.cues },
+    { src: '../audio/gratitude-v5.mp3', cues: guided.cues },
+    { src: 'audio/../audio/gratitude-v5.mp3', cues: guided.cues },
+    { src: 'audio/%2e%2e/audio/gratitude-v5.mp3', cues: guided.cues },
     { src: 'audio/gratitude-v3.mp3', cues: 'audio/gratitude-v3-cues.json' },
-    { src: guided.src, cues: 'audio/whole-body-v5-cues.json' },
+    { src: guided.src, cues: 'audio/whole-body-v6-cues.json' },
     { src: sound.src, cues: guided.cues }
   ];
   for (const item of bad) {

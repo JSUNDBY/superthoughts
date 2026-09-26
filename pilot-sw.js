@@ -1,22 +1,22 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v10';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v11';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
   'index.html', 'session.html', 'practice.html', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
   'pilot-visuals.js', 'pilot-progress.mjs', 'pilot-offline.js',
-  'pilot-feedback.js', 'pilot.webmanifest',
+  'pilot-feedback.js', 'pilot-analytics.js', 'pilot-analytics-core.mjs', 'terms.html', 'pilot.webmanifest',
   'images/favicon.svg', 'images/superthoughts-symbol.svg',
   'fonts/dm-sans-300.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
 ];
 const SESSION_FILES = new Map([
-  ['audio/gratitude-v4.mp3', 'audio/gratitude-v4-cues.json'],
-  ['audio/whole-body-v5.mp3', 'audio/whole-body-v5-cues.json'],
-  ['audio/wind-down-v11.mp3', 'audio/wind-down-v11-cues.json'],
-  ['audio/pilot-reset-v2.mp3', 'audio/pilot-reset-v2-cues.json'],
-  ['audio/pilot-begin-day-v2.mp3', 'audio/pilot-begin-day-v2-cues.json'],
+  ['audio/gratitude-v5.mp3', 'audio/gratitude-v5-cues.json'],
+  ['audio/whole-body-v6.mp3', 'audio/whole-body-v6-cues.json'],
+  ['audio/wind-down-v12.mp3', 'audio/wind-down-v12-cues.json'],
+  ['audio/pilot-reset-v3.mp3', 'audio/pilot-reset-v3-cues.json'],
+  ['audio/pilot-begin-day-v3.mp3', 'audio/pilot-begin-day-v3-cues.json'],
   ['audio/pilot-warmth-v1.mp3', null],
   ['audio/pilot-open-space-v1.mp3', null],
   ['audio/pilot-drift-v1.mp3', null],

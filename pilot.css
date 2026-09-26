@@ -130,3 +130,6 @@ button:disabled{opacity:.45;cursor:default}
 .daily-play-mark svg{margin-left:2px}
 .daily-invitation:hover .daily-play-mark{border-color:rgba(246,240,230,.8);background:rgba(246,240,230,.09)}
 .welcome-copy #daily-meta{margin:9px 0 0 60px;font-size:12px;line-height:1.6;color:var(--muted)}
+
+/* Footer privacy controls share the same quiet treatment as policy links. */
+.site-footer [data-analytics-settings]{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}.site-footer [data-analytics-settings]:focus-visible{outline:2px solid currentColor;outline-offset:5px}
