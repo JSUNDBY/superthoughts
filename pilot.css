@@ -114,3 +114,12 @@ button:disabled{opacity:.45;cursor:default}
 @media(max-width:560px){.welcome{min-height:670px;padding:72px 0 78px}.welcome-copy h1{font-size:clamp(46px,11.5vw,66px);letter-spacing:-.055em;max-width:420px}.welcome-copy h1+p{font-size:15px;max-width:300px}.welcome-art{inset:0 -16px 0 0;opacity:.7;mask-image:linear-gradient(90deg,transparent,#000);-webkit-mask-image:linear-gradient(90deg,transparent,#000)}.listening{margin-top:72px}.session-grid{grid-template-columns:1fr}.session-art,.session-card:first-child .session-art{aspect-ratio:1.4}.session-card .card-body h3,.session-card:first-child .card-body h3,.session-card:not(:first-child) .card-body h3{font-size:24px}.session-card .card-body p:not(.card-meta),.session-card:first-child .card-body p:not(.card-meta){font-size:14px;min-height:0}.session-card .card-meta{font-size:11px}}
 
 .hero-first-line{display:block;max-width:850px;text-wrap:balance}.welcome-copy h1 em{text-wrap:balance}
+
+/* Softer lettering lets the visual work carry the identity. */
+.brand>span,.footer-brand>span,h1,h2,h3,.practice-number,.goal-number{font-family:"DM Sans",system-ui,sans-serif}
+.brand>span{font-weight:500;letter-spacing:-.06em}
+.welcome-copy h1,.welcome-copy h1 em{font-weight:400;letter-spacing:-.055em}
+.section-intro h2{font-weight:400;letter-spacing:-.05em}
+.card-body h3{font-weight:400;letter-spacing:-.035em}
+.field-center h3{font-weight:300;letter-spacing:-.035em;line-height:1.12}
+.field-center p:not(.field-overline){font-weight:300;letter-spacing:0;line-height:1.65}
