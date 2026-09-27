@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createListeningAnalytics } from '../pilot-analytics-core.mjs';
-import { createAnalyticsController, canonicalPageUrl, sanitizedReferrer } from '../pilot-analytics.js';
+import { createAnalyticsController, canonicalPageUrl, sanitizedReferrer, approvedCampaign } from '../pilot-analytics.js';
 
 class Audio extends EventTarget {
   src = 'https://example.test/audio/a.mp3';
@@ -79,21 +79,22 @@ class Element extends EventTarget {
   querySelectorAll(selector) { return selector === '[data-choice]' ? this.buttons || [] : []; }
   querySelector(selector) { return selector === 'button' ? this.buttons?.[0] : null; }
 }
-function browserHarness(gpc = false, existingButton = false) {
+function browserHarness(gpc = false, existingButton = false, href = 'https://example.test/session.html?session=secret', withAudio = false) {
   const data = new Map();
   const storage = { getItem: key => data.get(key), setItem: (key, value) => data.set(key, value) };
   const head = new Element(), body = new Element();
   const existing = existingButton ? new Element() : null;
+  const audio = withAudio ? new Audio() : null;
   const doc = {
-    head, body, baseURI: 'https://example.test/session.html?session=secret', title: 'A · Superthoughts', referrer: 'https://search.test/search?q=private',
-    cookie: '', createElement: () => new Element(), getElementById: () => null, querySelector: () => null, querySelectorAll: selector => selector === '[data-analytics-settings]' && existing ? [existing] : []
+    head, body, baseURI: href, title: 'A · Superthoughts', referrer: 'https://search.test/search?q=private',
+    cookie: '', createElement: () => new Element(), getElementById: id => id === 'pilot-audio' ? audio : null, querySelector: () => null, querySelectorAll: selector => selector === '[data-analytics-settings]' && existing ? [existing] : []
   };
   const win = new EventTarget();
-  win.location = { href: 'https://example.test/session.html?session=secret', hostname: 'example.test' };
+  win.location = { href, hostname: 'example.test' };
   win.performance = { now: () => 0 };
   win.navigator = { globalPrivacyControl: gpc };
   const controller = createAnalyticsController({ win, doc, storage, catalog });
-  return { controller, win, doc, head, body, storage, existing };
+  return { controller, win, doc, head, body, storage, existing, audio };
 }
 
 test('no Google script or transmission before explicit opt-in; decline remains silent', () => {
@@ -131,6 +132,57 @@ test('canonical URLs and referrers strip queries, fragments, and cross-site path
   assert.equal(canonicalPageUrl('https://example.test/practice.html?practice=reset#x'), 'https://example.test/practice.html');
   assert.equal(sanitizedReferrer('https://example.test/index.html?token=secret', 'https://example.test/session.html'), 'https://example.test/index.html');
   assert.equal(sanitizedReferrer('https://external.test/private/path?token=secret', 'https://example.test/session.html'), 'https://external.test');
+});
+
+test('only exact approved YouTube campaign bundles survive; no other query data is copied', () => {
+  const prefix = 'https://example.test/session.html?session=reset&private=secret&utm_source=youtube&utm_medium=organic_video';
+  for (const content of ['reset_full', 'begin_day_full', 'whole_body_full', 'reset_short', 'begin_day_short', 'whole_body_short']) {
+    const medium = content.endsWith('_short') ? 'organic_short' : 'organic_video';
+    const url = `${prefix.replace('organic_video', medium)}&utm_campaign=pilot_launch_three&utm_content=${content}`;
+    assert.deepEqual(approvedCampaign(url), {
+      campaign_source: 'youtube', campaign_medium: medium,
+      campaign_name: 'pilot_launch_three', campaign_content: content
+    });
+  }
+  assert.equal(approvedCampaign('https://example.test/?utm_source=youtube&utm_medium=organic_video&utm_campaign=channel_relaunch&utm_content=profile').campaign_content, 'profile');
+  assert.equal(approvedCampaign(`${prefix}&utm_campaign=relaunch_8wk&utm_content=w01_reset`).campaign_content, 'w01_reset');
+  for (const unsafe of [
+    `${prefix}&utm_campaign=pilot_launch_three&utm_content=unknown`,
+    `${prefix}&utm_campaign=pilot_launch_three&utm_content=reset_short`,
+    `${prefix.replace('organic_video', 'organic_short')}&utm_campaign=pilot_launch_three&utm_content=reset_full`,
+    `${prefix.replace('organic_video', 'organic_short')}&utm_campaign=pilot_launch_three&utm_content=reset_short%40private.test`,
+    `${prefix.replace('organic_video', 'organic_short')}&utm_campaign=pilot_launch_three&utm_content=reset_short&utm_content=secret`,
+    `${prefix}&utm_campaign=channel_relaunch&utm_content=reset_short`,
+    `${prefix.replace('utm_source=youtube', 'utm_source=other')}&utm_campaign=pilot_launch_three&utm_content=reset_short`,
+    `${prefix.replace('utm_medium=organic_video', 'utm_medium=email')}&utm_campaign=pilot_launch_three&utm_content=reset_short`
+  ]) assert.deepEqual(approvedCampaign(unsafe), {});
+});
+
+test('consent panel privacy link resolves from nested session pages', () => {
+  const h = browserHarness(false, false, 'https://example.test/sessions/reset/');
+  const panel = h.body.children.find(child => child.className === 'analytics-choice');
+  assert.ok(panel._html.includes('href="/privacy.html"'));
+});
+
+test('consented page and listening events carry approved campaign fields with path-only location', () => {
+  const href = 'https://example.test/session.html?session=a&private=secret&utm_source=youtube&utm_medium=organic_video&utm_campaign=pilot_launch_three&utm_content=reset_full';
+  const h = browserHarness(false, false, href, true);
+  assert.equal(h.win.dataLayer, undefined);
+  h.controller.setPreference('granted');
+  const script = h.head.children.find(e => e.src?.includes('googletagmanager'));
+  script.dispatchEvent(new Event('load'));
+  h.audio.paused = false;
+  h.audio.fire('playing');
+  const config = h.win.dataLayer.find(args => args[0] === 'config')[2];
+  const events = h.win.dataLayer.filter(args => args[0] === 'event').map(args => args[2]);
+  assert.deepEqual(events.map(event => event.page_location), ['https://example.test/session.html', 'https://example.test/session.html']);
+  for (const params of [config, ...events]) {
+    assert.equal(params.campaign_source, 'youtube');
+    assert.equal(params.campaign_medium, 'organic_video');
+    assert.equal(params.campaign_name, 'pilot_launch_three');
+    assert.equal(params.campaign_content, 'reset_full');
+    assert.equal(JSON.stringify(params).includes('secret'), false);
+  }
 });
 
 test('existing settings control reopens hidden choices; withdrawal before script load sends no page view', () => {

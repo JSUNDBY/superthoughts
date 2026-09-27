@@ -4,6 +4,14 @@ const MEASUREMENT_ID = 'G-93YX918L19';
 const CONSENT_KEY = 'st_analytics_consent_v1';
 const DENIED = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' };
 const GRANTED = { ...DENIED, analytics_storage: 'granted' };
+const APPROVED_CAMPAIGNS = {
+  channel_relaunch: new Set(['profile']),
+  relaunch_8wk: new Set(['w01_reset']),
+  pilot_launch_three: new Set([
+    'reset_full', 'begin_day_full', 'whole_body_full',
+    'reset_short', 'begin_day_short', 'whole_body_short'
+  ])
+};
 
 export function canonicalPageUrl(raw, base = raw) {
   try { const url = new URL(raw, base); return `${url.origin}${url.pathname}`; } catch { return ''; }
@@ -14,6 +22,22 @@ export function sanitizedReferrer(raw, current = raw) {
     if (!['http:', 'https:'].includes(ref.protocol)) return '';
     return ref.origin === here.origin ? canonicalPageUrl(ref.href) : ref.origin;
   } catch { return ''; }
+}
+export function approvedCampaign(raw, base = raw) {
+  try {
+    const query = new URL(raw, base).searchParams;
+    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+    if (keys.some(key => query.getAll(key).length !== 1)) return {};
+    const [source, medium, name, content] = keys.map(key => query.get(key));
+    if (source !== 'youtube' || !APPROVED_CAMPAIGNS[name]?.has(content) ||
+        medium !== (content.endsWith('_short') ? 'organic_short' : 'organic_video')) return {};
+    return {
+      campaign_source: source,
+      campaign_medium: medium,
+      campaign_name: name,
+      campaign_content: content
+    };
+  } catch { return {}; }
 }
 
 export function createAnalyticsController({ win = window, doc = document, storage = null, catalog = win.STCatalog || [] } = {}) {
@@ -29,11 +53,13 @@ export function createAnalyticsController({ win = window, doc = document, storag
   let destroyed = false;
   const pageLocation = canonicalPageUrl(win.location.href);
   const pageReferrer = sanitizedReferrer(doc.referrer, win.location.href);
+  const campaign = approvedCampaign(win.location.href);
+  const pageParams = { page_location: pageLocation, page_referrer: pageReferrer, ...campaign };
   function gtag() { win.dataLayer = win.dataLayer || []; win.dataLayer.push(arguments); }
   const isGranted = () => preference === 'granted' && !destroyed;
   const sendEvent = (name, params) => {
     if (!isGranted()) return;
-    const event = [name, { ...params, send_to: MEASUREMENT_ID, page_location: pageLocation, page_referrer: pageReferrer }];
+    const event = [name, { ...params, send_to: MEASUREMENT_ID, ...pageParams }];
     if (!tagReady) { if (pendingEvents.length < 32) pendingEvents.push(event); return; }
     gtag('event', ...event);
   };
@@ -53,17 +79,16 @@ export function createAnalyticsController({ win = window, doc = document, storag
     if (!isGranted() || tagReady) return;
     win[`ga-disable-${MEASUREMENT_ID}`] = false;
     gtag('consent', 'update', GRANTED);
-    gtag('set', { allow_google_signals: false, allow_ad_personalization_signals: false, ads_data_redaction: true, page_location: pageLocation, page_referrer: pageReferrer });
+    gtag('set', { allow_google_signals: false, allow_ad_personalization_signals: false, ads_data_redaction: true, ...pageParams });
     gtag('js', new Date());
     gtag('config', MEASUREMENT_ID, {
       send_page_view: false,
       allow_google_signals: false,
       allow_ad_personalization_signals: false,
-      page_location: pageLocation,
-      page_referrer: pageReferrer
+      ...pageParams
     });
     tagReady = true;
-    gtag('event', 'page_view', { send_to: MEASUREMENT_ID, page_location: pageLocation, page_referrer: pageReferrer, page_title: doc.title });
+    gtag('event', 'page_view', { send_to: MEASUREMENT_ID, ...pageParams, page_title: doc.title });
     for (const [name, params] of pendingEvents) gtag('event', name, params);
     pendingEvents = [];
   };
@@ -89,7 +114,7 @@ export function createAnalyticsController({ win = window, doc = document, storag
     if (choice === 'granted') {
       tracker?.enable();
       if (script && !tagReady) { render(); return; }
-      if (tagReady) { win[`ga-disable-${MEASUREMENT_ID}`] = false; gtag('consent', 'update', GRANTED); if (previous !== 'granted') gtag('event', 'page_view', { send_to: MEASUREMENT_ID, page_location: pageLocation, page_referrer: pageReferrer, page_title: doc.title }); }
+      if (tagReady) { win[`ga-disable-${MEASUREMENT_ID}`] = false; gtag('consent', 'update', GRANTED); if (previous !== 'granted') gtag('event', 'page_view', { send_to: MEASUREMENT_ID, ...pageParams, page_title: doc.title }); }
       else loadTag();
     } else {
       tracker?.disable();
@@ -122,7 +147,7 @@ export function createAnalyticsController({ win = window, doc = document, storag
   const panel = doc.createElement('section');
   panel.className = 'analytics-choice';
   panel.setAttribute('aria-label', 'Analytics preference');
-  panel.innerHTML = '<h2>Help improve this listening space?</h2><p>With your choice, Google Analytics measures page visits and how much of each session is actually heard. You can listen without analytics and change this choice anytime. <a href="privacy.html">Privacy details</a></p><div class="analytics-choice-actions"><button type="button" data-choice="granted">Accept analytics</button><button type="button" data-choice="denied">Decline analytics</button></div>';
+  panel.innerHTML = '<h2>Help improve this listening space?</h2><p>With your choice, Google Analytics measures page visits and how much of each session is actually heard. You can listen without analytics and change this choice anytime. <a href="/privacy.html">Privacy details</a></p><div class="analytics-choice-actions"><button type="button" data-choice="granted">Accept analytics</button><button type="button" data-choice="denied">Decline analytics</button></div>';
   const existingSettings = [...doc.querySelectorAll('[data-analytics-settings]')];
   const settings = existingSettings[0] || doc.createElement('button');
   const generatedSettings = existingSettings.length === 0;
