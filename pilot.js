@@ -143,13 +143,28 @@ function updateTime() {
   if ('mediaSession' in navigator && navigator.mediaSession.setPositionState && Number.isFinite(duration) && duration > 0) {
     try { navigator.mediaSession.setPositionState({ duration, playbackRate: audio.playbackRate || 1, position: Math.min(duration, Math.max(0, current)) }); } catch {}
   }
-  const line = cues.find(cue => current >= cue.start - .8 && current < cue.end + 2);
-  if (line) $('field-words').textContent = line.text;
-  const smooth = x => { x = Math.min(1, Math.max(0,x));return x*x*(3-2*x); };
-  const opacity = line ? Math.min(smooth((current-line.start+.8)/1.6), smooth((line.end+2-current)/2)) : 0;
-  $('field-words').style.setProperty('--caption-opacity', opacity);
-  $('field-words').style.setProperty('--caption-blur', `${reducedMotion.matches?0:(1-opacity)*9}px`);
-  $('field-words').style.setProperty('--caption-lift', `${reducedMotion.matches?0:(1-opacity)*5}px`);
+  if (audio.paused) updateCaption();
+}
+
+let captionFrame = 0;
+function updateCaption() {
+  const current = audio.currentTime || 0;
+  const index = cues.findIndex((cue, i) => current >= cue.start - .8 && current < Math.min(cue.end + 1.8, cues[i + 1]?.start - .8 || Infinity));
+  const line = cues[index];
+  const smooth = x => { x = Math.min(1, Math.max(0, x)); return x*x*(3-2*x); };
+  const end = line ? Math.min(line.end + 1.8, cues[index + 1]?.start - .8 || Infinity) : 0;
+  const opacity = line && !audio.paused ? Math.min(smooth((current-line.start+.8)/1.6), smooth((end-current)/Math.min(1.6, end-line.end))) : 0;
+  const words = $('field-words');
+  if (line && words.textContent !== line.text) words.textContent = line.text;
+  words.style.setProperty('--caption-opacity', opacity);
+  words.style.setProperty('--caption-blur', `${reducedMotion.matches ? 0 : (1-opacity)*5}px`);
+  words.style.setProperty('--caption-lift', `${reducedMotion.matches ? 0 : (1-opacity)*3}px`);
+}
+function animateCaptions() {
+  cancelAnimationFrame(captionFrame);
+  updateCaption();
+  if (!audio.paused && !audio.ended && !document.hidden) captionFrame = requestAnimationFrame(animateCaptions);
+
 }
 
 async function loadCues(item) {
@@ -283,7 +298,10 @@ audio.addEventListener('durationchange', updateTime);
 audio.addEventListener('loadstart', () => { if (active) setStatus('Loading audio…'); });
 audio.addEventListener('waiting', () => { if (active && !audio.paused) setStatus('Audio interrupted. Reconnecting…'); });
 audio.addEventListener('stalled', () => { if (active && !audio.paused) setStatus('Audio interrupted. Check your connection.'); });
-audio.addEventListener('playing', () => { setStatus('Playing'); updateTransport(); });
+audio.addEventListener('playing', () => { setStatus('Playing'); updateTransport(); animateCaptions(); });
+audio.addEventListener('pause', animateCaptions);
+audio.addEventListener('seeked', animateCaptions);
+document.addEventListener('visibilitychange', animateCaptions);
 audio.addEventListener('pause', () => { if (active && !audio.ended && !audio.error) setStatus('Paused. Press play to continue.'); updateTransport(); });
 audio.addEventListener('ended', () => { updateTransport(); if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch {} } const earned = earnedCompletionId === active?.id; setStatus(earned ? 'A moment well spent. Thank you for making this time for yourself.' : 'You are welcome back whenever you like.'); $('resume-message').hidden = false; $('resume-message').textContent = earned ? 'A practice you can return to whenever you like.' : 'Your listening time has been saved on this device.'; });
 audio.addEventListener('error', () => { if (active) setStatus('This audio is unavailable right now. Please try again later.'); updateTransport(); });
@@ -341,9 +359,9 @@ let bathIdleTimer = 0;
 function revealBath() {
   clearTimeout(bathIdleTimer);
   document.body.classList.remove('bath-idle');
-  if (!focusView || active?.type !== 'sound' || audio.paused || audio.ended) return;
+  if ((!isSessionPage && !focusView) || audio.paused || audio.ended || transcriptDialog.open) return;
   bathIdleTimer = setTimeout(() => {
-    if (focusView && active?.type === 'sound' && !audio.paused)
+    if ((isSessionPage || focusView) && !audio.paused && !transcriptDialog.open && !document.activeElement?.matches(':focus-visible'))
       document.body.classList.add('bath-idle');
   }, 3500);
 }
@@ -352,7 +370,10 @@ $('player-shell').addEventListener('pointerdown', revealBath, {passive:true});
 document.addEventListener('keydown', revealBath, true);
 audio.addEventListener('play', () => {
   if (active?.type === 'sound' && !isPracticePage) setFocusView(true);
+  revealBath();
 });
 audio.addEventListener('pause', () => { if (isSessionPage) setFocusView(false); revealBath(); });
 audio.addEventListener('ended', revealBath);
 audio.addEventListener('error', revealBath);
+
+transcriptDialog.addEventListener('close', revealBath);

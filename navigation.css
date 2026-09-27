@@ -42,3 +42,11 @@
 @media(prefers-reduced-motion:reduce){.session-toolbar{transition:none}}
 
 body:not(.page-session) .listening{display:none}
+
+/* Give the moving field and spoken words their own uninterrupted space. */
+.page-session .player-panel,.page-session .field-top,.page-session .field-index{transition:opacity 1.8s ease}
+.page-session .field-center{display:none}
+.page-session .field-words{top:45%;bottom:auto;left:10%;right:10%;width:auto;text-align:center;pointer-events:none;transition:opacity 1.2s ease}
+.page-session:not(.bath-idle) .field-words{opacity:0}
+.page-session.bath-idle .field-words{transition:none}
+@media(prefers-reduced-motion:reduce){.page-session .player-panel,.page-session .session-toolbar,.page-session .field-words{transition-duration:.2s}}
