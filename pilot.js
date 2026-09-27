@@ -245,7 +245,29 @@ $('play-toggle').addEventListener('click', togglePlay);
 $('replay-button').addEventListener('click', () => { if (!active) return; restartRun(); setStatus('Ready from the beginning'); if (audio.paused) playAudio(); });
 $('seek-range').addEventListener('input', event => { if (!active) return; try { audio.currentTime = Number(event.target.value); } catch {} updateTime(); });
 $('player-favorite').addEventListener('click', () => { if (!active) return; store.toggleFavorite(active.id); updateFavoriteButton(); renderLibrary(); });
-$('transcript-toggle').addEventListener('click', () => { const panel = $('transcript-panel'); panel.hidden = !panel.hidden; $('transcript-toggle').setAttribute('aria-expanded', String(!panel.hidden)); });
+// A separate reading surface avoids burying the transcript under player controls.
+const transcriptDialog = document.createElement('dialog');
+transcriptDialog.className = 'transcript-dialog';
+transcriptDialog.setAttribute('aria-labelledby', 'transcript-heading');
+transcriptDialog.innerHTML = '<header><div><p class="eyebrow">Session transcript</p><h2 id="transcript-heading"></h2></div><button type="button" autofocus>Close</button></header>';
+$('player-shell').append(transcriptDialog);
+const transcriptPanel = $('transcript-panel');
+transcriptDialog.append(transcriptPanel);
+transcriptPanel.querySelector('.eyebrow')?.remove();
+$('transcript-toggle').setAttribute('aria-haspopup', 'dialog');
+$('transcript-toggle').addEventListener('click', () => {
+  $('transcript-heading').textContent = active?.title || 'Transcript';
+  transcriptPanel.hidden = false;
+  transcriptDialog.showModal();
+  transcriptPanel.scrollTop = 0;
+  $('transcript-toggle').setAttribute('aria-expanded', 'true');
+});
+transcriptDialog.querySelector('button').addEventListener('click', () => transcriptDialog.close());
+transcriptDialog.addEventListener('close', () => {
+  transcriptPanel.hidden = true;
+  $('transcript-toggle').setAttribute('aria-expanded', 'false');
+  $('transcript-toggle').focus({ preventScroll: true });
+});
 $('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); scene?.setDim(dimmed); updateTime(); });
 $('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; scene?.setMotion(!motionPaused); });
 $('share-button').addEventListener('click', async () => { if (!active) return; const url = new URL(sessionUrl(active.id), location.href); try { if (navigator.share) await navigator.share({ title: active.title, url: url.href }); else { await navigator.clipboard.writeText(url.href); setStatus('Session link copied.'); } } catch (error) { if (error?.name !== 'AbortError') setStatus('The link could not be shared here.'); } });
@@ -304,7 +326,7 @@ function setFocusView(enabled) {
 }
 focusButton.addEventListener('click',()=>setFocusView(!focusView));
 document.addEventListener('keydown',event=>{
-  if (!focusView) return;
+  if (!focusView || transcriptDialog.open) return;
   if (event.key==='Escape') { event.preventDefault();setFocusView(false);return; }
   if (event.key==='Tab') {
     const controls=[...$('player-shell').querySelectorAll('button:not(:disabled),input:not(:disabled),a[href]')].filter(el=>el.offsetParent!==null);

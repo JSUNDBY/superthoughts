@@ -133,3 +133,15 @@ button:disabled{opacity:.45;cursor:default}
 
 /* Footer privacy controls share the same quiet treatment as policy links. */
 .site-footer [data-analytics-settings]{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}.site-footer [data-analytics-settings]:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+
+/* Transcript remains readable in the player and in native full screen. */
+.transcript-dialog{width:min(640px,calc(100vw - 32px));max-height:85svh;padding:0;border:1px solid var(--line);border-radius:20px;background:#18201f;color:var(--ink);box-shadow:0 24px 100px #0008}
+.transcript-dialog[open]{display:flex;flex-direction:column}
+.transcript-dialog::backdrop{background:#080d10b8;backdrop-filter:blur(10px)}
+.transcript-dialog header{display:flex;align-items:start;justify-content:space-between;gap:20px;padding:26px 28px 20px;border-bottom:1px solid var(--line)}
+.transcript-dialog .eyebrow{margin:0 0 8px}
+.transcript-dialog h2{margin:0;font-size:25px;line-height:1.25;font-weight:400;letter-spacing:-.025em}
+.transcript-dialog header button{min-height:44px;padding:8px 16px;border:1px solid var(--line);border-radius:99px;background:transparent;color:var(--ink)}
+.transcript-dialog .transcript-panel{display:block!important;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;margin:0;padding:22px 28px 32px;border:0;font-size:17px;line-height:1.8;color:var(--ink);text-align:left}
+.transcript-dialog .transcript-panel p{margin:0 0 18px;font:inherit;color:inherit}
+@media(max-width:560px){.transcript-dialog header{padding:20px}.transcript-dialog .transcript-panel{padding:20px}.transcript-dialog h2{font-size:22px}}
