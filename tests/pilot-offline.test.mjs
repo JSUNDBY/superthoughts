@@ -4,9 +4,15 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../pilot-sw.js', import.meta.url), 'utf8');
+const catalogSource = readFileSync(new URL('../pilot-catalog.js', import.meta.url), 'utf8');
+const catalogContext = { window: {} };
+vm.runInNewContext(catalogSource, catalogContext, { filename: 'pilot-catalog.js' });
+const catalog = Array.from(catalogContext.window.STCatalog, item => ({
+  id: item.id, src: item.src, cues: item.cues
+}));
 const origin = 'http://localhost:8846/';
-const guided = { src: 'audio/gratitude-v5.mp3', cues: 'audio/gratitude-v5-cues.json' };
-const sound = { src: 'audio/pilot-warmth-v1.mp3', cues: null };
+const guided = catalog.find(item => item.id === 'gratitude');
+const sound = catalog.find(item => item.id === 'warmth');
 const saved = response => Array.from(response.saved);
 
 function worker(options = {}) {
@@ -58,7 +64,13 @@ function worker(options = {}) {
       return fetcher(input, init);
     }
   };
+  // In a real service worker `self` is the global object.
+  context.window = context.self;
   vm.createContext(context);
+  context.importScripts = path => {
+    assert.equal(path, 'pilot-catalog.js');
+    vm.runInContext(options.catalogSource ?? catalogSource, context, { filename: path });
+  };
   vm.runInContext(source, context, { filename: 'pilot-sw.js' });
   return {
     buckets,
@@ -155,6 +167,21 @@ test('a guided session is listed only after audio and cues are complete', async 
   assert.deepEqual(saved(removed), []);
 });
 
+test('every current catalog session can be saved and removed offline', async () => {
+  const sw = worker();
+  for (const item of catalog) {
+    const result = await sw.message({ type: 'CACHE_SESSION', src: item.src, cues: item.cues });
+    assert.equal(result.ok, true, `${item.id}: ${result.error || ''}`);
+    assert.ok(saved(result).includes(item.src), item.id);
+  }
+  assert.deepEqual(saved(await sw.message({ type: 'LIST_SAVED' })), catalog.map(item => item.src));
+  for (const item of catalog) {
+    const result = await sw.message({ type: 'REMOVE_SESSION', src: item.src, cues: item.cues });
+    assert.equal(result.ok, true, item.id);
+  }
+  assert.deepEqual(saved(await sw.message({ type: 'LIST_SAVED' })), []);
+});
+
 test('failed cue, incomplete audio, and storage quota failures never report a new save', async () => {
   const cueFailure = worker({ fetcher: async input => {
     if (String(input).endsWith('.json')) throw Error('offline');
@@ -183,12 +210,12 @@ test('failed cue, incomplete audio, and storage quota failures never report a ne
 test('message validation rejects foreign origins, mismatched cues, and path traversal', async () => {
   const sw = worker();
   const bad = [
-    { src: 'https://elsewhere.example/audio/gratitude-v5.mp3', cues: guided.cues },
-    { src: '../audio/gratitude-v5.mp3', cues: guided.cues },
-    { src: 'audio/../audio/gratitude-v5.mp3', cues: guided.cues },
-    { src: 'audio/%2e%2e/audio/gratitude-v5.mp3', cues: guided.cues },
+    { src: 'https://elsewhere.example/' + guided.src, cues: guided.cues },
+    { src: '../' + guided.src, cues: guided.cues },
+    { src: 'audio/../' + guided.src, cues: guided.cues },
+    { src: 'audio/%2e%2e/' + guided.src, cues: guided.cues },
     { src: 'audio/gratitude-v3.mp3', cues: 'audio/gratitude-v3-cues.json' },
-    { src: guided.src, cues: 'audio/whole-body-v6-cues.json' },
+    { src: guided.src, cues: catalog.find(item => item.id === 'whole-body').cues },
     { src: sound.src, cues: guided.cues }
   ];
   for (const item of bad) {
@@ -197,6 +224,18 @@ test('message validation rejects foreign origins, mismatched cues, and path trav
     assert.deepEqual(saved(result), []);
   }
   assert.equal(sw.fetchCalls.length, 0);
+});
+
+test('imported catalog cannot expand the offline allowlist outside audio paths', () => {
+  for (const entry of [
+    { src: '../private.mp3', cues: null },
+    { src: 'https://elsewhere.example/audio/file.mp3', cues: null },
+    { src: 'audio/file.mp3?version=1', cues: null },
+    { src: 'audio/file.mp3', cues: '../private.json' }
+  ]) {
+    assert.throws(() => worker({ catalogSource: `window.STCatalog = ${JSON.stringify([entry])};` }),
+      /Invalid session catalog path/);
+  }
 });
 
 

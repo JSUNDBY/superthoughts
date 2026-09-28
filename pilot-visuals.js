@@ -6,7 +6,7 @@
   const FRAME_MS = 1000 / 24;
   const SCENES = new Set([
     'gratitude', 'whole-body', 'wind-down', 'reset',
-    'begin-day', 'warmth', 'open-space', 'drift', 'afterglow', 'first-light'
+    'begin-day', 'warmth', 'open-space', 'drift', 'afterglow', 'first-light', 'after-conversation'
   ]);
 
   class SuperthoughtsField {
@@ -128,6 +128,7 @@
         case 'drift': this.drift(t); break;
         case 'afterglow': this.afterglow(t); break;
         case 'first-light': this.firstLight(t); break;
+        case 'after-conversation': this.afterConversation(t); break;
       }
       // Dimming is a CSS veil, so it fades even while rendering is paused.
       this.vignette();
@@ -388,6 +389,59 @@
         c.bezierCurveTo(.6,y+.39-sway,.23,y-.1+sway,-.1,y+.07);
         c.closePath();c.fillStyle=g;c.fill();
       }
+    }
+
+    afterConversation(t) {
+      // Plum, coral and indigo forms begin tangled, then drift apart around a calm
+      // centre over the eight-minute session. The immersive page uses a WebGL version.
+      const c = this.ctx, smooth = (a, b, x) => { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); };
+      const pr = Math.min(1, t / 480), apart = smooth(.05, .6, pr), settle = smooth(.45, .75, pr), back = smooth(.75, .9, pr);
+      const p = t * .048, speed = 1 - .45 * settle;
+      this.background([[0, '#0b0a1a'], [.55, '#140f24'], [1, '#1b0f1d']]);
+      this.glow(.18, .26, .62, '52,48,122', .17);
+      this.glow(.86, .74, .55, '104,44,88', .14);
+      const cx = .5 + .012 * Math.sin(p * .5), cy = .48 + .014 * Math.cos(p * .43);
+      const families = [
+        { dir: -2.35, rgb: ['74,68,146', '96,86,172', '128,114,204'] },
+        { dir: .32, rgb: ['106,50,104', '138,70,128', '172,98,150'] },
+        { dir: 2.05, rgb: ['176,92,88', '204,122,106', '228,158,134'] }
+      ];
+      for (let layer = 0; layer < 3; layer++) {
+        const depth = layer / 2;
+        families.forEach((f, fi) => {
+          const dist = .03 + apart * (.15 + .06 * depth);
+          const ang = f.dir + .1 * Math.sin(p * .4 * speed + fi * 1.7);
+          const x = cx + Math.cos(ang) * dist * 1.22, y = cy + Math.sin(ang) * dist;
+          const radius = (.36 - layer * .075) * (1 - .16 * apart);
+          const agitation = .11 * (1 - apart) + .032;
+          const turn = f.dir * .6 + Math.sin(p * .55 * speed + fi + layer * .4) * (.16 - .08 * settle);
+          const phase = p * (1.25 - .55 * settle);
+          c.save(); c.translate(x, y); c.rotate(turn);
+          const contour = (scale, reverse) => {
+            for (let j = 0; j <= 128; j++) {
+              const a = (reverse ? 128 - j : j) / 128 * TAU;
+              const r = radius * scale * (1 + agitation * Math.cos(a * 3 + phase + fi * 2.1 + layer * .5) + .04 * Math.sin(a * 2 - phase * .8 + fi));
+              if (j === 0) c.moveTo(Math.cos(a) * r * .8, Math.sin(a) * r); else c.lineTo(Math.cos(a) * r * .8, Math.sin(a) * r);
+            }
+            c.closePath();
+          };
+          const rgb = f.rgb[layer];
+          c.beginPath(); contour(1, false); contour(.78, true);
+          const fill = c.createLinearGradient(-radius, -radius, radius, radius);
+          fill.addColorStop(0, `rgba(${rgb},.015)`); fill.addColorStop(.25, `rgba(${rgb},${.06 + depth * .05})`);
+          fill.addColorStop(.5, `rgba(${rgb},.022)`); fill.addColorStop(.76, `rgba(${rgb},${.11 + depth * .08})`);
+          fill.addColorStop(1, `rgba(${rgb},.02)`);
+          c.fillStyle = fill; c.fill('evenodd');
+          c.beginPath(); contour(.785, false);
+          const rim = c.createLinearGradient(-radius, 0, radius, 0);
+          rim.addColorStop(0, `rgba(${rgb},0)`); rim.addColorStop(.6, `rgba(${rgb},.025)`);
+          rim.addColorStop(.85, `rgba(${rgb},${.1 + depth * .09})`); rim.addColorStop(1, `rgba(${rgb},0)`);
+          c.strokeStyle = rim; c.lineWidth = .0011; c.stroke(); c.restore();
+        });
+      }
+      this.glow(cx, cy, .2, '206,190,204', .02 + .12 * apart + .05 * back);
+      this.glow(cx, cy + .01, .075, '244,224,212', .015 + .11 * apart + .06 * back);
+      this.glow(.5, 1.08, .75, '222,146,116', .11 * back);
     }
 
     firstLight(t) {

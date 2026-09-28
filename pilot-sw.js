@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v15-youtube';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v19-after-conversation';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
@@ -11,18 +11,25 @@ const SHELL_FILES = [
   'images/favicon.svg', 'images/superthoughts-symbol.svg',
   'fonts/dm-sans-300.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
 ];
-const SESSION_FILES = new Map([
-  ['audio/gratitude-v5.mp3', 'audio/gratitude-v5-cues.json'],
-  ['audio/whole-body-v6.mp3', 'audio/whole-body-v6-cues.json'],
-  ['audio/wind-down-v12.mp3', 'audio/wind-down-v12-cues.json'],
-  ['audio/pilot-reset-v3.mp3', 'audio/pilot-reset-v3-cues.json'],
-  ['audio/pilot-begin-day-v3.mp3', 'audio/pilot-begin-day-v3-cues.json'],
-  ['audio/pilot-warmth-v1.mp3', null],
-  ['audio/pilot-open-space-v1.mp3', null],
-  ['audio/pilot-drift-v1.mp3', null],
-  ['audio/afterglow-v1.mp3', null],
-  ['audio/first-light-v1.mp3', null]
-]);
+// Import the same static catalog used by the player. A separate versioned list
+// silently broke offline saving each time an audio master changed.
+self.window = self;
+importScripts('pilot-catalog.js');
+const SESSION_FILES = (() => {
+  const catalog = self.STCatalog;
+  if (!Array.isArray(catalog) || !catalog.length) throw new Error('Missing session catalog.');
+  const files = new Map();
+  for (const item of catalog) {
+    const src = item && item.src;
+    const cues = item && item.cues;
+    // Restrict the imported data to versioned same-origin audio and cue paths.
+    if (typeof src !== 'string' || !/^audio\/[a-z0-9][a-z0-9-]*\.mp3$/.test(src) ||
+        !(cues === null || (typeof cues === 'string' && /^audio\/[a-z0-9][a-z0-9-]*-cues\.json$/.test(cues))) ||
+        files.has(src)) throw new Error('Invalid session catalog path.');
+    files.set(src, cues);
+  }
+  return files;
+})();
 
 const pathFor = relative => new URL(relative, ROOT).pathname;
 const urlFor = relative => new URL(relative, ROOT).href;
