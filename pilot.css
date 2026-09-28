@@ -145,3 +145,26 @@ button:disabled{opacity:.45;cursor:default}
 .transcript-dialog .transcript-panel{display:block!important;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;margin:0;padding:22px 28px 32px;border:0;font-size:17px;line-height:1.8;color:var(--ink);text-align:left}
 .transcript-dialog .transcript-panel p{margin:0 0 18px;font:inherit;color:inherit}
 @media(max-width:560px){.transcript-dialog header{padding:20px}.transcript-dialog .transcript-panel{padding:20px}.transcript-dialog h2{font-size:22px}}
+
+/* Readability floor (Josh, 2026-09-27: "the text on the site like the listen button is too small").
+   Placed last so it holds at every breakpoint. Controls 16px with 44px targets, reading text 15-16px,
+   uppercase labels at least 13px, numbers 14px. */
+.card-listen,.session-card .card-listen{font-size:16px;min-height:44px;display:inline-flex;align-items:flex-end;gap:2px}
+.filters button{font-size:16px;min-height:44px;padding:10px 16px}
+.player-extras button,.ambient-options button,.privacy-row button,.confirm-box button,.offline-options button,.feedback-export-row button,.focus-toggle{font-size:16px;min-height:44px}
+.card-body p:not(.card-meta),.session-card .card-body p:not(.card-meta),.session-card:first-child .card-body p:not(.card-meta){font-size:16px;line-height:1.55}
+.transcript-panel p:not(.eyebrow){font-size:16px;line-height:1.6}
+.confirm-box p,.privacy-row p,.resume-message,.welcome-copy .quiet,.welcome-copy #daily-meta,.welcome-back,#feedback-form label,.feedback-export-row,#feedback-status,.field-center>p:last-child,.player-type{font-size:15px}
+.offline-options p,.site-footer,.time-row,.transport-copy span,.library-count{font-size:14px}
+.goal-control select{font-size:16px}
+.eyebrow,.pilot-label,.card-topline,.card-meta,.session-card .card-meta,.field-top,.field-overline,.field-index,.art-corner,.practice-card-label,.practice-foot,.goal-control label{font-size:13px}
+
+/* Listener words (2026-09-27): six short excerpts, first names only, never tied to a specific session. */
+.voices{margin-top:90px;border-top:1px solid var(--line);padding-top:55px}
+.voice-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 48px}
+.voice-list li{margin:0}
+.voice-list blockquote{margin:0}
+.voice-list blockquote p{margin:0;font-size:clamp(19px,1.6vw,23px);line-height:1.45;letter-spacing:-.015em;color:var(--ink);font-weight:300}
+.voice-name{margin:14px 0 0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage)}
+@media(max-width:1000px){.voice-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.voices{margin-top:72px}.voice-list{grid-template-columns:1fr;gap:32px}}

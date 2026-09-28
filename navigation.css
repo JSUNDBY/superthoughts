@@ -50,3 +50,8 @@ body:not(.page-session) .listening{display:none}
 .page-session:not(.bath-idle) .field-words{opacity:0}
 .page-session.bath-idle .field-words{transition:none}
 @media(prefers-reduced-motion:reduce){.page-session .player-panel,.page-session .session-toolbar,.page-session .field-words{transition-duration:.2s}}
+
+/* Readability floor (2026-09-27); see the matching block at the end of pilot.css. */
+.site-header nav a,.session-toolbar>*,.page-session .session-toolbar>*{font-size:16px}
+.collection-links small{font-size:15px}
+.collection-links a>span{font-size:13px}
