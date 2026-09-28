@@ -26,11 +26,11 @@ float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
  return mix(mix(dot(h2(i),f),dot(h2(i+vec2(1,0)),f-vec2(1,0)),u.x),mix(dot(h2(i+vec2(0,1)),f-vec2(0,1)),dot(h2(i+vec2(1,1)),f-vec2(1,1)),u.x),u.y);}
 float fbm(vec2 p){float a=.5,s=0.;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){s+=a*noise(p);p=m*p;a*=.5;}return s;}
 vec2 web(vec2 p,float warp,float seed,float tt){
- vec2 q=vec2(fbm(p+seed+vec2(tt*.031,0.)),fbm(p+seed*1.7-vec2(0.,tt*.026)));
+ vec2 q=vec2(fbm(p+seed+vec2(tt*.095,0.)),fbm(p+seed*1.7-vec2(0.,tt*.08)));
  vec2 r=p+warp*q;
  float a=clamp(1.-abs(noise(r*1.05+seed))*4.6,0.,1.);
  float b=clamp(1.-abs(noise(r*2.2-seed+q))*7.,0.,1.);
- float cluster=smoothstep(-.2,.24,fbm(p*.32+seed*2.3+vec2(0.,tt*.006)));
+ float cluster=smoothstep(-.2,.24,fbm(p*.32+seed*2.3+vec2(tt*.012,tt*.018)));
  return vec2((pow(a,5.)+.3*pow(b,7.))*cluster,pow(a*b,2.)*cluster);
 }
 void main(){
@@ -44,10 +44,10 @@ void main(){
   float d=float(k)/2.;
   vec3 tint=k==0?tint0:(k==1?tint1:tint2);
   vec2 p=uv*(1.-holeAmt*apart*.3*(1.-d*.3)*exp(-rad*1.4));
-  float ang=.06*sin(tt*.02+d*2.);p=mat2(cos(ang),-sin(ang),sin(ang),cos(ang))*p;
+  float ang=.08*sin(tt*.05+d*2.);p=mat2(cos(ang),-sin(ang),sin(ang),cos(ang))*p;
   // Align: threads stretch along one gentle diagonal as the session finds its direction.
   p=mat2(.94,-.34,.34,.94)*p;p.x*=1.-.62*alignAmt*apart;p=mat2(.94,.34,-.34,.94)*p;
-  p=p*mix(1.5,2.7,d)+vec2(d*6.2,d*3.4)+vec2(tt*.01*alignAmt,0.);
+  p=p*mix(1.5,2.7,d)+vec2(d*6.2,d*3.4)+vec2(tt*(.012+.02*d),tt*.006)+vec2(tt*.01*alignAmt,0.);
   vec2 w=web(p,warp,d*5.3+1.,tt);
   float hole=mix(1.,.12+.88*smoothstep(.04+.16*apart,.16+.3*apart,rad),apart*holeAmt);
   float glow=(.2+.24*d)*(.75+.7*voice*(1.-.3*d))*(.85+.3*music)*light;

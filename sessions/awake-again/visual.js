@@ -32,10 +32,11 @@ function render(){
  ctx.globalCompositeOperation='lighter';
  const unit=Math.min(w,h)/900;
  for(const l of lights){
-  const x=((l.x+t*l.drift*.2)%1.08-.04)*w;
-  const y=(l.y+.012*Math.sin(t*.05*l.drift*60+l.phase))*h;
+  // Visible but unhurried: roughly 3-10 px per second across a laptop screen.
+  const x=((l.x+t*l.drift*3)%1.08-.04)*w;
+  const y=(l.y+.02*Math.sin(t*(.03+.05*l.depth)+l.phase))*h;
   const r=l.size*unit*(mobile?1.3:1);
-  const a=l.base*fade*(.8+.2*Math.sin(t*.07+l.phase));
+  const a=l.base*fade*(.72+.28*Math.sin(t*(.18+.2*l.depth)+l.phase));
   const g=ctx.createRadialGradient(x,y,0,x,y,r);
   g.addColorStop(0,`rgba(${l.hue},${a})`);g.addColorStop(.35,`rgba(${l.hue},${a*.35})`);g.addColorStop(1,`rgba(${l.hue},0)`);
   ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);
