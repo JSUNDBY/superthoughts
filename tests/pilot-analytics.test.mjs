@@ -201,3 +201,11 @@ test('existing settings control reopens hidden choices; withdrawal before script
   assert.equal(h.win.dataLayer.filter(args => args[0] === 'event').length, 0);
   assert.equal(h.win['ga-disable-G-93YX918L19'], true);
 });
+
+test('sleep launch links are attributed only with their matching medium', async () => {
+  const { approvedCampaign } = await import('../pilot-analytics.js');
+  const base = 'https://example.test/sessions/letting-go-into-sleep/?utm_source=youtube';
+  assert.equal(approvedCampaign(`${base}&utm_medium=organic_video&utm_campaign=sleep_launch&utm_content=letting_go_full`).campaign_content, 'letting_go_full');
+  assert.equal(approvedCampaign(`${base}&utm_medium=organic_short&utm_campaign=sleep_launch&utm_content=letting_go_short`).campaign_content, 'letting_go_short');
+  assert.deepEqual(approvedCampaign(`${base}&utm_medium=organic_short&utm_campaign=sleep_launch&utm_content=letting_go_full`), {});
+});

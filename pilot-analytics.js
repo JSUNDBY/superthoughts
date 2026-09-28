@@ -10,7 +10,8 @@ const APPROVED_CAMPAIGNS = {
   pilot_launch_three: new Set([
     'reset_full', 'begin_day_full', 'whole_body_full',
     'reset_short', 'begin_day_short', 'whole_body_short'
-  ])
+  ]),
+  sleep_launch: new Set(['letting_go_full', 'letting_go_short'])
 };
 
 export function canonicalPageUrl(raw, base = raw) {
