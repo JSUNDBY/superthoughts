@@ -181,15 +181,18 @@ button:disabled{opacity:.45;cursor:default}
 .tile-light:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 35%,rgba(8,7,12,.45))}
 .tile-light{z-index:0}
 .tile-light i{position:absolute;display:block}
-.tl-back{inset:-45%;background:radial-gradient(circle at var(--g-x1) var(--g-y1),var(--tile-1),transparent 38%),radial-gradient(circle at var(--g-x2) var(--g-y2),var(--tile-2),transparent 42%),radial-gradient(circle at 50% 110%,var(--tile-3),transparent 55%);opacity:1;animation:tl-spin calc(var(--g-spin) * 2.4) linear infinite;animation-delay:var(--g-delay)}
-.tl-bloom{left:50%;top:62%;width:150%;aspect-ratio:1;translate:-50% -50%;background:repeating-conic-gradient(from var(--g-bloom),color-mix(in srgb,var(--tile-3) 85%,#ffe6b0) 0 5deg,transparent 9deg 26deg);-webkit-mask-image:radial-gradient(circle,#000 0,rgba(0,0,0,.5) 22%,transparent 62%);mask-image:radial-gradient(circle,#000 0,rgba(0,0,0,.6) 28%,transparent 66%);filter:blur(2.5px);opacity:.58;mix-blend-mode:screen;animation:tl-spin var(--g-spin) linear infinite reverse;animation-delay:var(--g-delay)}
+.tl-back{inset:-20%;background:radial-gradient(circle at var(--g-x1) var(--g-y1),var(--tile-1),transparent 42%),radial-gradient(circle at var(--g-x2) var(--g-y2),var(--tile-2),transparent 46%),radial-gradient(circle at 50% 115%,var(--tile-3),transparent 60%);opacity:.55;animation:tl-breathe var(--g-drift) ease-in-out infinite alternate;animation-delay:var(--g-delay)}
+.tl-petals{position:absolute;left:50%;bottom:-6%;width:0;height:92%;transform:rotate(var(--g-tilt))}
+.tl-petals i{position:absolute;left:-14cqw;bottom:0;width:28cqw;height:100%;transform-origin:50% 100%;border-radius:50% 50% 45% 45%/70% 70% 30% 30%;background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--tile-1) 60%,#ffe2b0) 28%,color-mix(in srgb,var(--tile-2) 75%,#ffe2b0) 60%,transparent);filter:blur(3.5px);opacity:.62;mix-blend-mode:screen;animation:tl-unfurl 5.5s cubic-bezier(.2,.7,.2,1) both,tl-sway var(--g-sway) ease-in-out infinite alternate;animation-delay:calc(var(--k) * 90ms + .3s),calc(var(--k) * -1.3s + var(--g-delay))}
+.tl-petals i:nth-child(even){background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--tile-3) 70%,#ffd9a0) 34%,transparent)}
+.session-art{container-type:inline-size}
 .tl-a,.tl-b{width:72%;aspect-ratio:1;filter:blur(10px);border-radius:var(--g-shape-a)}
-.tl-a{left:var(--g-x1);top:var(--g-y1);background:radial-gradient(circle at 40% 40%,color-mix(in srgb,var(--tile-2) 80%,#ffe6b0),var(--tile-2) 45%,transparent 72%);opacity:.85;mix-blend-mode:screen;animation:tl-morph var(--g-drift) ease-in-out infinite alternate;animation-delay:var(--g-delay)}
-.tl-b{left:var(--g-x2);top:var(--g-y2);width:60%;background:radial-gradient(circle at 60% 55%,var(--tile-1),transparent 70%);opacity:.8;mix-blend-mode:screen;animation:tl-morph calc(var(--g-drift) * 1.37) ease-in-out infinite alternate-reverse;animation-delay:calc(var(--g-delay) / 2)}
-.tl-grain{inset:0;background-image:radial-gradient(circle,rgba(255,250,235,.9) 0 1px,transparent 1.6px),radial-gradient(circle,color-mix(in srgb,var(--tile-2) 50%,#fff) 0 1.2px,transparent 2px);background-size:57px 83px,97px 131px;background-position:var(--g-x1) var(--g-y1),var(--g-x2) var(--g-y2);opacity:.45;animation:tl-rise calc(var(--g-drift) * 3) linear infinite;animation-delay:var(--g-delay)}
-@keyframes tl-spin{to{transform:rotate(360deg)}}
-@keyframes tl-morph{0%{transform:translate(-50%,-50%) scale(.9) rotate(0);border-radius:var(--g-shape-a)}100%{transform:translate(-28%,-68%) scale(1.3) rotate(50deg);border-radius:var(--g-shape-b)}}
-@keyframes tl-rise{to{background-position:var(--g-x1) calc(var(--g-y1) - 332px),var(--g-x2) calc(var(--g-y2) - 262px)}}
+.tl-a{left:var(--g-x1);top:var(--g-y1);background:radial-gradient(circle at 40% 40%,color-mix(in srgb,var(--tile-2) 80%,#ffe6b0),var(--tile-2) 45%,transparent 72%);opacity:.4;mix-blend-mode:screen;animation:tl-morph var(--g-drift) ease-in-out infinite alternate;animation-delay:var(--g-delay)}
+.tl-b{left:var(--g-x2);top:var(--g-y2);width:60%;background:radial-gradient(circle at 60% 55%,var(--tile-1),transparent 70%);opacity:.35;mix-blend-mode:screen;animation:tl-morph calc(var(--g-drift) * 1.37) ease-in-out infinite alternate-reverse;animation-delay:calc(var(--g-delay) / 2)}
+@keyframes tl-breathe{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.12) translate(-3%,-4%)}}
+@keyframes tl-unfurl{0%{rotate:0deg;scale:.5 .35;opacity:0}100%{rotate:calc(var(--k) * var(--g-fan));scale:1 1;opacity:.62}}
+@keyframes tl-sway{0%{transform:rotate(-2.5deg) scaleY(.96)}100%{transform:rotate(2.5deg) scaleY(1.04)}}
+@keyframes tl-morph{0%{transform:translate(-50%,-50%) scale(.9);border-radius:var(--g-shape-a)}100%{transform:translate(-32%,-62%) scale(1.25);border-radius:var(--g-shape-b)}}
 .session-art .card-topline{z-index:3}
 .card-listen,.session-card .card-listen{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px 0 7px;border:0;border-radius:99px;background:rgba(255,250,240,.94);color:#16171f;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .2s}
 .card-listen:hover{color:#16171f;transform:translateY(-2px)}

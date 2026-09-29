@@ -87,11 +87,11 @@ function renderLibrary() {
     let gene = [...item.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) || 1;
     const next = () => (gene = (gene * 16807) % 2147483647) / 2147483647;
     const shape = () => [0, 0, 0, 0].map(() => `${Math.round(35 + next() * 30)}%`).join(' ');
-    [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['bloom', 0, 360], ['spin', 14, 30], ['drift', 6, 12], ['delay', -40, 0]]
-      .forEach(([k, lo, hi]) => card.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'bloom' ? 'deg' : 's')));
+    [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['fan', 7, 12], ['tilt', -8, 8], ['sway', 7, 13], ['drift', 9, 16], ['delay', -40, 0]]
+      .forEach(([k, lo, hi]) => card.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'fan' || k === 'tilt' ? 'deg' : 's')));
     card.style.setProperty('--g-shape-a', shape()); card.style.setProperty('--g-shape-b', shape());
     const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
-    light.innerHTML = '<i class="tl-back"></i><i class="tl-bloom"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-grain"></i>'; art.append(light);
+    light.innerHTML = '<i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><span class="tl-petals">' + Array.from({length: 9}, (_, k) => `<i style="--k:${k - 4}"></i>`).join('') + '</span>'; art.append(light);
     const topline = document.createElement('div'); topline.className = 'card-topline';
     const kicker = document.createElement('span'); kicker.textContent = item.kicker || item.category;
     const heart = document.createElement('button'); heart.className = 'card-save'; heart.type = 'button'; heart.setAttribute('aria-label', `${saved.has(item.id) ? 'Remove' : 'Save'} ${item.title} ${saved.has(item.id) ? 'from' : 'to'} favorites`); heart.setAttribute('aria-pressed', String(saved.has(item.id))); heart.title = saved.has(item.id) ? 'Remove from saved' : 'Save session'; heart.innerHTML = '<span aria-hidden="true">♡</span>';
