@@ -209,3 +209,11 @@ test('sleep launch links are attributed only with their matching medium', async 
   assert.equal(approvedCampaign(`${base}&utm_medium=organic_short&utm_campaign=sleep_launch&utm_content=letting_go_short`).campaign_content, 'letting_go_short');
   assert.deepEqual(approvedCampaign(`${base}&utm_medium=organic_short&utm_campaign=sleep_launch&utm_content=letting_go_full`), {});
 });
+
+test('abundance launch links are attributed only with their matching medium', async () => {
+  const { approvedCampaign } = await import('../pilot-analytics.js');
+  const base = 'https://example.test/sessions/frequency-of-abundance/?utm_source=youtube';
+  assert.equal(approvedCampaign(`${base}&utm_medium=organic_video&utm_campaign=abundance_launch&utm_content=abundance_full`).campaign_content, 'abundance_full');
+  assert.equal(approvedCampaign(`${base}&utm_medium=organic_short&utm_campaign=abundance_launch&utm_content=abundance_short`).campaign_content, 'abundance_short');
+  assert.deepEqual(approvedCampaign(`${base}&utm_medium=organic_video&utm_campaign=abundance_launch&utm_content=abundance_short`), {});
+});
