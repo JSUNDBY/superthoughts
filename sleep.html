@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070a14">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="A free guided sleep session from Superthoughts. Press play, set the phone down, and rest.">
+  <title>A quieter night · Superthoughts</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="pilot.css">
+  <style>
+    /* Sleep landing (ads): one tap to play, the screen rests while you listen, a quiet email offer. */
+    body.page-landing{min-height:100svh;background:#070a14;overflow-x:hidden}
+    .landing-light{position:fixed;inset:0;z-index:-1;container-type:inline-size}
+    .landing-light .tile-light{position:absolute;inset:0}
+    .landing-light .tl-a,.landing-light .tl-b,.landing-light .tl-c,.landing-light .tl-d{filter:blur(calc(10px + 2cqw))}
+    .landing-light[data-motif=moon] .tl-a{filter:blur(1.5px)}
+    .landing-light::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,10,20,.15),rgba(7,10,20,.35) 55%,rgba(7,10,20,.85))}
+    .landing{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;gap:22px;padding:28px 22px calc(34px + env(safe-area-inset-bottom));max-width:620px;margin:0 auto;transition:opacity 1.6s ease}
+    .landing-brand{position:fixed;top:calc(18px + env(safe-area-inset-top));left:22px;display:flex;align-items:center;gap:8px;color:#fff8ee;text-decoration:none;font-weight:600;letter-spacing:-.05em;font-size:21px;transition:opacity 1.6s ease}
+    .landing-brand img{width:26px;height:26px}
+    .landing .eyebrow{color:#fff8eecc;margin:0}
+    .landing h1{font-size:clamp(44px,12vw,72px);line-height:1.02;letter-spacing:-.06em;margin:0;color:#fff8ee;text-shadow:0 2px 24px rgba(7,10,20,.7)}
+    .landing .lead{font-size:18px;line-height:1.55;color:#f1ebe0e6;margin:0;max-width:30ch;text-shadow:0 1px 14px rgba(7,10,20,.8)}
+    .landing .daily-invitation{align-self:flex-start}
+    .landing-status{font-size:14px;color:#f1ebe0b3;margin:-8px 0 0 80px;min-height:20px}
+    .signup{display:grid;gap:10px;margin-top:10px;padding:18px;border:1px solid rgba(255,244,228,.18);border-radius:20px;background:rgba(10,12,22,.45);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+    .signup[hidden]{display:none}
+    .signup p{margin:0;color:#fff8ee;font-size:16px;line-height:1.5}
+    .signup .signup-row{display:flex;gap:8px}
+    .signup input{flex:1;min-width:0;min-height:50px;border-radius:99px;border:1px solid rgba(255,244,228,.3);background:rgba(255,255,255,.06);color:#fff8ee;padding:0 18px;font:inherit;font-size:16px}
+    .signup button{min-height:50px;padding:0 20px;border:0;border-radius:99px;background:linear-gradient(100deg,var(--tile-1),var(--tile-3));color:#fff8ee;font:inherit;font-weight:600;font-size:15px}
+    .signup small{color:#f1ebe0a6;font-size:13px}
+    .landing-foot{font-size:13px;color:#f1ebe099;display:flex;gap:16px;flex-wrap:wrap}
+    .landing-foot a{color:inherit}
+    /* While listening, everything rests; a tap brings it back. */
+    body.is-resting .landing,body.is-resting .landing-brand{opacity:0;pointer-events:none}
+    body.is-resting .landing-light::after{background:rgba(3,4,8,.72)}
+  </style>
+</head>
+<body class="page-landing">
+  <div class="landing-light" id="landing-light" aria-hidden="true"></div>
+  <a class="landing-brand" href="index.html"><img src="images/superthoughts-symbol.svg" alt="" width="26" height="26"><span>superthoughts<span class="brand-dot">.</span></span></a>
+  <main class="landing" id="main">
+    <p class="eyebrow" id="landing-meta">Free · guided sleep · no app</p>
+    <h1>A quieter night starts here.</h1>
+    <p class="lead">A guided sleep session from Josh Sundby, a certified hypnotherapist. Press play, set the phone down, and rest.</p>
+    <button id="landing-play" class="daily-invitation" type="button"><span class="daily-play-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 6.5 17 12l-8 5.5z"/></svg></span><span id="landing-play-label">Play tonight's session</span></button>
+    <p class="landing-status" id="landing-status" role="status" aria-live="polite"></p>
+    <form class="signup" id="signup" hidden>
+      <p>Want seven nights of this? One session each evening, in your inbox.</p>
+      <div class="signup-row"><label class="sr-only" for="signup-email">Email</label><input id="signup-email" name="email" type="email" autocomplete="email" placeholder="Your email" required><button type="submit">Send them</button></div>
+      <small>Free. Unsubscribe anytime.</small>
+    </form>
+    <p class="landing-foot"><a href="index.html">Explore the library</a><a href="privacy.html">Your data</a></p>
+  </main>
+  <audio id="landing-audio" preload="none"></audio>
+  <script src="pilot-catalog.js"></script>
+  <script src="tile-light.js"></script>
+  <script>
+  (() => {
+    'use strict';
+    // The session this page plays: ?s=<catalog id>, default the long sleep session.
+    // The email form stays hidden until SIGNUP_ENDPOINT is set (email tool not chosen yet).
+    const SIGNUP_ENDPOINT = '';
+    const DEFAULT_ID = 'letting-go-into-sleep';
+    const $ = id => document.getElementById(id);
+    const catalog = window.STCatalog || [];
+    const wanted = new URLSearchParams(location.search).get('s');
+    const item = catalog.find(x => x.id === wanted) || catalog.find(x => x.id === DEFAULT_ID) || catalog[0];
+    const field = $('landing-light');
+    field.append(window.STLight.build(item, field));
+    field.classList.add('is-live');
+    (window.STLight.colors[item.id] || []).forEach((c, i) => { document.body.style.setProperty(`--tile-${i + 1}`, c); document.getElementById('landing-play').style.setProperty(`--tile-${i + 1}`, c); });
+    $('landing-meta').textContent = `Free · ${Math.round(item.duration / 60)} minute guided sleep · no app`;
+
+    const audio = $('landing-audio'), play = $('landing-play'), label = $('landing-play-label'), status = $('landing-status');
+    audio.src = item.src;
+    if ('mediaSession' in navigator && 'MediaMetadata' in window) {
+      try { navigator.mediaSession.metadata = new MediaMetadata({ title: item.title, artist: 'Superthoughts', artwork: [{ src: new URL(`images/art/${item.id}.jpg`, location.href).href, sizes: '512x512', type: 'image/jpeg' }] }); } catch {}
+    }
+    let restTimer = 0;
+    const rest = () => { clearTimeout(restTimer); restTimer = setTimeout(() => { if (!audio.paused) document.body.classList.add('is-resting'); }, 9000); };
+    const wake = () => { document.body.classList.remove('is-resting'); if (!audio.paused) rest(); };
+    play.addEventListener('click', () => { if (audio.paused) audio.play().catch(() => { status.textContent = 'Tap play again to start.'; }); else audio.pause(); });
+    audio.addEventListener('play', () => { label.textContent = 'Pause'; status.textContent = 'Set the phone down. The screen will rest.'; rest(); });
+    audio.addEventListener('pause', () => { label.textContent = 'Keep listening'; status.textContent = ''; wake(); showSignup(); });
+    audio.addEventListener('ended', () => { label.textContent = 'Play again'; wake(); showSignup(); });
+    ['pointerdown', 'keydown'].forEach(type => document.addEventListener(type, wake, { passive: true }));
+
+    const form = $('signup');
+    function showSignup() { if (SIGNUP_ENDPOINT) form.hidden = false; }
+    if (SIGNUP_ENDPOINT) form.hidden = false;
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const email = $('signup-email').value.trim();
+      if (!email) return;
+      try {
+        const response = await fetch(SIGNUP_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'sleep-landing', session: item.id }) });
+        if (!response.ok) throw new Error(String(response.status));
+        form.innerHTML = '<p>Sent. Your first night arrives this evening.</p>';
+      } catch { form.querySelector('small').textContent = 'That did not go through. Try again in a moment.'; }
+    });
+  })();
+  </script>
+</body>
+</html>
