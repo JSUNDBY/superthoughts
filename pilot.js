@@ -10,7 +10,6 @@ let browserStorage = null;
 try { browserStorage = window.localStorage; } catch {}
 const store = createPracticeStore(browserStorage, () => new Date());
 const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, onComplete: acknowledgeCompletion });
-const scene = typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('field-canvas')) : null;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
 const sessionUrl = id => `session.html?session=${encodeURIComponent(id)}`;
@@ -77,6 +76,24 @@ const tileWatcher = typeof IntersectionObserver === 'function'
   ? new IntersectionObserver(entries => entries.forEach(entry => entry.target.classList.toggle('is-live', entry.isIntersecting)), { rootMargin: '150px 0px' })
   : null;
 
+// One light per session, grown from its id: the library tile and the session page share it,
+// so what you tap is what you arrive in.
+function buildLight(item, host, lazy = false) {
+  const tint = TILE_COLORS[item.id] || TILE_COLORS[item.visual] || [item.accent || '#ffb870', '#ff7aa2', '#52d8e0'];
+  tint.forEach((color, i) => host.style.setProperty(`--tile-${i + 1}`, color));
+  // A genome seeded from the session id: every tile grows its own shapes and motion.
+  let gene = [...item.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) || 1;
+  const next = () => (gene = (gene * 16807) % 2147483647) / 2147483647;
+  const shape = () => [0, 0, 0, 0].map(() => `${Math.round(35 + next() * 30)}%`).join(' ');
+  [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['fan', 13, 19], ['tilt', -8, 8], ['sway', 7, 13], ['drift', 9, 16], ['delay', -40, 0]]
+    .forEach(([k, lo, hi]) => host.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'fan' || k === 'tilt' ? 'deg' : 's')));
+  host.style.setProperty('--g-shape-a', shape()); host.style.setProperty('--g-shape-b', shape());
+  const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
+  const motif = TILE_MOTIFS[item.id] || 'bloom'; host.dataset.motif = motif;
+  light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">` + '<div class="tl-live"><i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-c"></i><i class="tl-d"></i>' + (motif === 'bloom' ? '<span class="tl-petals">' + Array.from({length: 7}, (_, k) => `<i style="--k:${k - 3}"></i>`).join('') + '</span>' : '') + '</div>';
+  return light;
+}
+
 function renderLibrary() {
   if (isSessionPage) return;
   const saved = new Set(snapshot().favorites || []);
@@ -93,18 +110,7 @@ function renderLibrary() {
     card.dataset.id = item.id;
     card.dataset.selected = String(active?.id === item.id);
     const art = document.createElement('div'); art.className = 'session-art'; art.dataset.visual = item.visual || item.id;
-    const tint = TILE_COLORS[item.id] || TILE_COLORS[item.visual] || [item.accent || '#ffb870', '#ff7aa2', '#52d8e0'];
-    tint.forEach((color, i) => card.style.setProperty(`--tile-${i + 1}`, color));
-    // A genome seeded from the session id: every tile grows its own shapes and motion.
-    let gene = [...item.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) || 1;
-    const next = () => (gene = (gene * 16807) % 2147483647) / 2147483647;
-    const shape = () => [0, 0, 0, 0].map(() => `${Math.round(35 + next() * 30)}%`).join(' ');
-    [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['fan', 13, 19], ['tilt', -8, 8], ['sway', 7, 13], ['drift', 9, 16], ['delay', -40, 0]]
-      .forEach(([k, lo, hi]) => card.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'fan' || k === 'tilt' ? 'deg' : 's')));
-    card.style.setProperty('--g-shape-a', shape()); card.style.setProperty('--g-shape-b', shape());
-    const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
-    const motif = TILE_MOTIFS[item.id] || 'bloom'; card.dataset.motif = motif;
-    light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" loading="lazy" decoding="async">` + '<div class="tl-live"><i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-c"></i><i class="tl-d"></i>' + (motif === 'bloom' ? '<span class="tl-petals">' + Array.from({length: 7}, (_, k) => `<i style="--k:${k - 3}"></i>`).join('') + '</span>' : '') + '</div>'; art.append(light);
+    art.append(buildLight(item, card, true));
     const topline = document.createElement('div'); topline.className = 'card-topline';
     const kicker = document.createElement('span'); kicker.textContent = item.kicker || item.category;
     const heart = document.createElement('button'); heart.className = 'card-save'; heart.type = 'button'; heart.setAttribute('aria-label', `${saved.has(item.id) ? 'Remove' : 'Save'} ${item.title} ${saved.has(item.id) ? 'from' : 'to'} favorites`); heart.setAttribute('aria-pressed', String(saved.has(item.id))); heart.title = saved.has(item.id) ? 'Remove from saved' : 'Save session'; heart.innerHTML = '<span aria-hidden="true">♡</span>';
@@ -115,6 +121,7 @@ function renderLibrary() {
     const title = document.createElement('h3'); title.textContent = item.title;
     const description = document.createElement('p'); description.textContent = item.description;
     const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = '<span class="listen-mark" aria-hidden="true">▶</span><span class="listen-word">Listen</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
+    listen.addEventListener('click', () => { art.style.viewTransitionName = 'session-light'; });
     body.append(meta, title, description, listen); card.append(art, body); grid.append(card);
     tileWatcher?.observe(card);
   }
@@ -157,7 +164,7 @@ function updateTransport() {
   $('play-toggle').classList.toggle('is-playing', playing);
   $('play-toggle').setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${active?.title || 'selected session'}`);
   $('play-icon').textContent = playing ? 'Ⅱ' : '▶';
-  scene?.setPlaying(playing);
+ 
   if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch {} }
 }
 
@@ -246,7 +253,7 @@ function select(id, options = {}) {
   audio.src = item.src;
   audio.setAttribute('aria-label', item.title);
   audio.load();
-  scene?.setScene(item.visual || item.id);
+  { const field = $('player-field'); field.querySelector('.tile-light')?.remove(); field.prepend(buildLight(item, field)); field.classList.add('is-live'); }
   (TILE_COLORS[item.id] || TILE_COLORS[item.visual] || []).forEach((color, i) => document.body.style.setProperty(`--tile-${i + 1}`, color));
   updateMediaSession(item);
   updateFavoriteButton(); if (!isSessionPage) renderLibrary(); updateTime(); updateTransport();
@@ -314,8 +321,8 @@ transcriptDialog.addEventListener('close', () => {
   $('transcript-toggle').setAttribute('aria-expanded', 'false');
   $('transcript-toggle').focus({ preventScroll: true });
 });
-$('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); scene?.setDim(dimmed); updateTime(); });
-$('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; scene?.setMotion(!motionPaused); });
+$('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); updateTime(); });
+$('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; $('player-field').classList.toggle('motion-paused', motionPaused); });
 $('share-button').addEventListener('click', async () => { if (!active) return; const url = new URL(sessionUrl(active.id), location.href); try { if (navigator.share) await navigator.share({ title: active.title, url: url.href }); else { await navigator.clipboard.writeText(url.href); setStatus('Session link copied.'); } } catch (error) { if (error?.name !== 'AbortError') setStatus('The link could not be shared here.'); } });
 $('goal-select').addEventListener('change', event => { store.setGoal(Number(event.target.value)); renderPractice(); });
 $('clear-history').addEventListener('click', () => { $('clear-confirm').hidden = false; $('clear-cancel').focus(); });
@@ -346,8 +353,8 @@ if ('mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('seekto', e => { if (Number.isFinite(e.seekTime)) audio.currentTime = e.seekTime; });
   } catch {}
 }
-reducedMotion.addEventListener?.('change', event => { if (event.matches) { motionPaused = true; $('motion-toggle').setAttribute('aria-pressed', 'true'); $('motion-toggle').textContent = 'Resume motion'; scene?.setMotion(false); } });
-scene?.setMotion(!motionPaused);
+reducedMotion.addEventListener?.('change', event => { if (event.matches) { motionPaused = true; $('motion-toggle').setAttribute('aria-pressed', 'true'); $('motion-toggle').textContent = 'Resume motion'; $('player-field').classList.add('motion-paused'); } });
+ $('player-field').classList.toggle('motion-paused', motionPaused);
 $('motion-toggle').setAttribute('aria-pressed', String(motionPaused));
 if (motionPaused) $('motion-toggle').textContent = 'Resume motion';
 renderPractice();
@@ -356,7 +363,8 @@ const requested = new URLSearchParams(location.search).get('session');
 select(byId.has(requested) ? requested : daily?.id || catalog[0]?.id);
 for (const button of document.querySelectorAll('[data-filter]')) button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
 if (isPracticePage) renderLibrary();
-window.addEventListener('beforeunload', () => { tracker.destroy(); scene?.destroy(); heroScene?.destroy(); });
+window.addEventListener('pageshow', () => document.querySelectorAll('.session-art').forEach(el => { el.style.viewTransitionName = ''; }));
+window.addEventListener('beforeunload', () => { tracker.destroy(); heroScene?.destroy(); });
 
 // Enhance only after initialization; the native player remains a fallback without JS.
 document.body.classList.add('pilot-ready');

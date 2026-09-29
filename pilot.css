@@ -326,3 +326,19 @@ button:disabled{opacity:.45;cursor:default}
 .listen-mark{isolation:isolate;-webkit-backdrop-filter:none;backdrop-filter:none;animation:none;box-shadow:0 0 16px color-mix(in srgb,var(--tile-1,#d9962a) 45%,transparent),inset 0 0 14px color-mix(in srgb,var(--tile-2,#c0542c) 50%,transparent),inset 0 1px 1px rgba(255,255,255,.5)}
 .listen-mark::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--tile-1,#d9962a) 55%,transparent) 40%,transparent 72%);opacity:.3;z-index:-1;animation:orb-glow 4.6s ease-in-out infinite alternate}
 @keyframes orb-glow{from{opacity:.25;transform:scale(.92)}to{opacity:.8;transform:scale(1.12)}}
+/* Continuity (2026-09-29): the player field shows the same light as the tile you tapped, and the tile grows into it. */
+.is-live .tl-live{opacity:1;visibility:visible;transition:opacity 1.2s ease}
+.player-field{container-type:inline-size}
+.player-field #field-canvas{display:none}
+.player-field>.tile-light{z-index:-1}
+.player-field .tl-still{transition:none}
+.player-field.motion-paused .tl-live *{animation-play-state:paused}
+.player-field .tl-a,.player-field .tl-b,.player-field .tl-c,.player-field .tl-d{filter:blur(calc(10px + 2cqw))}
+.player-field .tl-petals i{filter:blur(calc(7px + 1.5cqw))}
+@view-transition{navigation:auto}
+.page-session .player-field{view-transition-name:session-light}
+::view-transition-group(session-light){animation-duration:.7s;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+::view-transition-old(session-light),::view-transition-new(session-light){height:100%;object-fit:cover}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.45s}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+.player-field[data-motif=moon] .tl-a{filter:blur(1.5px)}.player-field[data-motif=breath] .tl-a,.player-field[data-motif=breath] .tl-b,.player-field[data-motif=breath] .tl-c{filter:blur(6px)}
