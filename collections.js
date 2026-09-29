@@ -54,7 +54,7 @@ if (document.body.classList.contains('page-session')) {
   const updateButton = () => {
     const full = document.fullscreenElement === shell || document.webkitFullscreenElement === shell;
     button.setAttribute('aria-pressed', String(full));
-    button.textContent = full ? 'Exit full screen' : 'Enter full screen';
+    button.textContent = full ? 'Exit full screen' : 'Full screen';
   };
   button.addEventListener('click', async () => {
     try {
@@ -66,12 +66,12 @@ if (document.body.classList.contains('page-session')) {
       else {
         document.body.classList.toggle('css-fullscreen');
         button.setAttribute('aria-pressed', String(document.body.classList.contains('css-fullscreen')));
-        button.textContent = document.body.classList.contains('css-fullscreen') ? 'Exit full screen view' : 'Enter full screen';
+        button.textContent = document.body.classList.contains('css-fullscreen') ? 'Exit full screen' : 'Full screen';
       }
     } catch {
       document.body.classList.toggle('css-fullscreen');
       button.setAttribute('aria-pressed', String(document.body.classList.contains('css-fullscreen')));
-      button.textContent = document.body.classList.contains('css-fullscreen') ? 'Exit full screen view' : 'Enter full screen';
+      button.textContent = document.body.classList.contains('css-fullscreen') ? 'Exit full screen' : 'Full screen';
     }
   });
   document.addEventListener('fullscreenchange', updateButton);
@@ -84,7 +84,7 @@ if (document.body.classList.contains('page-session')) {
     if (event.key === 'Escape' && document.body.classList.contains('css-fullscreen')) {
       document.body.classList.remove('css-fullscreen');
       button.setAttribute('aria-pressed', 'false');
-      button.textContent = 'Enter full screen';
+      button.textContent = 'Full screen';
     }
   });
 }

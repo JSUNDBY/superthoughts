@@ -15,6 +15,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
 const cardScenes = [];
 const sessionUrl = id => `session.html?session=${encodeURIComponent(id)}`;
+if (heroScene) heroScene.unfurl = true;
 heroScene?.setScene('first-light');
 if (heroScene) { heroScene.elapsed = 0; heroScene.render(); heroScene.setPlaying(true); }
 let active = null;
@@ -63,6 +64,15 @@ const TILE_COLORS = {
   'first-light': ['#e0943a', '#c94a6a', '#2fa8b0']
 };
 
+// Each session's tile has its own kind of light, not just its own colors.
+const TILE_MOTIFS = {
+  'first-light': 'bloom', 'begin-day': 'bloom', 'enter-your-work': 'bloom',
+  gratitude: 'horizon', afterglow: 'horizon', 'wind-down': 'horizon',
+  reset: 'breath', 'whole-body': 'curtain', 'frequency-of-abundance': 'curtain',
+  'after-conversation': 'merge', 'awake-again': 'moon', 'letting-go-into-sleep': 'moon',
+  warmth: 'ember', drift: 'tide', 'open-space': 'tide'
+};
+
 function renderLibrary() {
   if (isSessionPage) return;
   const saved = new Set(snapshot().favorites || []);
@@ -91,7 +101,8 @@ function renderLibrary() {
       .forEach(([k, lo, hi]) => card.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'fan' || k === 'tilt' ? 'deg' : 's')));
     card.style.setProperty('--g-shape-a', shape()); card.style.setProperty('--g-shape-b', shape());
     const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
-    light.innerHTML = '<i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><span class="tl-petals">' + Array.from({length: 9}, (_, k) => `<i style="--k:${k - 4}"></i>`).join('') + '</span>'; art.append(light);
+    const motif = TILE_MOTIFS[item.id] || 'bloom'; card.dataset.motif = motif;
+    light.innerHTML = '<i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-c"></i><i class="tl-d"></i>' + (motif === 'bloom' ? '<span class="tl-petals">' + Array.from({length: 9}, (_, k) => `<i style="--k:${k - 4}"></i>`).join('') + '</span>' : ''); art.append(light);
     const topline = document.createElement('div'); topline.className = 'card-topline';
     const kicker = document.createElement('span'); kicker.textContent = item.kicker || item.category;
     const heart = document.createElement('button'); heart.className = 'card-save'; heart.type = 'button'; heart.setAttribute('aria-label', `${saved.has(item.id) ? 'Remove' : 'Save'} ${item.title} ${saved.has(item.id) ? 'from' : 'to'} favorites`); heart.setAttribute('aria-pressed', String(saved.has(item.id))); heart.title = saved.has(item.id) ? 'Remove from saved' : 'Save session'; heart.innerHTML = '<span aria-hidden="true">♡</span>';
@@ -240,6 +251,7 @@ function select(id, options = {}) {
   audio.setAttribute('aria-label', item.title);
   audio.load();
   scene?.setScene(item.visual || item.id);
+  (TILE_COLORS[item.id] || TILE_COLORS[item.visual] || []).forEach((color, i) => document.body.style.setProperty(`--tile-${i + 1}`, color));
   updateMediaSession(item);
   updateFavoriteButton(); if (!isSessionPage) renderLibrary(); updateTime(); updateTransport();
   setStatus('Ready to listen');
@@ -400,3 +412,18 @@ audio.addEventListener('ended', revealBath);
 audio.addEventListener('error', revealBath);
 
 transcriptDialog.addEventListener('close', revealBath);
+
+// A light haptic tick on the main touch targets. Android supports vibrate(); on iOS 18+,
+// toggling a hidden native switch plays the system haptic. Older browsers do nothing.
+(() => {
+  const label = document.createElement('label');
+  label.setAttribute('aria-hidden', 'true');
+  label.style.cssText = 'position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:-9px;top:0';
+  const toggle = document.createElement('input'); toggle.type = 'checkbox'; toggle.setAttribute('switch', ''); toggle.tabIndex = -1;
+  label.append(toggle); document.body.append(label);
+  const tick = () => { if (navigator.vibrate) navigator.vibrate(8); else label.click(); };
+  document.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') return;
+    if (event.target.closest?.('.card-listen, .card-save, #daily-play, #play-toggle, .collection-links a, .new-release, .filters button')) tick();
+  }, { passive: true });
+})();

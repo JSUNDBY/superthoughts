@@ -445,8 +445,8 @@
     }
 
     firstLight(t) {
-      // The petals unfurl from closed over the first seconds, then each one sways on its own.
-      const c=this.ctx, open=Math.min(1,t/6), ease=open*open*(3-2*open);
+      // On the home hero the petals unfurl from closed; elsewhere they start open. Each one sways on its own.
+      const c=this.ctx, open=this.unfurl?Math.min(1,t/6):1, ease=open*open*(3-2*open);
       this.background([[0,'#0e2630'],[.5,'#3a2640'],[1,'#8a4436']]);
       this.glow(.52,.72,.66,'225,130,60',.5*(.4+.6*ease));
       this.glow(.18,.24,.5,'40,200,190',.34);
