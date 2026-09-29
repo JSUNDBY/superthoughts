@@ -18,6 +18,10 @@ assert len(catalog)>=8
 assert len({item["id"] for item in catalog})==len(catalog)
 for item in catalog:
  files.append(item['src'])
+ # Each track's own lock-screen and tile art (images/art/<id>.jpg).
+ art=f"images/art/{item['id']}.jpg"
+ if (ROOT/art).is_file():files.append(art)
+ else:print(f'WARNING: no track art for {item["id"]}; render it before publishing')
  if item['cues']:
   files.append(item['cues']);cues=json.loads((ROOT/item['cues']).read_text())
   assert item['duration']-cues[-1]['end']>=30

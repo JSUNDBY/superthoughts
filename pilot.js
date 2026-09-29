@@ -13,7 +13,6 @@ const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, 
 const scene = typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('field-canvas')) : null;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
-const cardScenes = [];
 const sessionUrl = id => `session.html?session=${encodeURIComponent(id)}`;
 if (heroScene) heroScene.unfurl = true;
 heroScene?.setScene('first-light');
@@ -73,6 +72,11 @@ const TILE_MOTIFS = {
   warmth: 'ember', drift: 'tide', 'open-space': 'tide'
 };
 
+// Tiles only animate while on screen; off screen they rest as their still art.
+const tileWatcher = typeof IntersectionObserver === 'function'
+  ? new IntersectionObserver(entries => entries.forEach(entry => entry.target.classList.toggle('is-live', entry.isIntersecting)), { rootMargin: '150px 0px' })
+  : null;
+
 function renderLibrary() {
   if (isSessionPage) return;
   const saved = new Set(snapshot().favorites || []);
@@ -81,8 +85,7 @@ function renderLibrary() {
   const focused = document.activeElement;
   const focusedId = focused?.closest('.session-card')?.dataset.id;
   const focusedKind = focused?.classList.contains('card-save') ? '.card-save' : '.card-listen';
-  cardScenes.forEach(field => field.destroy());
-  cardScenes.length = 0;
+  tileWatcher?.disconnect();
   grid.replaceChildren();
   for (const item of shown) {
     const card = document.createElement('article');
@@ -90,19 +93,18 @@ function renderLibrary() {
     card.dataset.id = item.id;
     card.dataset.selected = String(active?.id === item.id);
     const art = document.createElement('div'); art.className = 'session-art'; art.dataset.visual = item.visual || item.id;
-    const artCanvas = document.createElement('canvas'); artCanvas.setAttribute('aria-hidden', 'true'); art.append(artCanvas);
     const tint = TILE_COLORS[item.id] || TILE_COLORS[item.visual] || [item.accent || '#ffb870', '#ff7aa2', '#52d8e0'];
     tint.forEach((color, i) => card.style.setProperty(`--tile-${i + 1}`, color));
     // A genome seeded from the session id: every tile grows its own shapes and motion.
     let gene = [...item.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) || 1;
     const next = () => (gene = (gene * 16807) % 2147483647) / 2147483647;
     const shape = () => [0, 0, 0, 0].map(() => `${Math.round(35 + next() * 30)}%`).join(' ');
-    [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['fan', 7, 12], ['tilt', -8, 8], ['sway', 7, 13], ['drift', 9, 16], ['delay', -40, 0]]
+    [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['fan', 13, 19], ['tilt', -8, 8], ['sway', 7, 13], ['drift', 9, 16], ['delay', -40, 0]]
       .forEach(([k, lo, hi]) => card.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'fan' || k === 'tilt' ? 'deg' : 's')));
     card.style.setProperty('--g-shape-a', shape()); card.style.setProperty('--g-shape-b', shape());
     const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
     const motif = TILE_MOTIFS[item.id] || 'bloom'; card.dataset.motif = motif;
-    light.innerHTML = '<i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-c"></i><i class="tl-d"></i>' + (motif === 'bloom' ? '<span class="tl-petals">' + Array.from({length: 9}, (_, k) => `<i style="--k:${k - 4}"></i>`).join('') + '</span>' : ''); art.append(light);
+    light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" loading="lazy" decoding="async">` + '<div class="tl-live"><i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-c"></i><i class="tl-d"></i>' + (motif === 'bloom' ? '<span class="tl-petals">' + Array.from({length: 7}, (_, k) => `<i style="--k:${k - 3}"></i>`).join('') + '</span>' : '') + '</div>'; art.append(light);
     const topline = document.createElement('div'); topline.className = 'card-topline';
     const kicker = document.createElement('span'); kicker.textContent = item.kicker || item.category;
     const heart = document.createElement('button'); heart.className = 'card-save'; heart.type = 'button'; heart.setAttribute('aria-label', `${saved.has(item.id) ? 'Remove' : 'Save'} ${item.title} ${saved.has(item.id) ? 'from' : 'to'} favorites`); heart.setAttribute('aria-pressed', String(saved.has(item.id))); heart.title = saved.has(item.id) ? 'Remove from saved' : 'Save session'; heart.innerHTML = '<span aria-hidden="true">♡</span>';
@@ -114,13 +116,7 @@ function renderLibrary() {
     const description = document.createElement('p'); description.textContent = item.description;
     const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = '<span class="listen-mark" aria-hidden="true">▶</span><span class="listen-word">Listen</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
     body.append(meta, title, description, listen); card.append(art, body); grid.append(card);
-    if (typeof window.SuperthoughtsField === 'function') {
-      const field = new window.SuperthoughtsField(artCanvas);
-      field.setScene(item.visual || item.id);
-      field.elapsed = {gratitude:42,'begin-day':30,reset:47,'whole-body':55,'wind-down':34,warmth:76,'open-space':91,drift:62,'first-light':40}[item.visual || item.id] || 0;
-      field.render();
-      cardScenes.push(field);
-    }
+    tileWatcher?.observe(card);
   }
   if (focusedId) {
     const replacement = [...grid.children].find(card => card.dataset.id === focusedId)?.querySelector(focusedKind);
@@ -224,7 +220,7 @@ async function loadCues(item) {
 
 function updateMediaSession(item) {
   if (!('mediaSession' in navigator) || !('MediaMetadata' in window)) return;
-  try { navigator.mediaSession.metadata = new MediaMetadata({ title: item.title, artist: 'Superthoughts', album: 'A little space to listen' }); } catch {}
+  try { navigator.mediaSession.metadata = new MediaMetadata({ title: item.title, artist: 'Superthoughts', album: 'A little space to listen', artwork: [{ src: new URL(`images/art/${item.id}.jpg`, location.href).href, sizes: '512x512', type: 'image/jpeg' }] }); } catch {}
 }
 
 function select(id, options = {}) {
@@ -360,7 +356,7 @@ const requested = new URLSearchParams(location.search).get('session');
 select(byId.has(requested) ? requested : daily?.id || catalog[0]?.id);
 for (const button of document.querySelectorAll('[data-filter]')) button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
 if (isPracticePage) renderLibrary();
-window.addEventListener('beforeunload', () => { tracker.destroy(); scene?.destroy(); heroScene?.destroy(); cardScenes.forEach(field => field.destroy()); });
+window.addEventListener('beforeunload', () => { tracker.destroy(); scene?.destroy(); heroScene?.destroy(); });
 
 // Enhance only after initialization; the native player remains a fallback without JS.
 document.body.classList.add('pilot-ready');
