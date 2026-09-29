@@ -168,3 +168,9 @@ button:disabled{opacity:.45;cursor:default}
 .voice-name{margin:14px 0 0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage)}
 @media(max-width:1000px){.voice-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.voices{margin-top:72px}.voice-list{grid-template-columns:1fr;gap:32px}}
+
+/* Home feature for the newest session (2026-09-29). */
+.new-release{display:inline-flex;align-items:center;gap:12px;margin:0 0 22px;padding:10px 16px 10px 10px;border:1px solid rgba(255,200,120,.35);border-radius:999px;color:var(--ink);text-decoration:none;font-size:16px;background:linear-gradient(90deg,rgba(255,170,90,.14),rgba(40,200,170,.08));transition:border-color .2s,background .2s;min-height:44px}
+.new-release:hover{border-color:rgba(255,200,120,.7)}
+.new-tag{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1a120a;background:#f3c27a;border-radius:999px;padding:5px 10px}
+@media(max-width:560px){.new-release{font-size:15px;gap:10px}}
