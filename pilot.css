@@ -238,3 +238,15 @@ button:disabled{opacity:.45;cursor:default}
  .library{margin-top:40px;padding-top:34px}
 }
 .welcome-copy h1,.welcome-copy h1+p{text-shadow:0 2px 24px rgba(10,8,14,.8)}
+/* Listen as a glass orb of light (2026-09-29): frosted glass, a luminous rim in the tile's colors, a breathing glow. No pill. */
+.card-listen,.session-card .card-listen{gap:12px;min-height:56px;padding:0;background:none;border:0;box-shadow:none;color:#fff8ee;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-shadow:0 1px 12px rgba(0,0,0,.6)}
+.card-listen:hover{color:#fff;transform:none}
+.listen-mark,.daily-invitation .daily-play-mark{position:relative;width:54px;height:54px;flex:0 0 54px;border-radius:50%;border:1px solid rgba(255,244,228,.55);background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.42),rgba(255,255,255,.08) 46%,color-mix(in srgb,var(--tile-1,#d9962a) 30%,transparent) 100%);-webkit-backdrop-filter:blur(12px) saturate(1.7);backdrop-filter:blur(12px) saturate(1.7);box-shadow:0 0 22px color-mix(in srgb,var(--tile-1,#d9962a) 55%,transparent),inset 0 0 16px color-mix(in srgb,var(--tile-2,#c0542c) 55%,transparent),inset 0 1px 1px rgba(255,255,255,.5);color:#fff;font-size:15px;padding-left:3px;animation:orb-breathe 4.6s ease-in-out infinite alternate}
+.listen-mark::after,.daily-invitation .daily-play-mark::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid color-mix(in srgb,var(--tile-1,#e0a030) 60%,#fff);opacity:0;animation:orb-ripple 4.6s ease-out infinite}
+.card-listen:hover .listen-mark,.card-listen:focus-visible .listen-mark,.daily-invitation:hover .daily-play-mark{box-shadow:0 0 36px color-mix(in srgb,var(--tile-1,#d9962a) 80%,transparent),inset 0 0 20px color-mix(in srgb,var(--tile-2,#c0542c) 70%,transparent),inset 0 1px 1px rgba(255,255,255,.6);border-color:#fff}
+@keyframes orb-breathe{0%{box-shadow:0 0 14px color-mix(in srgb,var(--tile-1,#d9962a) 40%,transparent),inset 0 0 12px color-mix(in srgb,var(--tile-2,#c0542c) 45%,transparent),inset 0 1px 1px rgba(255,255,255,.5)}100%{box-shadow:0 0 30px color-mix(in srgb,var(--tile-1,#d9962a) 70%,transparent),inset 0 0 20px color-mix(in srgb,var(--tile-2,#c0542c) 65%,transparent),inset 0 1px 1px rgba(255,255,255,.5)}}
+@keyframes orb-ripple{0%{transform:scale(.85);opacity:0}25%{opacity:.55}100%{transform:scale(1.35);opacity:0}}
+.daily-invitation{min-height:70px;padding:0;gap:16px;border-radius:0;background:none;box-shadow:none;color:#fff8ee;font-size:19px;font-weight:500;letter-spacing:-.01em;text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.daily-invitation .daily-play-mark{width:64px;height:64px;flex-basis:64px;color:#fff}
+.daily-invitation .daily-play-mark svg{width:18px;height:18px;margin-left:3px}
+.daily-invitation{--tile-1:#e0a030;--tile-2:#c0542c}
