@@ -1,12 +1,12 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v25-aurora';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v26-living-light';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
   'index.html', 'session.html', 'practice.html', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
-  'pilot-visuals.js', 'pilot-progress.mjs', 'pilot-offline.js',
+  'pilot-visuals.js', 'ambient-light.js', 'pilot-progress.mjs', 'pilot-offline.js',
   'pilot-feedback.js', 'pilot-analytics.js', 'pilot-analytics-core.mjs', 'terms.html', 'pilot.webmanifest',
   'images/favicon.svg', 'images/superthoughts-symbol.svg',
   'fonts/dm-sans-300.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'

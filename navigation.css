@@ -55,3 +55,18 @@ body:not(.page-session) .listening{display:none}
 .site-header nav a,.session-toolbar>*,.page-session .session-toolbar>*{font-size:16px}
 .collection-links small{font-size:15px}
 .collection-links a>span{font-size:13px}
+
+/* Phone: the four ways in become color chips (2026-09-29). */
+@media(max-width:560px){
+ .collection-nav{padding:6px 0 30px}
+ .collection-links{grid-template-columns:1fr 1fr;gap:10px;border:0}
+ .collection-links a,.collection-links a:first-child{min-height:104px;padding:16px;gap:6px;border:0;border-radius:18px;background:linear-gradient(140deg,var(--chip-a),var(--chip-b));color:#fff6ea;box-shadow:inset 0 1px 0 rgba(255,240,220,.18)}
+ .collection-links a>span{color:#fff6eab8;font-weight:600}
+ .collection-links strong{font-size:19px;font-weight:600}
+ .collection-links strong span{color:#fff6ea}
+ .collection-links small{display:none}
+ .collection-links a:nth-child(1){--chip-a:#d68a1f;--chip-b:#9c3f1c}
+ .collection-links a:nth-child(2){--chip-a:#1a8a6e;--chip-b:#0d4f5c}
+ .collection-links a:nth-child(3){--chip-a:#8a2f4a;--chip-b:#3a1f4f}
+ .collection-links a:nth-child(4){--chip-a:#1f6f9c;--chip-b:#123a5c}
+}

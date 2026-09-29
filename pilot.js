@@ -15,8 +15,8 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
 const cardScenes = [];
 const sessionUrl = id => `session.html?session=${encodeURIComponent(id)}`;
-heroScene?.setScene('wind-down');
-if (heroScene) { heroScene.elapsed = 38; heroScene.render(); heroScene.setPlaying(true); }
+heroScene?.setScene('first-light');
+if (heroScene) { heroScene.elapsed = 0; heroScene.render(); heroScene.setPlaying(true); }
 let active = null;
 let filter = 'all';
 let cues = [];
@@ -51,6 +51,18 @@ function pickDaily() {
   return choices[hash % choices.length];
 }
 
+// Each session gets its own vivid palette for its library tile.
+const TILE_COLORS = {
+  gratitude: ['#e07a2e', '#c94f3a', '#f0b441'], 'begin-day': ['#e0962a', '#b8502c', '#1f8f86'],
+  reset: ['#1f9e74', '#0f6f7a', '#9cbf3a'], 'whole-body': ['#b83a6e', '#d9723a', '#e8b04a'],
+  'after-conversation': ['#1f9c80', '#2a6fb0', '#d9a55a'], 'wind-down': ['#d07a2c', '#9e3350', '#3f8a6a'],
+  'enter-your-work': ['#e08a2a', '#d4a52e', '#0f8f6f'], 'awake-again': ['#1d7a9c', '#2fae9e', '#d9a441'],
+  'letting-go-into-sleep': ['#156a82', '#c9a86a', '#8f3f62'], 'frequency-of-abundance': ['#1fae74', '#e0a52e', '#d4593a'],
+  warmth: ['#d9502f', '#e08a2a', '#a8305a'], 'open-space': ['#1f9eb0', '#6fa83a', '#2f5fb0'],
+  drift: ['#2f55b8', '#1fa894', '#7a3fa8'], afterglow: ['#d95f45', '#e0a53a', '#7a3a9c'],
+  'first-light': ['#e0943a', '#c94a6a', '#2fa8b0']
+};
+
 function renderLibrary() {
   if (isSessionPage) return;
   const saved = new Set(snapshot().favorites || []);
@@ -69,21 +81,32 @@ function renderLibrary() {
     card.dataset.selected = String(active?.id === item.id);
     const art = document.createElement('div'); art.className = 'session-art'; art.dataset.visual = item.visual || item.id;
     const artCanvas = document.createElement('canvas'); artCanvas.setAttribute('aria-hidden', 'true'); art.append(artCanvas);
+    const tint = TILE_COLORS[item.id] || TILE_COLORS[item.visual] || [item.accent || '#ffb870', '#ff7aa2', '#52d8e0'];
+    tint.forEach((color, i) => card.style.setProperty(`--tile-${i + 1}`, color));
+    // A genome seeded from the session id: every tile grows its own shapes and motion.
+    let gene = [...item.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) || 1;
+    const next = () => (gene = (gene * 16807) % 2147483647) / 2147483647;
+    const shape = () => [0, 0, 0, 0].map(() => `${Math.round(35 + next() * 30)}%`).join(' ');
+    [['x1', 10, 60], ['y1', 5, 55], ['x2', 40, 90], ['y2', 40, 95], ['bloom', 0, 360], ['spin', 14, 30], ['drift', 6, 12], ['delay', -40, 0]]
+      .forEach(([k, lo, hi]) => card.style.setProperty(`--g-${k}`, (lo + next() * (hi - lo)).toFixed(1) + (k.startsWith('x') || k.startsWith('y') ? '%' : k === 'bloom' ? 'deg' : 's')));
+    card.style.setProperty('--g-shape-a', shape()); card.style.setProperty('--g-shape-b', shape());
+    const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
+    light.innerHTML = '<i class="tl-back"></i><i class="tl-bloom"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-grain"></i>'; art.append(light);
     const topline = document.createElement('div'); topline.className = 'card-topline';
     const kicker = document.createElement('span'); kicker.textContent = item.kicker || item.category;
     const heart = document.createElement('button'); heart.className = 'card-save'; heart.type = 'button'; heart.setAttribute('aria-label', `${saved.has(item.id) ? 'Remove' : 'Save'} ${item.title} ${saved.has(item.id) ? 'from' : 'to'} favorites`); heart.setAttribute('aria-pressed', String(saved.has(item.id))); heart.title = saved.has(item.id) ? 'Remove from saved' : 'Save session'; heart.innerHTML = '<span aria-hidden="true">♡</span>';
     heart.addEventListener('click', () => { store.toggleFavorite(item.id); renderLibrary(); updateFavoriteButton(); });
     topline.append(kicker, heart); art.append(topline);
     const body = document.createElement('div'); body.className = 'card-body';
-    const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = `${item.type === 'sound' ? 'Sound' : 'Guided'} · ${durationText(item.duration)}`;
+    const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = `${item.type === 'sound' ? 'Sound' : 'Guided'} · ${Math.max(1, Math.round(item.duration / 60))} min`;
     const title = document.createElement('h3'); title.textContent = item.title;
     const description = document.createElement('p'); description.textContent = item.description;
-    const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = 'Listen <span aria-hidden="true">↗</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
+    const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = '<span class="listen-mark" aria-hidden="true">▶</span><span class="listen-word">Listen</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
     body.append(meta, title, description, listen); card.append(art, body); grid.append(card);
     if (typeof window.SuperthoughtsField === 'function') {
       const field = new window.SuperthoughtsField(artCanvas);
       field.setScene(item.visual || item.id);
-      field.elapsed = {gratitude:42,'begin-day':30,reset:47,'whole-body':55,'wind-down':34,warmth:76,'open-space':91,drift:62}[item.visual || item.id] || 0;
+      field.elapsed = {gratitude:42,'begin-day':30,reset:47,'whole-body':55,'wind-down':34,warmth:76,'open-space':91,drift:62,'first-light':40}[item.visual || item.id] || 0;
       field.render();
       cardScenes.push(field);
     }

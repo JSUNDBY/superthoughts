@@ -445,25 +445,31 @@
     }
 
     firstLight(t) {
-      const c=this.ctx;
-      this.background([[0,'#162341'],[.55,'#3f315d'],[1,'#70434e']]);
-      this.glow(.52,.7,.62,'248,165,114',.48);
-      this.glow(.19,.25,.48,'73,180,191',.32);
-      this.glow(.85,.25,.46,'179,112,218',.32);
-      c.save();c.translate(.5+Math.sin(t*.02)*.04,.68);
-      c.rotate(Math.sin(t*.015)*.12);
+      // The petals unfurl from closed over the first seconds, then each one sways on its own.
+      const c=this.ctx, open=Math.min(1,t/6), ease=open*open*(3-2*open);
+      this.background([[0,'#0e2630'],[.5,'#3a2640'],[1,'#8a4436']]);
+      this.glow(.52,.72,.66,'225,130,60',.5*(.4+.6*ease));
+      this.glow(.18,.24,.5,'40,200,190',.34);
+      this.glow(.84,.26,.46,'170,50,80',.34);
+      const colors=['235,160,60','205,80,90','30,170,160','225,120,45'];
+      c.save();c.translate(.5+Math.sin(t*.05)*.04,.72);
+      c.rotate(Math.sin(t*.04)*.1);
+      c.globalCompositeOperation='lighter';
       for(let i=0;i<12;i++) {
-        c.save();c.rotate((i-6)*.16);
-        const g=c.createLinearGradient(0,0,0,-1);
-        g.addColorStop(0,'rgba(255,199,141,.02)');
-        g.addColorStop(.45,i%2?'rgba(128,215,223,.13)':'rgba(235,156,230,.15)');
+        c.save();c.rotate((i-5.5)*.17*ease+Math.sin(t*.23+i*1.3)*.05);
+        const reach=(.55+.45*ease)*(1+.08*Math.sin(t*.17+i));
+        const g=c.createLinearGradient(0,0,0,-reach);
+        g.addColorStop(0,'rgba(255,214,160,.05)');
+        g.addColorStop(.45,`rgba(${colors[i%4]},${(.12+.05*Math.sin(t*.3+i)).toFixed(3)})`);
         g.addColorStop(1,'rgba(255,196,155,0)');
+        const bend=.12*Math.sin(t*.19+i*.9);
         c.beginPath();c.moveTo(0,.1);
-        c.bezierCurveTo(-.12,-.25,-.15,-.7,0,-1.1);
-        c.bezierCurveTo(.17,-.65,.08,-.2,0,.1);
+        c.bezierCurveTo(-.12+bend,-.25*reach,-.15+bend,-.7*reach,bend*.6,-1.1*reach);
+        c.bezierCurveTo(.17+bend,-.65*reach,.08,-.2*reach,0,.1);
         c.fillStyle=g;c.fill();c.restore();
       }
       c.restore();
+      c.globalCompositeOperation='source-over';
     }
 
     destroy() {

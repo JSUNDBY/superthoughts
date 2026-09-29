@@ -6,7 +6,7 @@ OUT=ROOT/'_site'
 if OUT.exists():shutil.rmtree(OUT)
 OUT.mkdir()
 files=['index.html','session.html','practice.html','navigation.css','collections.js','privacy.html','terms.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
- 'pilot.css','pilot.js','pilot-visuals.js','pilot-catalog.js','pilot-progress.mjs','pilot-offline.js','pilot-feedback.js','pilot-analytics.js','pilot-analytics-core.mjs','pilot-sw.js','pilot.webmanifest',
+ 'pilot.css','pilot.js','pilot-visuals.js','ambient-light.js','pilot-catalog.js','pilot-progress.mjs','pilot-offline.js','pilot-feedback.js','pilot-analytics.js','pilot-analytics-core.mjs','pilot-sw.js','pilot.webmanifest',
  'CNAME','images/favicon.svg','images/superthoughts-symbol.svg','robots.txt','sitemap.xml']
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'sessions').rglob('*') if p.is_file() and p.suffix in ['.html','.js']]
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'fonts').iterdir() if p.is_file()]
