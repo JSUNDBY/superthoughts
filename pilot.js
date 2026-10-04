@@ -130,7 +130,7 @@ function renderLibrary() {
     const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = `${item.type === 'sound' ? 'Sound' : 'Guided'} · ${Math.max(1, Math.round(item.duration / 60))} min`;
     const title = document.createElement('h3'); title.textContent = item.title;
     const description = document.createElement('p'); description.textContent = item.description;
-    const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = '<span class="listen-mark" aria-hidden="true">▶</span><span class="listen-word">Listen</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
+    const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = '<span class="listen-mark" aria-hidden="true"><svg class="transport-icon" viewBox="0 0 24 24"><path d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/></svg></span><span class="listen-word">Listen</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
     listen.addEventListener('click', () => { art.style.viewTransitionName = 'session-light'; });
     body.append(meta, title, description, listen); card.append(art, body); grid.append(card);
     tileWatcher?.observe(card);
@@ -173,7 +173,6 @@ function updateTransport() {
   $('player-field').dataset.playing = String(playing);
   $('play-toggle').classList.toggle('is-playing', playing);
   $('play-toggle').setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${active?.title || 'selected session'}`);
-  $('play-icon').textContent = playing ? 'Ⅱ' : '▶';
  
   if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch {} }
 }

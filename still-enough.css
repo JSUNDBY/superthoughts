@@ -5,3 +5,11 @@
 @media(max-width:650px){.room{padding:19px 18px 13px}.brand span{font-size:23px}.library-link{font-size:12px}.introduction{margin-top:clamp(58px,12vh,130px)}h1{font-size:clamp(53px,12vw,78px)}.description{font-size:17px;max-width:320px}.wash{background:linear-gradient(0deg,rgba(4,9,16,.95),rgba(4,9,16,.15) 50%,rgba(4,9,16,.4)),linear-gradient(90deg,#060b11a8,transparent 90%)}.player{margin-top:40px;padding:16px 17px 8px}.play{width:58px;height:58px}.play-copy strong{font-size:16px}.play-copy span{font-size:12px}.timing{font-size:13px;gap:5px}.actions{justify-content:space-between;gap:0}.actions button{font-size:11px;padding:8px 5px}.actions button:first-child{margin-left:0}.after{font-size:11px;gap:8px 15px}.after p{width:100%;order:2}.words{top:37%;left:8%;right:8%;font-size:clamp(23px,6vw,34px)}}
 @media(max-width:380px){.actions button{font-size:10px}.play-copy span{display:none}}
 @media(prefers-reduced-motion:reduce){.art video{display:none}.room *, .room *:before,.room *:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Play and pause use a drawn icon rather than a font glyph. */
+.play{padding:0;border-radius:17px;background:rgba(17,27,34,.58);color:#fff3e3;box-shadow:inset 0 1px 0 #ffffff24,0 9px 28px #0000002e;transition:background .25s ease,border-color .25s ease,transform .25s ease}
+.play:hover{background:rgba(255,236,210,.17);border-color:#fff3e3;transform:translateY(-1px);filter:none}
+.play.is-playing{padding:0}
+.transport-icon{display:block;width:24px;height:24px}
+.transport-icon .icon-pause,.is-playing .transport-icon .icon-play{display:none}
+.is-playing .transport-icon .icon-pause{display:block}

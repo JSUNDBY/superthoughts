@@ -2,7 +2,7 @@ import { createPracticeStore, createPlaybackTracker } from './pilot-progress.mjs
 
 const $ = id => document.getElementById(id);
 const room = $('room'), audio = $('pilot-audio'), video = $('art-video');
-const play = $('play'), symbol = $('play-symbol'), state = $('play-state'), seek = $('seek');
+const play = $('play'), state = $('play-state'), seek = $('seek');
 const elapsed = $('elapsed'), words = $('words'), status = $('status');
 const id = 'still-enough-to-listen', duration = 540;
 const motionDisabled = matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData === true;
@@ -44,7 +44,6 @@ function syncPlay() {
   const playing = !audio.paused && !audio.ended;
   room.classList.toggle('is-playing', playing);
   play.classList.toggle('is-playing', playing);
-  symbol.textContent = playing ? 'Ⅱ' : '▶';
   play.setAttribute('aria-label', playing ? 'Pause Still enough to listen' : 'Play Still enough to listen');
   state.textContent = playing ? 'Listening now' : audio.ended ? 'Welcome back' : 'Ready when you are';
   if (playing) wake(); else { room.classList.remove('is-idle'); clearTimeout(idleTimer); }
