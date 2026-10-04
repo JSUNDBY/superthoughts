@@ -342,3 +342,6 @@ button:disabled{opacity:.45;cursor:default}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.45s}
 @media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
 .player-field[data-motif=moon] .tl-a{filter:blur(1.5px)}.player-field[data-motif=breath] .tl-a,.player-field[data-motif=breath] .tl-b,.player-field[data-motif=breath] .tl-c{filter:blur(6px)}
+.tile-light .tl-session-film{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.player-field[data-motif=film] .tile-light:after{background:radial-gradient(ellipse at 50% 44%,transparent 45%,rgba(5,8,13,.26))}
+.session-card[data-motif=film] .tl-still{object-fit:cover}

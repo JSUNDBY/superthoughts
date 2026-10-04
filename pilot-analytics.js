@@ -12,7 +12,8 @@ const APPROVED_CAMPAIGNS = {
     'reset_short', 'begin_day_short', 'whole_body_short'
   ]),
   sleep_launch: new Set(['letting_go_full', 'letting_go_short']),
-  abundance_launch: new Set(['abundance_full', 'abundance_short'])
+  abundance_launch: new Set(['abundance_full', 'abundance_short']),
+  still_enough_launch: new Set(['still_enough_full', 'still_enough_short'])
 };
 
 export function canonicalPageUrl(raw, base = raw) {

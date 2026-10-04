@@ -12,7 +12,7 @@ const store = createPracticeStore(browserStorage, () => new Date());
 const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, onComplete: acknowledgeCompletion });
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
-const sessionUrl = id => `session.html?session=${encodeURIComponent(id)}`;
+const sessionUrl = id => id === 'still-enough-to-listen' ? 'still-enough.html' : `session.html?session=${encodeURIComponent(id)}`;
 if (heroScene) heroScene.unfurl = true;
 heroScene?.setScene('first-light');
 if (heroScene) { heroScene.elapsed = 0; heroScene.render(); heroScene.setPlaying(true); }
@@ -54,6 +54,7 @@ function pickDaily() {
 const TILE_COLORS = {
   gratitude: ['#e07a2e', '#c94f3a', '#f0b441'], 'begin-day': ['#e0962a', '#b8502c', '#1f8f86'],
   reset: ['#1f9e74', '#0f6f7a', '#9cbf3a'], 'whole-body': ['#b83a6e', '#d9723a', '#e8b04a'],
+  'still-enough-to-listen': ['#ba6946', '#3d8092', '#e9b77c'],
   'after-conversation': ['#1f9c80', '#2a6fb0', '#d9a55a'], 'wind-down': ['#d07a2c', '#9e3350', '#3f8a6a'],
   'enter-your-work': ['#e08a2a', '#d4a52e', '#0f8f6f'], 'awake-again': ['#1d7a9c', '#2fae9e', '#d9a441'],
   'letting-go-into-sleep': ['#156a82', '#c9a86a', '#8f3f62'], 'frequency-of-abundance': ['#1fae74', '#e0a52e', '#d4593a'],
@@ -67,6 +68,7 @@ const TILE_MOTIFS = {
   'first-light': 'bloom', 'begin-day': 'bloom', 'enter-your-work': 'bloom',
   gratitude: 'horizon', afterglow: 'horizon', 'wind-down': 'horizon',
   reset: 'breath', 'whole-body': 'curtain', 'frequency-of-abundance': 'curtain',
+  'still-enough-to-listen': 'film',
   'after-conversation': 'merge', 'awake-again': 'moon', 'letting-go-into-sleep': 'moon',
   warmth: 'ember', drift: 'tide', 'open-space': 'tide'
 };
@@ -90,6 +92,14 @@ function buildLight(item, host, lazy = false) {
   host.style.setProperty('--g-shape-a', shape()); host.style.setProperty('--g-shape-b', shape());
   const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
   const motif = TILE_MOTIFS[item.id] || 'bloom'; host.dataset.motif = motif;
+  if (item.id === 'still-enough-to-listen') {
+    light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">`;
+    if (!lazy) {
+      const film = document.createElement('video'); film.className = 'tl-session-film'; film.muted = true; film.loop = true; film.playsInline = true; film.preload = 'none'; film.poster = `images/art/${item.id}.jpg`; film.src = 'images/art/still-enough-motion-loop.mp4';
+      light.append(film);
+    }
+    return light;
+  }
   light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">` + '<div class="tl-live"><i class="tl-back"></i><i class="tl-a"></i><i class="tl-b"></i><i class="tl-c"></i><i class="tl-d"></i>' + (motif === 'bloom' ? '<span class="tl-petals">' + Array.from({length: 7}, (_, k) => `<i style="--k:${k - 3}"></i>`).join('') + '</span>' : '') + '</div>';
   return light;
 }
@@ -254,6 +264,7 @@ function select(id, options = {}) {
   audio.setAttribute('aria-label', item.title);
   audio.load();
   { const field = $('player-field'); field.querySelector('.tile-light')?.remove(); field.prepend(buildLight(item, field)); field.classList.add('is-live'); }
+  syncSessionFilm();
   (TILE_COLORS[item.id] || TILE_COLORS[item.visual] || []).forEach((color, i) => document.body.style.setProperty(`--tile-${i + 1}`, color));
   updateMediaSession(item);
   updateFavoriteButton(); if (!isSessionPage) renderLibrary(); updateTime(); updateTransport();
@@ -321,8 +332,8 @@ transcriptDialog.addEventListener('close', () => {
   $('transcript-toggle').setAttribute('aria-expanded', 'false');
   $('transcript-toggle').focus({ preventScroll: true });
 });
-$('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); updateTime(); });
-$('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; $('player-field').classList.toggle('motion-paused', motionPaused); });
+$('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); updateTime(); syncSessionFilm(); });
+$('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; $('player-field').classList.toggle('motion-paused', motionPaused); syncSessionFilm(); });
 $('share-button').addEventListener('click', async () => { if (!active) return; const url = new URL(sessionUrl(active.id), location.href); try { if (navigator.share) await navigator.share({ title: active.title, url: url.href }); else { await navigator.clipboard.writeText(url.href); setStatus('Session link copied.'); } } catch (error) { if (error?.name !== 'AbortError') setStatus('The link could not be shared here.'); } });
 $('goal-select').addEventListener('change', event => { store.setGoal(Number(event.target.value)); renderPractice(); });
 $('clear-history').addEventListener('click', () => { $('clear-confirm').hidden = false; $('clear-cancel').focus(); });
@@ -337,6 +348,16 @@ audio.addEventListener('loadstart', () => { if (active) setStatus('Loading audio
 audio.addEventListener('waiting', () => { if (active && !audio.paused) setStatus('Audio interrupted. Reconnecting…'); });
 audio.addEventListener('stalled', () => { if (active && !audio.paused) setStatus('Audio interrupted. Check your connection.'); });
 audio.addEventListener('playing', () => { setStatus('Playing'); updateTransport(); animateCaptions(); });
+function syncSessionFilm() {
+  const film = $('player-field').querySelector('.tl-session-film');
+  if (!film) return;
+  if (audio.paused || audio.ended || document.hidden || motionPaused || dimmed || reducedMotion.matches) film.pause();
+  else film.play().catch(() => {});
+}
+audio.addEventListener('playing', syncSessionFilm);
+audio.addEventListener('pause', syncSessionFilm);
+audio.addEventListener('ended', syncSessionFilm);
+document.addEventListener('visibilitychange', syncSessionFilm);
 audio.addEventListener('pause', animateCaptions);
 audio.addEventListener('seeked', animateCaptions);
 document.addEventListener('visibilitychange', animateCaptions);

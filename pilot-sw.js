@@ -1,14 +1,14 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v29-continuity';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v30-still-enough';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
-  'index.html', 'session.html', 'practice.html', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
+  'index.html', 'session.html', 'practice.html', 'still-enough.html', 'still-enough.css', 'still-enough.js', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
   'pilot-visuals.js', 'ambient-light.js', 'pilot-progress.mjs', 'pilot-offline.js',
   'pilot-feedback.js', 'pilot-analytics.js', 'pilot-analytics-core.mjs', 'terms.html', 'pilot.webmanifest',
-  'images/favicon.svg', 'images/superthoughts-symbol.svg',
+  'images/favicon.svg', 'images/superthoughts-symbol.svg', 'images/art/still-enough-to-listen.jpg', 'images/art/still-enough-motion-loop.mp4',
   'fonts/dm-sans-300.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
 ];
 // Import the same static catalog used by the player. A separate versioned list
@@ -86,7 +86,7 @@ self.addEventListener('activate', event => {
 async function shellResponse(request, isNavigation) {
   const cache = await caches.open(SHELL_CACHE);
   const requestPath = new URL(request.url).pathname;
-  const canonical = urlFor(isNavigation ? (['session.html', 'practice.html'].find(file => pathFor(file) === requestPath) || 'index.html') :
+  const canonical = urlFor(isNavigation ? (['session.html', 'practice.html', 'still-enough.html'].find(file => pathFor(file) === requestPath) || 'index.html') :
     SHELL_FILES.find(file => pathFor(file) === requestPath));
   try {
     const response = await fetch(request, { cache: 'no-cache' });
