@@ -5,9 +5,10 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'_site'
 if OUT.exists():shutil.rmtree(OUT)
 OUT.mkdir()
-files=['index.html','session.html','practice.html','still-enough.html','still-enough.css','still-enough.js','navigation.css','collections.js','privacy.html','terms.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
+files=['index.html','session.html','practice.html','still-enough.html','soft-place-to-land.html','soft-place-to-land.js','still-enough.css','still-enough.js','navigation.css','collections.js','privacy.html','terms.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
  'pilot.css','pilot.js','pilot-visuals.js','ambient-light.js','pilot-catalog.js','pilot-progress.mjs','pilot-offline.js','pilot-feedback.js','pilot-analytics.js','pilot-analytics-core.mjs','pilot-sw.js','pilot.webmanifest',
  'CNAME','images/favicon.svg','images/superthoughts-symbol.svg','robots.txt','sitemap.xml']
+if (ROOT/'images/art/soft-place-to-land-motion-loop.mp4').is_file():files.append('images/art/soft-place-to-land-motion-loop.mp4')
 if (ROOT/'images/art/still-enough-motion-loop.mp4').is_file():files.append('images/art/still-enough-motion-loop.mp4')
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'sessions').rglob('*') if p.is_file() and p.suffix in ['.html','.js']]
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'fonts').iterdir() if p.is_file()]

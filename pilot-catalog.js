@@ -1,5 +1,6 @@
 /* Superthoughts pilot catalog. Mastered audio, no live-generation costs. */
 window.STCatalog = [
+ {id:'soft-place-to-land',title:'A soft place to land',description:'A spacious guided Warmth experience. Room for your body, your breath, and whatever you brought with you.',category:'reset',type:'guided',duration:570,src:'audio/soft-place-to-land-v5.mp3',cues:'audio/soft-place-to-land-v5-cues.json',visual:'warmth',accent:'#d99570',kicker:'Rest in Warmth'},
  {id:'gratitude',title:'Morning gratitude',description:'Let one small, real thing set the tone for your day.',category:'morning',type:'guided',duration:390,src:'audio/gratitude-v7.mp3',cues:'audio/gratitude-v7-cues.json',visual:'gratitude',accent:'#e6b394',kicker:'A little appreciation'},
  {id:'begin-day',title:'Begin your day',description:'Find your footing and choose one thing to give your attention to.',category:'morning',type:'guided',duration:270,src:'audio/pilot-begin-day-v7.mp3',cues:'audio/pilot-begin-day-v7-cues.json',visual:'begin-day',accent:'#ecc080',kicker:'An easy beginning'},
  {id:'reset',title:'A little reset',description:'A short pause to feel your feet, find your breath, and begin again.',category:'reset',type:'guided',duration:180,src:'audio/pilot-reset-v13.mp3',cues:'audio/pilot-reset-v13-cues.json',visual:'reset',accent:'#99d0c3',kicker:'Room between things'},

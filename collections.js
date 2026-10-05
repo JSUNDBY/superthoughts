@@ -1,7 +1,7 @@
 // Existing shared links keep leading directly to their listening room.
 if (!document.body.classList.contains('page-session') && !document.body.classList.contains('page-practice')) {
   const id = new URLSearchParams(location.search).get('session');
-  if ((window.STCatalog || []).some(item => item.id === id)) location.replace(`session.html?session=${encodeURIComponent(id)}`);
+  if ((window.STCatalog || []).some(item => item.id === id)) location.replace(({'still-enough-to-listen':'still-enough.html','soft-place-to-land':'soft-place-to-land.html'})[id] || `session.html?session=${encodeURIComponent(id)}`);
 }
 const entries = {
   morning: { title: 'Begin gently', description: 'A little room to choose how your day begins.' },

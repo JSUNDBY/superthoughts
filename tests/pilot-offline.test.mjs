@@ -242,11 +242,11 @@ test('imported catalog cannot expand the offline allowlist outside audio paths',
 test('focused session and practice query routes retain their own shell offline', async () => {
   const sw = worker({fetcher: async input => new Response(String(typeof input === 'string' ? input : input.url))});
   await sw.install();
-  for (const page of ['session.html', 'practice.html']) {
+  for (const page of ['session.html', 'practice.html', 'still-enough.html', 'soft-place-to-land.html']) {
     await sw.route(origin + page, {mode:'navigate'});
   }
   sw.setFetcher(async () => { throw Error('offline'); });
-  for (const page of ['session.html', 'practice.html']) {
+  for (const page of ['session.html', 'practice.html', 'still-enough.html', 'soft-place-to-land.html']) {
     const response = await sw.route(origin + page + '?session=warmth', {mode:'navigate'});
     assert.equal(await response.text(), origin + page);
   }

@@ -12,7 +12,7 @@ const store = createPracticeStore(browserStorage, () => new Date());
 const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, onComplete: acknowledgeCompletion });
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
-const sessionUrl = id => id === 'still-enough-to-listen' ? 'still-enough.html' : `session.html?session=${encodeURIComponent(id)}`;
+const sessionUrl = id => ({'still-enough-to-listen':'still-enough.html','soft-place-to-land':'soft-place-to-land.html'}[id] || `session.html?session=${encodeURIComponent(id)}`);
 if (heroScene) heroScene.unfurl = true;
 heroScene?.setScene('first-light');
 if (heroScene) { heroScene.elapsed = 0; heroScene.render(); heroScene.setPlaying(true); }
@@ -92,10 +92,10 @@ function buildLight(item, host, lazy = false) {
   host.style.setProperty('--g-shape-a', shape()); host.style.setProperty('--g-shape-b', shape());
   const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
   const motif = TILE_MOTIFS[item.id] || 'bloom'; host.dataset.motif = motif;
-  if (item.id === 'still-enough-to-listen') {
+  if (['still-enough-to-listen', 'soft-place-to-land'].includes(item.id)) {
     light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">`;
     if (!lazy) {
-      const film = document.createElement('video'); film.className = 'tl-session-film'; film.muted = true; film.loop = true; film.playsInline = true; film.preload = 'none'; film.poster = `images/art/${item.id}.jpg`; film.src = 'images/art/still-enough-motion-loop.mp4';
+      const film = document.createElement('video'); film.className = 'tl-session-film'; film.muted = true; film.loop = true; film.playsInline = true; film.preload = 'none'; film.poster = `images/art/${item.id}.jpg`; film.src = item.id === 'soft-place-to-land' ? 'images/art/soft-place-to-land-motion-loop.mp4' : 'images/art/still-enough-motion-loop.mp4';
       light.append(film);
     }
     return light;
