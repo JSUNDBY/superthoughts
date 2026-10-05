@@ -14,13 +14,18 @@ let store = null;
 try { store = createPracticeStore(localStorage); } catch { store = createPracticeStore(null); }
 const playback = createPlaybackTracker(audio, store, { onComplete: () => say('You made space for nine minutes. Welcome back.') });
 const resume = playback.select(id, duration);
-audio.addEventListener('loadedmetadata', () => {
+let metadataReady = false;
+function prepareMetadata() {
+  if (metadataReady) return;
+  metadataReady = true;
   seek.disabled = false;
   if (resume > 10 && resume < duration - 30) {
     audio.currentTime = resume;
     state.textContent = `Continue at ${fmt(resume)}`;
   }
-});
+}
+audio.addEventListener('loadedmetadata', prepareMetadata);
+if (audio.readyState >= 1) prepareMetadata();
 
 function wake() {
   room.classList.remove('is-idle');
