@@ -1,20 +1,37 @@
+// Shared session links land in the same dedicated room as the homepage.
+const dedicatedRooms = {
+  'still-enough-to-listen': 'still-enough.html',
+  'soft-place-to-land': 'soft-place-to-land.html',
+  'let-them-think': 'let-them-think.html',
+  'precious-life': 'precious-life.html'
+};
+if (document.body.classList.contains('page-session')) {
+  const destination = dedicatedRooms[new URLSearchParams(location.search).get('session')];
+  if (destination) location.replace(destination);
+}
 // Existing shared links keep leading directly to their listening room.
 if (!document.body.classList.contains('page-session') && !document.body.classList.contains('page-practice')) {
   const id = new URLSearchParams(location.search).get('session');
-  if ((window.STCatalog || []).some(item => item.id === id)) location.replace(({'still-enough-to-listen':'still-enough.html','soft-place-to-land':'soft-place-to-land.html'})[id] || `session.html?session=${encodeURIComponent(id)}`);
+  if ((window.STCatalog || []).some(item => item.id === id)) location.replace(id === 'still-enough-to-listen' ? 'still-enough.html' : id === 'soft-place-to-land' ? 'soft-place-to-land.html' : id === 'let-them-think' ? 'let-them-think.html' : id === 'precious-life' ? 'precious-life.html' : `session.html?session=${encodeURIComponent(id)}`);
 }
 const entries = {
-  morning: { title: 'Begin gently', description: 'A little room to choose how your day begins.' },
-  reset: { title: 'Come back to yourself', description: 'Short pauses for the middle of it all.' },
-  evening: { title: 'Sleep', description: 'A softer pace when the day is winding down.' },
-  sound: { title: 'Just listen', description: 'No words to follow. Only space to listen.' },
+  morning: { title: 'Begin gently', description: 'A little room to choose how your day begins.', hero: 'A softer beginning.' },
+  reset: { title: 'Come back to yourself', description: 'Short pauses for the middle of it all.', hero: 'Room to return.' },
+  evening: { title: 'Sleep', description: 'A softer pace when the day is winding down.', hero: 'Let the day settle.' },
+  sound: { title: 'Just listen', description: 'No words to follow. Only space to listen.', hero: 'Follow the sound.' },
 };
 
 if (document.body.classList.contains('page-practice')) {
   const title = document.getElementById('library-title');
   const intro = document.querySelector('.library .section-intro > p');
+  const hero = document.querySelector('.practice-hero');
+  const heroTitle = document.getElementById('practice-hero-title');
+  const heroDescription = document.getElementById('practice-hero-description');
   const renderHeading = key => {
     const entry = entries[key];
+    hero.dataset.practiceArt = entry ? key : key === 'favorites' ? 'favorites' : 'all';
+    heroTitle.textContent = entry?.hero || (key === 'favorites' ? 'Keep what stays with you.' : 'Find a little space.');
+    heroDescription.textContent = entry?.description || (key === 'favorites' ? 'Your saved moments, ready when you are.' : 'Guided moments and sound for wherever you find yourself today.');
     title.textContent = entry ? entry.title : key === 'favorites' ? 'Your saved sessions' : 'The library';
     const period = document.createElement('span');
     period.className = 'title-period';

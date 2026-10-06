@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1118">
+  <meta name="description" content="A little time with an ordinary moment, and the life here in this breath. Listen to This Precious Life on Superthoughts.">
+  <link rel="canonical" href="https://superthoughts.com/precious-life.html">
+  <meta property="og:type" content="music.song">
+  <meta property="og:url" content="https://superthoughts.com/precious-life.html">
+  <meta property="og:title" content="This Precious Life · Superthoughts">
+  <meta property="og:description" content="A little time with an ordinary moment, and the life here in this breath.">
+  <meta property="og:image" content="https://superthoughts.com/images/art/precious-life.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://superthoughts.com/images/art/precious-life.jpg">
+  <title>This Precious Life · Superthoughts</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="manifest" href="pilot.webmanifest">
+  <link rel="stylesheet" href="still-enough.css">
+  <link rel="stylesheet" href="session-art.css">
+  <link rel="stylesheet" href="visual-system.css">
+</head>
+<body>
+  <a class="skip" href="#player">Skip to listening controls</a>
+  <main class="room" id="room" data-session="precious-life" data-motion-rate="1">
+    <div class="art" aria-hidden="true">
+      <img src="images/art/precious-life.jpg" alt="" fetchpriority="high">
+      <video id="art-video" muted loop playsinline preload="none" poster="images/art/precious-life.jpg"><source src="images/art/precious-life-motion.mp4" type="video/mp4"></video>
+    </div>
+    <div class="wash" aria-hidden="true"></div>
+    <div class="dim-veil" aria-hidden="true"></div>
+    <header class="topbar" id="topbar">
+      <a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" alt="" width="30" height="30"><span>superthoughts<span class="period">.</span></span></a>
+      <a class="library-link" href="index.html#library">Explore the library</a>
+    </header>
+    <section class="introduction" aria-labelledby="title">
+      <p class="eyebrow">A space to listen <span class="separator" aria-hidden="true"></span> 11 minutes</p>
+      <h1 id="title">This precious<br>life.</h1>
+      <p class="description">A little time with an ordinary moment, and the life here in this breath.</p>
+    </section>
+    <p id="words" class="words" aria-live="off" aria-hidden="true"></p>
+    <section id="player" class="player" aria-label="This Precious Life player">
+      <div class="player-primary">
+        <button class="play" id="play" type="button" aria-label="Play This Precious Life"><svg class="transport-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="icon-play" d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/><path class="icon-pause" d="M7 5h3v14H7zm7 0h3v14h-3z" fill="currentColor"/></svg></button>
+        <div class="play-copy"><strong id="play-state">Ready when you are</strong><span>This Precious Life</span></div>
+        <div class="timing"><span id="elapsed">0:00</span><span class="time-divider">/</span><span>11:00</span></div>
+      </div>
+      <label class="sr-only" for="seek">Seek through the session</label>
+      <input id="seek" class="seek" type="range" min="0" max="660" value="0" step="1" aria-valuetext="0 minutes" disabled>
+      <div class="actions">
+        <button id="captions" type="button" aria-pressed="false">Words off</button>
+        <button id="motion" type="button" aria-pressed="false">Pause motion</button>
+        <button id="dim" type="button" aria-pressed="false">Dim visuals</button>
+        <button id="fullscreen" type="button">Full screen</button>
+        <button id="share" type="button">Share</button>
+      </div>
+      <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+      <audio id="pilot-audio" preload="metadata" src="audio/this-precious-life-v3.mp3" aria-label="This Precious Life"></audio>
+    </section>
+    <div class="after"><details id="transcript"><summary>Read the words</summary><div id="transcript-lines"></div></details><p>Private revision · Version 4. The music continues after the last words. Come back at your own pace.</p><a href="privacy.html">Privacy</a><button type="button" data-analytics-settings>Privacy choices</button></div>
+  </main>
+  <script src="pilot-catalog.js"></script>
+  <script type="module" src="pilot-analytics.js"></script>
+  <script type="module" src="guided-room.js"></script>
+</body>
+</html>

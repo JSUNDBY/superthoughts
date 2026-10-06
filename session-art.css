@@ -1,0 +1,8 @@
+/* A shared exposure grade for thumbnails, homepage films and listening rooms.
+   Keep Let Them Think's accepted darkness; bring the other worlds closer to it.
+   A flat translucent glaze avoids extra blur/filter work on every video frame. */
+.still-world,.room[data-session="still-enough-to-listen"],.session-card[data-id="still-enough-to-listen"]{--art-shade:.40}
+.warmth-world,.room[data-session="soft-place-to-land"],.session-card[data-id="soft-place-to-land"]{--art-shade:.44}
+.precious-world,.room[data-session="precious-life"],.session-card[data-id="precious-life"]{--art-shade:.38}
+.think-world,.room[data-session="let-them-think"],.session-card[data-id="let-them-think"]{--art-shade:0}
+.world-art::before,.room .art::after,.page-home .session-card .tile-light::after,.page-practice .session-card .session-art::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(4,9,14,var(--art-shade,0))}

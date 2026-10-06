@@ -17,15 +17,18 @@
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="manifest" href="pilot.webmanifest">
   <link rel="stylesheet" href="still-enough.css">
+  <link rel="stylesheet" href="session-art.css">
+  <link rel="stylesheet" href="visual-system.css">
 </head>
 <body>
   <a class="skip" href="#player">Skip to listening controls</a>
-  <main class="room" id="room">
+  <main class="room" id="room" data-session="still-enough-to-listen" data-motion-rate="1.6">
     <div class="art" aria-hidden="true">
       <img src="images/art/still-enough-to-listen.jpg" alt="" fetchpriority="high">
       <video id="art-video" muted loop playsinline preload="none" poster="images/art/still-enough-to-listen.jpg"><source src="images/art/still-enough-motion-loop.mp4" type="video/mp4"></video>
     </div>
     <div class="wash" aria-hidden="true"></div>
+    <div class="dim-veil" aria-hidden="true"></div>
     <header class="topbar" id="topbar">
       <a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" alt="" width="30" height="30"><span>superthoughts<span class="period">.</span></span></a>
       <a class="library-link" href="index.html#library">Explore the library</a>
@@ -54,7 +57,7 @@
       <p id="status" class="sr-only" role="status" aria-live="polite"></p>
       <audio id="pilot-audio" preload="metadata" src="audio/still-enough-to-listen-v5.mp3" aria-label="Still enough to listen"></audio>
     </section>
-    <div class="after"><details id="transcript"><summary>Read the words</summary><div id="transcript-lines"></div></details><p>The music continues after the last words. Come back at your own pace.</p><a href="privacy.html">Privacy</a></div>
+    <div class="after"><details id="transcript"><summary>Read the words</summary><div id="transcript-lines"></div></details><p>The music continues after the last words. Come back at your own pace.</p><a href="privacy.html">Privacy</a><button type="button" data-analytics-settings>Privacy choices</button></div>
   </main>
   <script src="pilot-catalog.js"></script>
   <script type="module" src="pilot-analytics.js"></script>

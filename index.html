@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#131716">
-  <meta name="description" content="A quiet place to listen. Explore guided practices and sound from Superthoughts.">
+  <meta name="description" content="Four original listening spaces for a little more room to be yourself. Explore guided audio from Superthoughts.">
   <link rel="canonical" href="https://superthoughts.com/">
   <meta property="og:image" content="https://superthoughts.com/images/og-listening.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -12,15 +12,18 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://superthoughts.com/">
   <meta property="og:title" content="Superthoughts · Come home to yourself.">
-  <meta property="og:description" content="A quiet place to listen. Explore guided practices and sound from Superthoughts.">
+  <meta property="og:description" content="Four original listening spaces for a little more room to be yourself. Explore guided audio from Superthoughts.">
   <title>Superthoughts · Come home to yourself.</title>
   <link rel="manifest" href="pilot.webmanifest">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="stylesheet" href="fonts/fonts.css">
   <link rel="stylesheet" href="pilot.css">
   <link rel="stylesheet" href="navigation.css">
+  <link rel="stylesheet" href="homepage.css">
+  <link rel="stylesheet" href="session-art.css">
+  <link rel="stylesheet" href="visual-system.css">
 </head>
-<body>
+<body class="page-home">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header"><div class="shell header-inner">
     <a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" alt="" width="36" height="36"><span>superthoughts<span class="brand-dot">.</span></span></a>
@@ -29,40 +32,88 @@
   </div></header>
 
   <main id="main" class="shell">
-    <section class="welcome" aria-labelledby="welcome-title">
-      <div class="welcome-copy"><p class="eyebrow"><span class="eyebrow-line"></span> A moment for today</p><h1 id="welcome-title"><span class="hero-first-line">Come home</span><em>to yourself.</em></h1><p>Whatever this moment holds, there is a place to begin. Find a guided moment, or disappear into sound.</p><a class="new-release" href="soft-place-to-land.html"><span class="new-tag">New</span><span>A soft place to land · a guided Warmth experience</span><span aria-hidden="true">→</span></a><p id="welcome-back" class="welcome-back" hidden>Welcome back. Your listening space is here whenever you need it.</p><button id="daily-play" class="daily-invitation" type="button"><span class="daily-play-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 6.5 17 12l-8 5.5z"/></svg></span><span>Play today’s session</span></button><p id="daily-meta" class="quiet">A gentle place to start.</p></div>
-      <div class="welcome-art" aria-hidden="true"><canvas id="welcome-canvas"></canvas><span class="art-corner art-corner-top">SUPERTHOUGHTS / A SPACE TO LISTEN</span><span class="art-corner art-corner-bottom">A LITTLE SPACE TO LISTEN</span></div>
+    <section class="home-intro still-world" aria-labelledby="welcome-title">
+      <div class="entrance-art" aria-hidden="true">
+        <img src="images/art/still-enough-to-listen.jpg" alt="" fetchpriority="high">
+        <video muted loop playsinline preload="none" data-motion="images/art/still-enough-motion-loop.mp4"></video>
+      </div>
+      <div class="entrance-copy">
+        <p class="eyebrow">A space to listen</p>
+        <h1 id="welcome-title">Come home<br>to yourself.</h1>
+        <p class="entrance-description">A little room for your breath,<br>your body, your own quiet.</p>
+        <p id="welcome-back" class="welcome-back" hidden>Welcome back. Make yourself at home.</p>
+        <a class="entrance-invitation" href="still-enough.html"><span class="entrance-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/></svg></span><span>Still enough to listen<small>Nine quiet minutes. Ready when you are.</small></span></a>
+      </div>
+      <a class="entrance-explore" href="#featured-title">Explore the listening spaces</a>
     </section>
+    <section class="featured-worlds" aria-labelledby="featured-title">
+      <div class="worlds-heading"><p class="eyebrow">Four listening spaces</p><h2 id="featured-title">Find your way in.</h2><p>Each one is its own space. Stay with the one that meets you here.</p></div>
+      <article class="featured-piece still-world">
+        <a class="world-art" href="still-enough.html" aria-label="Listen to Still enough to listen">
+          <img src="images/art/still-enough-to-listen.jpg" alt="Copper and blue ribbons of light folding through a quiet dark space" fetchpriority="high">
+          <video muted loop playsinline preload="none" data-motion="images/art/still-enough-motion-loop.mp4" aria-hidden="true"></video>
+          <span class="world-invitation">Enter this space</span>
+        </a>
+        <div class="world-caption"><div><p class="eyebrow">Guided stillness · 9 minutes</p><h2><a href="still-enough.html">Still enough to listen</a></h2></div><p>Be still. Notice your breath. <br>Perhaps hear your heartbeat.</p></div>
+      </article>
+      <article class="featured-piece warmth-world">
+        <a class="world-art" href="soft-place-to-land.html" aria-label="Listen to A soft place to land">
+          <img src="images/art/soft-place-to-land.jpg" alt="Amber, coral and olive light flowing into a soft spiral" loading="lazy">
+          <video muted loop playsinline preload="none" data-motion="images/art/soft-place-to-land-motion.mp4" aria-hidden="true"></video>
+          <span class="world-invitation">Enter this space</span>
+        </a>
+        <div class="world-caption"><div><p class="eyebrow">Gentle guidance · 9 min 30 sec</p><h2><a href="soft-place-to-land.html">A soft place to land</a></h2></div><p>A warm voice. A little sound. <br>Nothing to do for a while.</p></div>
+      </article>
+      <article class="featured-piece think-world">
+        <a class="world-art" href="let-them-think.html" aria-label="Listen to Let Them Think What They Think">
+          <img src="images/art/let-them-think.jpg" alt="Original artwork for Let Them Think What They Think" loading="lazy" decoding="async">
+          <video muted loop playsinline preload="none" data-motion="images/art/let-them-think-motion.mp4" aria-hidden="true"></video>
+          <span class="world-invitation">Enter this space</span>
+        </a>
+        <div class="world-caption"><div><p class="eyebrow">Guided listening · 11 min 25 sec</p><h2><a href="let-them-think.html">Let Them Think What They Think</a></h2></div><p>A place to loosen your hold on what others might think.</p></div>
+      </article>
+      <article class="featured-piece precious-world">
+        <a class="world-art" href="precious-life.html" aria-label="Listen to This Precious Life">
+          <img src="images/art/precious-life.jpg" alt="Original artwork for This Precious Life" loading="lazy" decoding="async">
+          <video muted loop playsinline preload="none" data-motion="images/art/precious-life-motion.mp4" aria-hidden="true"></video>
+          <span class="world-invitation">Enter this space</span>
+        </a>
+        <div class="world-caption"><div><p class="eyebrow">Guided listening · 11 min</p><h2><a href="precious-life.html">This Precious Life</a></h2></div><p>A moment to notice the life already here.</p></div>
+      </article>
+    </section>
+    <div class="today-line"><button id="daily-play" type="button">Choose a moment for today</button><p id="daily-meta">A gentle place to begin.</p><button id="home-motion" type="button" aria-pressed="false">Pause artwork</button></div>
 
-    <nav class="collection-nav" id="collections" aria-label="Explore practices"><p class="eyebrow">Find your way in</p><div class="collection-links"><a href="practice.html?practice=morning"><span>01 / Morning</span><strong>Begin gently <span aria-hidden="true">↗</span></strong><small>Make room for the day ahead.</small></a><a href="practice.html?practice=reset"><span>02 / Reset</span><strong>Come back to yourself <span aria-hidden="true">↗</span></strong><small>Pause in the middle of it all.</small></a><a href="practice.html?practice=evening"><span>03 / Sleep</span><strong>Let the day settle <span aria-hidden="true">↗</span></strong><small>Ease into a quieter pace.</small></a><a href="practice.html?practice=sound"><span>04 / Sound</span><strong>Just listen <span aria-hidden="true">↗</span></strong><small>Follow the sound wherever it goes.</small></a></div></nav>
+    <nav class="collection-nav" id="collections" aria-label="Explore practices"><p class="eyebrow">Find your way in</p><div class="collection-links"><a href="practice.html?practice=morning"><span>01 / Morning</span><strong>Begin gently </strong><small>Make room for the day ahead.</small></a><a href="practice.html?practice=reset"><span>02 / Reset</span><strong>Come back to yourself </strong><small>Pause in the middle of it all.</small></a><a href="practice.html?practice=evening"><span>03 / Sleep</span><strong>Let the day settle </strong><small>Ease into a quieter pace.</small></a><a href="practice.html?practice=sound"><span>04 / Sound</span><strong>Just listen </strong><small>Follow the sound wherever it goes.</small></a></div></nav>
 
-    <section class="library" id="library" aria-labelledby="library-title"><div class="section-intro"><div><p class="eyebrow">Explore at your pace</p><h2 id="library-title">The library<span class="title-period">.</span></h2></div><p>Short practices, longer listening, and sound to make room for your own thoughts.</p></div><div class="library-toolbar"><div class="filters" role="group" aria-label="Filter sessions"><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="morning" aria-pressed="false">Morning</button><button type="button" data-filter="reset" aria-pressed="false">Reset</button><button type="button" data-filter="evening" aria-pressed="false">Sleep</button><button type="button" data-filter="sound" aria-pressed="false">Sound</button><button type="button" data-filter="favorites" aria-pressed="false">Saved <span aria-hidden="true">♡</span></button></div><span id="library-count" class="library-count"></span></div><div id="session-grid" class="session-grid"></div><p id="library-empty" class="library-empty" hidden>No sessions here yet. Save a favorite and it will appear in this space.</p></section>
+    <section class="library" id="library" aria-labelledby="library-title"><div class="section-intro"><div><p class="eyebrow">Explore at your pace</p><h2 id="library-title">The library<span class="title-period">.</span></h2></div><p>Earlier practices and sound are here to explore, too. Follow the kind of moment you need.</p></div><div class="library-toolbar"><div class="filters" role="group" aria-label="Filter sessions"><button type="button" data-filter="all" aria-pressed="true">All</button><button type="button" data-filter="morning" aria-pressed="false">Morning</button><button type="button" data-filter="reset" aria-pressed="false">Reset</button><button type="button" data-filter="evening" aria-pressed="false">Sleep</button><button type="button" data-filter="sound" aria-pressed="false">Sound</button><button type="button" data-filter="favorites" aria-pressed="false">Saved</button></div><span id="library-count" class="library-count"></span></div><div id="session-grid" class="session-grid"></div><p id="library-empty" class="library-empty" hidden>No sessions here yet. Save a favorite and it will appear in this space.</p></section>
 
 
     <section class="voices" aria-labelledby="voices-title"><div class="section-intro"><div><p class="eyebrow">From listeners</p><h2 id="voices-title">In their words<span class="title-period">.</span></h2></div><p>A few notes people have left after listening.</p></div><ul class="voice-list"><li><blockquote><p>“Your voice is calming and soothing, you have a gift!”</p></blockquote><p class="voice-name">Colleen</p></li><li><blockquote><p>“The music perfect, gorgeous pacing, a very nice voice.”</p></blockquote><p class="voice-name">Amrita</p></li><li><blockquote><p>“A wonderful moment to take in all that is available to me and be still.”</p></blockquote><p class="voice-name">Sarah</p></li><li><blockquote><p>“Been a while since I have felt so calm in a meditation.”</p></blockquote><p class="voice-name">Francesca</p></li><li><blockquote><p>“Surprisingly helpful for 2 1/2 minutes. Much appreciated. I'll be returning to this practice.”</p></blockquote><p class="voice-name">E.</p></li><li><blockquote><p>“My new favorite night meditation.”</p></blockquote><p class="voice-name">Denice</p></li></ul></section>
 
     <section class="listening" id="listen" aria-labelledby="listen-title">
-      <div class="section-intro listening-intro"><div><p class="eyebrow">Your listening room</p><h2 id="listen-title">Settle in.</h2></div><p>Listen with the light, or let the screen rest. The audio is always yours to control.</p></div>
+      <div class="section-intro listening-intro"><div><p class="eyebrow">Another way to listen</p><h2 id="listen-title">Your listening room.</h2></div><p>The earlier library also has a simple player here when you want it.</p></div>
+      <details class="home-player-details"><summary><span>Open the listening room</span><span>Choose from the library and listen here</span></summary>
       <div class="player-shell" id="player-shell">
         <div class="player-field" id="player-field"><canvas id="field-canvas" aria-hidden="true"></canvas><div class="field-wash" aria-hidden="true"></div><div class="field-top"><span id="field-kicker">ROOM BETWEEN THINGS</span><span id="field-duration">3 MIN</span></div><div class="field-center"><p class="field-overline">YOUR MOMENT</p><h3 id="player-title">A little reset</h3><p id="player-description">A short pause to feel your feet, find your breath, and begin again.</p></div><p id="field-words" class="field-words" aria-hidden="true"></p><span class="field-index" aria-hidden="true">S / T</span></div>
         <div class="player-panel">
           <div class="player-panel-top"><div><p class="eyebrow">The listening room</p><p id="player-type" class="player-type">Guided practice · 3 min</p></div><button id="player-favorite" class="icon-button heart-button" type="button" aria-label="Save session to favorites" aria-pressed="false" title="Save to favorites"><span aria-hidden="true">♡</span></button></div>
           <div class="transport"><button id="play-toggle" class="play-toggle" type="button" aria-label="Play selected session"><svg id="play-icon" class="transport-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="icon-play" d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/><path class="icon-pause" d="M7 5h3v14H7zm7 0h3v14h-3z" fill="currentColor"/></svg></button><div class="transport-copy"><strong id="transport-title">A little reset</strong><span id="play-status" role="status" aria-live="polite">Ready to listen</span></div><button id="replay-button" class="text-icon-button" type="button" aria-label="Restart from beginning" title="Restart from beginning"><span aria-hidden="true">↺</span></button></div>
           <div class="seek"><label class="sr-only" for="seek-range">Seek through session</label><input id="seek-range" type="range" min="0" max="100" value="0" step="1" aria-valuetext="0 minutes" disabled><div class="time-row"><span id="time-current">0:00</span><span id="time-total">0:00</span></div></div>
-          <audio id="pilot-audio" controls preload="metadata" src="audio/pilot-reset-v2.mp3" aria-label="A little reset"></audio>
+          <audio id="pilot-audio" controls preload="metadata" src="audio/pilot-reset-v13.mp3" aria-label="A little reset"></audio>
           <p id="resume-message" class="resume-message" hidden></p>
-          <div class="player-extras"><button id="transcript-toggle" type="button" aria-expanded="false" aria-controls="transcript-panel">Read transcript <span aria-hidden="true">↗</span></button><button id="share-button" type="button">Share session <span aria-hidden="true">↗</span></button></div>
+          <div class="player-extras"><button id="transcript-toggle" type="button" aria-expanded="false" aria-controls="transcript-panel">Read transcript </button><button id="share-button" type="button">Share session </button></div>
           <div class="offline-options"><button id="offline-button" type="button" disabled>Save for offline</button><button id="install-button" type="button" hidden>Install Superthoughts</button><p id="offline-note" role="status">Offline saving is getting ready.</p></div>
-          <button id="focus-toggle" class="focus-toggle" type="button" aria-pressed="false">Enter listening view <span aria-hidden="true">↗</span></button>
-          <div class="ambient-options" aria-label="Visual preferences"><button id="dim-toggle" type="button" aria-pressed="false">Dim visuals</button><button id="motion-toggle" type="button" aria-pressed="false">Pause motion</button></div>
+          <button id="focus-toggle" class="focus-toggle" type="button" aria-pressed="false">Enter listening view </button>
+          <div class="ambient-options" aria-label="Visual preferences"><button id="words-toggle" type="button" aria-pressed="false">Words off</button><button id="dim-toggle" type="button" aria-pressed="false">Dim visuals</button><button id="motion-toggle" type="button" aria-pressed="false">Pause motion</button></div>
           <div id="transcript-panel" class="transcript-panel" hidden><p class="eyebrow">Transcript</p><div id="transcript-content"></div></div>
         </div>
       </div>
+      </details>
     </section>
 
     <section class="practice" id="practice" aria-labelledby="practice-title"><div class="section-intro"><div><p class="eyebrow">A gentle record</p><h2 id="practice-title">Your practice<span class="title-period">.</span></h2></div><p>Every minute counts. This record stays on this device, and it is here only for you.</p></div><div class="practice-layout"><div class="practice-card"><p class="practice-card-label">Time together</p><strong id="total-minutes" class="practice-number">0 <small>min</small></strong><p class="practice-foot">Time spent listening</p></div><div class="practice-card"><p class="practice-card-label">Sessions completed</p><strong id="session-count" class="practice-number">0</strong><p class="practice-foot">At your own pace</p></div><div class="practice-card"><p class="practice-card-label">Days you made space</p><strong id="practice-days" class="practice-number">0</strong><p class="practice-foot">Whenever they happened</p></div><div class="goal-card"><div class="goal-head"><div><p class="practice-card-label">A little space today</p><strong id="today-minutes" class="goal-number">0 <small>min</small></strong></div><div class="goal-control"><label for="goal-select">Daily intention</label><select id="goal-select"><option value="0">No goal</option><option value="3">3 min</option><option value="5">5 min</option><option value="10">10 min</option></select></div></div><div id="goal-track" class="goal-track" aria-hidden="true"><span id="goal-fill"></span></div><p id="goal-caption" class="practice-foot">The time you make is enough.</p></div></div><div class="privacy-row"><p id="storage-note">Your favorites and listening history stay in this browser.</p><button id="clear-history" type="button">Clear listening history</button></div><div id="clear-confirm" class="confirm-box" hidden><p>Clear your listening time, saved places, and favorites on this device?</p><div><button id="clear-cancel" type="button">Keep my history</button><button id="clear-yes" type="button">Clear history</button></div></div></section>
     <section class="pilot-feedback" aria-labelledby="feedback-heading">
-      <details><summary id="feedback-heading">Help shape this space <span aria-hidden="true">↗</span></summary>
+      <details><summary id="feedback-heading">Help shape this space </summary>
         <p class="feedback-intro">What felt good? What would you change? These optional notes stay on your device. Export a copy whenever you want to share them.</p>
         <form id="feedback-form">
           <label>Experience<select id="feedback-session" name="session" required></select></label>
@@ -75,9 +126,9 @@
     </section>
   </main>
   <footer class="site-footer shell"><div class="footer-brand"><img src="images/superthoughts-symbol.svg" width="28" height="28" alt=""><span>superthoughts<span class="brand-dot">.</span></span></div><p>A small space to return to, anytime.</p><div><a href="#library">Explore the library</a><a href="privacy.html">Your data</a><a href="terms.html">Terms of use</a><button type="button" data-analytics-settings>Privacy choices</button><a href="mailto:josh@superthoughts.com">Contact</a></div><span>© 2026 Superthoughts</span></footer>
-  <script src="ambient-light.js" defer></script>
+  <script src="homepage.js" defer></script>
   <script src="pilot-catalog.js"></script>
-  <script src="collections.js"></script>
+  <script src="collections.js" defer></script>
   <script src="pilot-visuals.js"></script>
   <script type="module" src="pilot.js"></script>
   <script src="pilot-offline.js" defer></script>

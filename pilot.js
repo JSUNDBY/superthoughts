@@ -11,8 +11,8 @@ try { browserStorage = window.localStorage; } catch {}
 const store = createPracticeStore(browserStorage, () => new Date());
 const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, onComplete: acknowledgeCompletion });
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const heroScene = !isSessionPage && !isPracticePage && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
-const sessionUrl = id => ({'still-enough-to-listen':'still-enough.html','soft-place-to-land':'soft-place-to-land.html'}[id] || `session.html?session=${encodeURIComponent(id)}`);
+const heroScene = !isSessionPage && !isPracticePage && $('welcome-canvas') && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
+const sessionUrl = id => id === 'still-enough-to-listen' ? 'still-enough.html' : id === 'soft-place-to-land' ? 'soft-place-to-land.html' : id === 'let-them-think' ? 'let-them-think.html' : id === 'precious-life' ? 'precious-life.html' : `session.html?session=${encodeURIComponent(id)}`;
 if (heroScene) heroScene.unfurl = true;
 heroScene?.setScene('first-light');
 if (heroScene) { heroScene.elapsed = 0; heroScene.render(); heroScene.setPlaying(true); }
@@ -39,10 +39,11 @@ function setStatus(message) { $('play-status').textContent = message; }
 
 function pickDaily() {
   if (!catalog.length) return null;
-  const hour = new Date().getHours();
-  const preferred = hour < 11 ? 'morning' : hour >= 19 ? 'evening' : 'reset';
-  const pool = catalog.filter(item => item.category === preferred);
-  const choices = pool.length ? pool : catalog;
+  // Daily invitations promote only the four currently approved audio experiences.
+  // Older sessions remain available in the complete library.
+  const approved = new Set(['still-enough-to-listen', 'soft-place-to-land', 'let-them-think', 'precious-life']);
+  const choices = catalog.filter(item => approved.has(item.id));
+  if (!choices.length) return null;
   const now = new Date();
   const key = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
   let hash = 0;
@@ -92,10 +93,10 @@ function buildLight(item, host, lazy = false) {
   host.style.setProperty('--g-shape-a', shape()); host.style.setProperty('--g-shape-b', shape());
   const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
   const motif = TILE_MOTIFS[item.id] || 'bloom'; host.dataset.motif = motif;
-  if (['still-enough-to-listen', 'soft-place-to-land'].includes(item.id)) {
+  if (['still-enough-to-listen', 'soft-place-to-land', 'let-them-think', 'precious-life'].includes(item.id)) {
     light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">`;
     if (!lazy) {
-      const film = document.createElement('video'); film.className = 'tl-session-film'; film.muted = true; film.loop = true; film.playsInline = true; film.preload = 'none'; film.poster = `images/art/${item.id}.jpg`; film.src = item.id === 'soft-place-to-land' ? 'images/art/soft-place-to-land-motion-loop.mp4' : 'images/art/still-enough-motion-loop.mp4';
+      const film = document.createElement('video'); film.className = 'tl-session-film'; film.muted = true; film.loop = true; film.playsInline = true; film.preload = 'none'; film.poster = `images/art/${item.id}.jpg`; film.src = item.id === 'still-enough-to-listen' ? 'images/art/still-enough-motion-loop.mp4' : `images/art/${item.id}-motion.mp4`;
       light.append(film);
     }
     return light;
@@ -121,13 +122,16 @@ function renderLibrary() {
     card.dataset.selected = String(active?.id === item.id);
     const art = document.createElement('div'); art.className = 'session-art'; art.dataset.visual = item.visual || item.id;
     art.append(buildLight(item, card, true));
+    if (document.body.classList.contains('page-home')) {
+      const artLink = document.createElement('a'); artLink.className = 'art-link'; artLink.href = sessionUrl(item.id); artLink.setAttribute('aria-label', `Listen to ${item.title}`); artLink.tabIndex = -1; artLink.setAttribute('aria-hidden', 'true'); art.append(artLink);
+    }
     const topline = document.createElement('div'); topline.className = 'card-topline';
     const kicker = document.createElement('span'); kicker.textContent = item.kicker || item.category;
     const heart = document.createElement('button'); heart.className = 'card-save'; heart.type = 'button'; heart.setAttribute('aria-label', `${saved.has(item.id) ? 'Remove' : 'Save'} ${item.title} ${saved.has(item.id) ? 'from' : 'to'} favorites`); heart.setAttribute('aria-pressed', String(saved.has(item.id))); heart.title = saved.has(item.id) ? 'Remove from saved' : 'Save session'; heart.innerHTML = '<span aria-hidden="true">♡</span>';
     heart.addEventListener('click', () => { store.toggleFavorite(item.id); renderLibrary(); updateFavoriteButton(); });
     topline.append(kicker, heart); art.append(topline);
     const body = document.createElement('div'); body.className = 'card-body';
-    const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = `${item.type === 'sound' ? 'Sound' : 'Guided'} · ${Math.max(1, Math.round(item.duration / 60))} min`;
+    const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = `${item.type === 'sound' ? 'Sound' : 'Guided'} · ${durationText(item.duration)}`;
     const title = document.createElement('h3'); title.textContent = item.title;
     const description = document.createElement('p'); description.textContent = item.description;
     const listen = document.createElement('a'); listen.className = 'card-listen'; listen.href = sessionUrl(item.id); listen.innerHTML = '<span class="listen-mark" aria-hidden="true"><svg class="transport-icon" viewBox="0 0 24 24"><path d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/></svg></span><span class="listen-word">Listen</span>'; listen.setAttribute('aria-label', `Listen to ${item.title}`);
@@ -193,7 +197,9 @@ function updateTime() {
 }
 
 let captionFrame = 0;
+let captionsEnabled = false;
 function updateCaption() {
+  if (!captionsEnabled) { $('field-words').style.setProperty('--caption-opacity', 0); return; }
   const current = audio.currentTime || 0;
   const index = cues.findIndex((cue, i) => current >= cue.start - .8 && current < Math.min(cue.end + 1.8, cues[i + 1]?.start - .8 || Infinity));
   const line = cues[index];
@@ -209,7 +215,7 @@ function updateCaption() {
 function animateCaptions() {
   cancelAnimationFrame(captionFrame);
   updateCaption();
-  if (!audio.paused && !audio.ended && !document.hidden) captionFrame = requestAnimationFrame(animateCaptions);
+  if (captionsEnabled && !audio.paused && !audio.ended && !document.hidden) captionFrame = requestAnimationFrame(animateCaptions);
 
 }
 
@@ -332,6 +338,12 @@ transcriptDialog.addEventListener('close', () => {
   $('transcript-toggle').focus({ preventScroll: true });
 });
 $('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggle').setAttribute('aria-pressed', String(dimmed)); $('player-field').dataset.dim = String(dimmed); updateTime(); syncSessionFilm(); });
+$('words-toggle')?.addEventListener('click', () => {
+  captionsEnabled = !captionsEnabled;
+  $('words-toggle').setAttribute('aria-pressed', String(captionsEnabled));
+  $('words-toggle').textContent = captionsEnabled ? 'Words on' : 'Words off';
+  animateCaptions();
+});
 $('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; $('player-field').classList.toggle('motion-paused', motionPaused); syncSessionFilm(); });
 $('share-button').addEventListener('click', async () => { if (!active) return; const url = new URL(sessionUrl(active.id), location.href); try { if (navigator.share) await navigator.share({ title: active.title, url: url.href }); else { await navigator.clipboard.writeText(url.href); setStatus('Session link copied.'); } } catch (error) { if (error?.name !== 'AbortError') setStatus('The link could not be shared here.'); } });
 $('goal-select').addEventListener('change', event => { store.setGoal(Number(event.target.value)); renderPractice(); });
@@ -348,6 +360,8 @@ audio.addEventListener('waiting', () => { if (active && !audio.paused) setStatus
 audio.addEventListener('stalled', () => { if (active && !audio.paused) setStatus('Audio interrupted. Check your connection.'); });
 audio.addEventListener('playing', () => { setStatus('Playing'); updateTransport(); animateCaptions(); });
 function syncSessionFilm() {
+  // The earlier animated fields share the same rest policy as the newer films.
+  $('player-field').classList.toggle('motion-resting', audio.paused || audio.ended || document.hidden || motionPaused || dimmed || reducedMotion.matches);
   const film = $('player-field').querySelector('.tl-session-film');
   if (!film) return;
   if (audio.paused || audio.ended || document.hidden || motionPaused || dimmed || reducedMotion.matches) film.pause();
@@ -422,7 +436,7 @@ function revealBath() {
   bathIdleTimer = setTimeout(() => {
     if ((isSessionPage || focusView) && !audio.paused && !transcriptDialog.open && !document.activeElement?.matches(':focus-visible'))
       document.body.classList.add('bath-idle');
-  }, 3500);
+  }, 8000);
 }
 $('player-shell').addEventListener('pointermove', revealBath, {passive:true});
 $('player-shell').addEventListener('pointerdown', revealBath, {passive:true});

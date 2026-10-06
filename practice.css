@@ -1,0 +1,291 @@
+/* Private library: the still artwork and quiet type used by the dedicated rooms. */
+.page-practice {
+  --bg: #080e12;
+  --panel: #111b20;
+  --ink: #f4eee3;
+  --muted: #bdc5c5;
+  --quiet: #99a8ab;
+  --line: rgba(237, 237, 220, .16);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+.page-practice .ambient-light { display: none; }
+.page-practice .shell { width: min(100% - 96px, 1440px); }
+.page-practice .site-header { background: var(--bg); }
+.page-practice .header-inner { min-height: 88px; }
+.page-practice .pilot-label { display: none; }
+.page-practice .brand img,
+.page-practice .footer-brand img { filter: brightness(0) invert(1); opacity: .9; }
+.page-practice .brand>span,
+.page-practice .footer-brand>span,
+.page-practice h1,
+.page-practice h2,
+.page-practice h3 { font-family: "Helvetica Neue", Arial, sans-serif; }
+.page-practice .brand>span,
+.page-practice .footer-brand>span { font-weight: 500; letter-spacing: -.065em; }
+.page-practice .site-header nav a { color: var(--muted); }
+.page-practice .site-header nav a:hover { color: var(--ink); }
+.page-practice .title-period { display: none; }
+
+.page-practice .library { padding-top: 0; }
+.page-practice .practice-hero {
+  position: relative;
+  display: flex;
+  align-items: end;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(390px, 44vw, 600px);
+  margin: 0 0 64px;
+  padding: clamp(28px, 5vw, 74px);
+  background: #111b20;
+}
+.page-practice .practice-hero-art {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url("images/art/let-them-think.jpg");
+  background-size: cover;
+  background-position: center;
+}
+.page-practice .practice-hero[data-practice-art="morning"] .practice-hero-art { background-image: url("images/art/first-light.jpg"); background-position: center 42%; }
+.page-practice .practice-hero[data-practice-art="reset"] .practice-hero-art { background-image: url("images/art/let-them-think.jpg"); }
+.page-practice .practice-hero[data-practice-art="evening"] .practice-hero-art { background-image: url("images/art/wind-down.jpg"); }
+.page-practice .practice-hero[data-practice-art="sound"] .practice-hero-art { background-image: url("images/art/open-space.jpg"); }
+.page-practice .practice-hero[data-practice-art="favorites"] .practice-hero-art { background-image: url("images/art/soft-place-to-land.jpg"); }
+.page-practice .practice-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(3, 8, 13, .86), rgba(3, 8, 13, .48) 56%, rgba(3, 8, 13, .16)),
+              linear-gradient(0deg, rgba(3, 8, 13, .75), transparent 58%);
+}
+.page-practice .practice-hero-copy { max-width: 760px; }
+.page-practice .practice-hero .eyebrow { color: #d2d9d6; margin-bottom: 21px; }
+.page-practice .practice-hero h1 {
+  max-width: 13ch;
+  margin: 0 0 19px;
+  font-size: clamp(56px, 6.7vw, 96px);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -.065em;
+  text-wrap: balance;
+}
+.page-practice .practice-hero-copy>p:last-child {
+  max-width: 43ch;
+  margin: 0;
+  color: #e0e5e2;
+  font-size: clamp(16px, 1.45vw, 20px);
+  line-height: 1.5;
+}
+.page-practice .practice-hero-mark {
+  position: absolute;
+  top: 29px;
+  right: 31px;
+  color: #e5e7deab;
+  font-size: 10px;
+  letter-spacing: .16em;
+}
+.page-practice .section-intro { margin-bottom: 26px; }
+.page-practice .section-intro .eyebrow { color: #a8b7b8; font-size: 11px; }
+.page-practice .section-intro h2 { font-size: clamp(32px, 3.5vw, 48px); font-weight: 300; letter-spacing: -.05em; }
+.page-practice .section-intro>p { max-width: 380px; font-size: 15px; }
+.page-practice .library-toolbar { margin-bottom: 27px; padding-bottom: 15px; }
+.page-practice .filters { gap: 5px; }
+.page-practice .filters button {
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: #bbc5c4;
+  font-size: 14px;
+  font-weight: 400;
+}
+.page-practice .filters button:hover { border-color: var(--line); color: var(--ink); }
+.page-practice .filters button[aria-pressed="true"] {
+  border-color: rgba(238, 231, 220, .45);
+  background: rgba(247, 241, 229, .1);
+  color: var(--ink);
+}
+.page-practice .library-count { font-size: 13px; }
+.page-practice .session-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 35px 20px; }
+.page-practice .session-card,
+.page-practice .session-card:first-child {
+  position: relative;
+  display: block;
+  grid-column: auto;
+  overflow: visible;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.page-practice .session-card .session-art,
+.page-practice .session-card:first-child .session-art {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1.35;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background-color: #152027;
+  background-size: cover;
+  background-position: center;
+}
+.page-practice .session-art::before,
+.page-practice .session-art::after { content: none; }
+.page-practice .session-art::before { content: ""; display: block; position: absolute; inset: 0; z-index: 1; border: 0; border-radius: 0; box-shadow: none; transform: none; background: linear-gradient(0deg, rgba(2, 8, 13, .22), transparent 60%); pointer-events: none; }
+.page-practice .session-art .tile-light { display: none !important; }
+.page-practice .session-art[data-visual="let-them-think"] { background-image: url("images/art/let-them-think.jpg"); }
+.page-practice .session-art[data-visual="precious-life"] { background-image: url("images/art/precious-life.jpg"); }
+.page-practice .session-art[data-visual="still-enough-to-listen"] { background-image: url("images/art/still-enough-to-listen.jpg"); }
+.page-practice .session-card[data-id="soft-place-to-land"] .session-art { background-image: url("images/art/soft-place-to-land.jpg"); }
+.page-practice .session-card[data-id="gratitude"] .session-art { background-image: url("images/art/gratitude.jpg"); }
+.page-practice .session-card[data-id="begin-day"] .session-art { background-image: url("images/art/begin-day.jpg"); }
+.page-practice .session-card[data-id="reset"] .session-art { background-image: url("images/art/reset.jpg"); }
+.page-practice .session-card[data-id="whole-body"] .session-art { background-image: url("images/art/whole-body.jpg"); }
+.page-practice .session-card[data-id="after-conversation"] .session-art { background-image: url("images/art/after-conversation.jpg"); }
+.page-practice .session-card[data-id="wind-down"] .session-art { background-image: url("images/art/wind-down.jpg"); }
+.page-practice .session-card[data-id="enter-your-work"] .session-art { background-image: url("images/art/enter-your-work.jpg"); }
+.page-practice .session-card[data-id="awake-again"] .session-art { background-image: url("images/art/awake-again.jpg"); }
+.page-practice .session-card[data-id="letting-go-into-sleep"] .session-art { background-image: url("images/art/letting-go-into-sleep.jpg"); }
+.page-practice .session-card[data-id="frequency-of-abundance"] .session-art { background-image: url("images/art/frequency-of-abundance.jpg"); }
+.page-practice .session-card[data-id="warmth"] .session-art { background-image: url("images/art/warmth.jpg"); }
+.page-practice .session-card[data-id="open-space"] .session-art { background-image: url("images/art/open-space.jpg"); }
+.page-practice .session-card[data-id="drift"] .session-art { background-image: url("images/art/drift.jpg"); }
+.page-practice .session-card[data-id="afterglow"] .session-art { background-image: url("images/art/afterglow.jpg"); }
+.page-practice .session-card[data-id="first-light"] .session-art { background-image: url("images/art/first-light.jpg"); }
+.page-practice .session-card .card-topline { inset: 10px 10px auto; justify-content: flex-end; z-index: 3; pointer-events: none; }
+.page-practice .session-card .card-topline>span { display: none; }
+.page-practice .session-card .card-save {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(244, 238, 227, .54);
+  border-radius: 0;
+  background: rgba(8, 14, 18, .54);
+  backdrop-filter: blur(6px);
+  color: var(--ink);
+  pointer-events: auto;
+}
+.page-practice .session-card .card-save[aria-pressed="true"] { background: rgba(244, 238, 227, .88); color: #0b1318; }
+.page-practice .session-card .card-body,
+.page-practice .session-card:first-child .card-body,
+.page-practice .session-card:not(:first-child) .card-body {
+  position: relative;
+  inset: auto;
+  display: block;
+  padding: 13px 0 0;
+  background: none;
+  pointer-events: auto;
+}
+.page-practice .session-card .card-meta { margin: 0 0 7px; color: #9dafb1; font-size: 11px; letter-spacing: .07em; text-shadow: none; }
+.page-practice .session-card .card-body h3,
+.page-practice .session-card:first-child .card-body h3,
+.page-practice .session-card:not(:first-child) .card-body h3 {
+  max-width: none;
+  margin: 0 0 11px;
+  color: var(--ink);
+  font-size: clamp(19px, 1.6vw, 23px);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -.035em;
+  text-shadow: none;
+}
+.page-practice .session-card .card-body>p:not(.card-meta),
+.page-practice .session-card:first-child .card-body>p:not(.card-meta) {
+  display: block;
+  min-height: 0;
+  max-width: 34ch;
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.page-practice .session-card .card-listen,
+.page-practice .session-card:first-child .card-listen {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  transform: none;
+}
+.page-practice .session-card .card-listen::after { content: none; }
+.page-practice .session-card .listen-mark {
+  position: static;
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(244, 238, 227, .47);
+  border-radius: 0;
+  background: rgba(244, 238, 227, .06);
+  box-shadow: none;
+  color: var(--ink);
+}
+.page-practice .session-card .listen-mark::before,
+.page-practice .session-card .listen-mark::after { content: none; }
+.page-practice .session-card .listen-mark svg { width: 13px; height: 13px; }
+.page-practice .session-card .listen-word { margin-left: 0; }
+.page-practice .session-card .card-listen:hover { color: #efd0b3; }
+.page-practice .session-card .card-listen:hover .listen-mark { border-color: #efd0b3; }
+.page-practice .session-card[data-selected="true"] .session-art { outline: 1px solid #d6c6b7; outline-offset: 3px; }
+.page-practice .library-empty { font-size: 15px; }
+.page-practice .site-footer { margin-top: 86px; }
+
+@media (max-width: 1100px) {
+  .page-practice .session-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .page-practice .shell { width: calc(100% - 60px); }
+}
+@media (max-width: 760px) {
+  .page-practice .shell { width: calc(100% - 40px); }
+  .page-practice .practice-hero { min-height: 430px; margin-bottom: 44px; padding: 34px; }
+  .page-practice .practice-hero::after { background: linear-gradient(90deg, rgba(3, 8, 13, .82), rgba(3, 8, 13, .33)), linear-gradient(0deg, rgba(3, 8, 13, .72), transparent 70%); }
+  .page-practice .session-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 16px; }
+  .page-practice .section-intro { display: block; }
+  .page-practice .section-intro>p { margin-top: 13px; }
+}
+@media (max-width: 560px) {
+  .page-practice .shell { width: calc(100% - 36px); }
+  .page-practice .header-inner { min-height: 72px; gap: 11px; flex-wrap: nowrap; padding: 0; }
+  .page-practice .brand img { width: 27px; height: 27px; }
+  .page-practice .brand>span { font-size: 23px; }
+  .page-practice .site-header nav { width: auto; gap: 14px; flex-wrap: nowrap; }
+  .page-practice .site-header nav a { font-size: 12px; }
+  .page-practice .site-header nav a:first-child,
+  .page-practice .site-header nav a:last-child { display: none; }
+  .page-practice .practice-hero { min-height: 430px; padding: 27px 24px; margin-bottom: 40px; }
+  .page-practice .practice-hero-art { background-position: center; }
+  .page-practice .practice-hero::after { background: linear-gradient(0deg, rgba(3, 8, 13, .88), rgba(3, 8, 13, .26) 75%), linear-gradient(90deg, rgba(3, 8, 13, .35), transparent); }
+  .page-practice .practice-hero h1 { font-size: clamp(48px, 11vw, 64px); }
+  .page-practice .practice-hero-copy>p:last-child { font-size: 16px; }
+  .page-practice .practice-hero-mark { top: 20px; right: 21px; font-size: 9px; }
+  .page-practice .library-toolbar { display: block; overflow: hidden; }
+  .page-practice .filters { display: flex; flex-wrap: nowrap; overflow-x: auto; margin-inline: -18px; padding-inline: 18px; scrollbar-width: none; }
+  .page-practice .filters::-webkit-scrollbar { display: none; }
+  .page-practice .filters button { flex: none; font-size: 14px; }
+  .page-practice .session-grid { grid-template-columns: 1fr; gap: 34px; }
+  .page-practice .session-card .session-art,
+  .page-practice .session-card:first-child .session-art { aspect-ratio: 1.6; }
+  .page-practice .session-card .card-body h3,
+  .page-practice .session-card:first-child .card-body h3,
+  .page-practice .session-card:not(:first-child) .card-body h3 { font-size: 24px; }
+  .page-practice .session-card .card-body>p:not(.card-meta) { font-size: 15px; }
+  .page-practice .site-footer { margin-top: 68px; }
+}
+
+/* The thumbnail is the same exposure as its listening room, not a brighter alternate. */
+.page-practice .session-card .session-art::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(4,9,14,var(--art-shade,0));border:0;border-radius:0;transform:none;box-shadow:none;pointer-events:none}
