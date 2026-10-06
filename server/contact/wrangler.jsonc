@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "superthoughts-contact",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-10-06",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "observability": {
+    "enabled": false
+  },
+  "ratelimits": [
+    {
+      "name": "CONTACT_RATE_LIMIT",
+      "namespace_id": "638947021",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "account_id": "0672ae6f0ce7a86086cafbcba03ed68f",
+  "preview_urls": false
+}
