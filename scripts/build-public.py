@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'_site'
 if OUT.exists():shutil.rmtree(OUT)
 OUT.mkdir()
-files=['contact.html','contact.css','contact.js','visual-system.css','practice.css','session-art.css','guided-room.js','let-them-think.html','precious-life.html','images/art/let-them-think-motion.mp4','images/art/precious-life-motion.mp4','homepage.css','soft-place-to-land.html','soft-place-to-land.js','images/art/soft-place-to-land-motion.mp4','index.html','session.html','practice.html','still-enough.html','still-enough.css','still-enough.js','navigation.css','collections.js','privacy.html','terms.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
+files=['newsletter.css','newsletter.js','contact.html','contact.css','contact.js','visual-system.css','practice.css','session-art.css','guided-room.js','let-them-think.html','precious-life.html','images/art/let-them-think-motion.mp4','images/art/precious-life-motion.mp4','homepage.css','soft-place-to-land.html','soft-place-to-land.js','images/art/soft-place-to-land-motion.mp4','index.html','session.html','practice.html','still-enough.html','still-enough.css','still-enough.js','navigation.css','collections.js','privacy.html','terms.html','pilot.html','listen.html','gratitude.html','whole-body.html','wind-down.html',
  'pilot.css','pilot.js','pilot-visuals.js','ambient-light.js','pilot-catalog.js','pilot-progress.mjs','pilot-offline.js','pilot-feedback.js','pilot-analytics.js','pilot-analytics-core.mjs','pilot-sw.js','pilot.webmanifest',
  'CNAME','images/favicon.svg','images/superthoughts-symbol.svg','robots.txt','sitemap.xml']
 if (ROOT/'images/art/still-enough-motion-loop.mp4').is_file():files.append('images/art/still-enough-motion-loop.mp4')

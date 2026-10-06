@@ -1,11 +1,11 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v42-contact-form';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v43-kit-signup';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
-  'contact.html', 'contact.css', 'contact.js',
+  'newsletter.css', 'newsletter.js', 'contact.html', 'contact.css', 'contact.js',
   'visual-system.css', 'practice.css', 'session-art.css', 'guided-room.js', 'let-them-think.html', 'precious-life.html', 'images/art/let-them-think.jpg', 'images/art/precious-life.jpg', 'homepage.css', 'homepage.js', 'soft-place-to-land.html', 'soft-place-to-land.js', 'images/art/soft-place-to-land.jpg', 'index.html', 'session.html', 'practice.html', 'still-enough.html', 'still-enough.css', 'still-enough.js', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
   'pilot-visuals.js', 'ambient-light.js', 'pilot-progress.mjs', 'pilot-offline.js',
   'pilot-feedback.js', 'pilot-analytics.js', 'pilot-analytics-core.mjs', 'terms.html', 'pilot.webmanifest',

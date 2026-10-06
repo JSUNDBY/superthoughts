@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="pilot.css">
   <link rel="stylesheet" href="navigation.css">
   <link rel="stylesheet" href="homepage.css">
+  <link rel="stylesheet" href="newsletter.css">
   <link rel="stylesheet" href="session-art.css">
   <link rel="stylesheet" href="visual-system.css">
 </head>
@@ -112,6 +113,25 @@
     </section>
 
     <section class="practice" id="practice" aria-labelledby="practice-title"><div class="section-intro"><div><p class="eyebrow">A gentle record</p><h2 id="practice-title">Your practice<span class="title-period">.</span></h2></div><p>Every minute counts. This record stays on this device, and it is here only for you.</p></div><div class="practice-layout"><div class="practice-card"><p class="practice-card-label">Time together</p><strong id="total-minutes" class="practice-number">0 <small>min</small></strong><p class="practice-foot">Time spent listening</p></div><div class="practice-card"><p class="practice-card-label">Sessions completed</p><strong id="session-count" class="practice-number">0</strong><p class="practice-foot">At your own pace</p></div><div class="practice-card"><p class="practice-card-label">Days you made space</p><strong id="practice-days" class="practice-number">0</strong><p class="practice-foot">Whenever they happened</p></div><div class="goal-card"><div class="goal-head"><div><p class="practice-card-label">A little space today</p><strong id="today-minutes" class="goal-number">0 <small>min</small></strong></div><div class="goal-control"><label for="goal-select">Daily intention</label><select id="goal-select"><option value="0">No goal</option><option value="3">3 min</option><option value="5">5 min</option><option value="10">10 min</option></select></div></div><div id="goal-track" class="goal-track" aria-hidden="true"><span id="goal-fill"></span></div><p id="goal-caption" class="practice-foot">The time you make is enough.</p></div></div><div class="privacy-row"><p id="storage-note">Your favorites and listening history stay in this browser.</p><button id="clear-history" type="button">Clear listening history</button></div><div id="clear-confirm" class="confirm-box" hidden><p>Clear your listening time, saved places, and favorites on this device?</p><div><button id="clear-cancel" type="button">Keep my history</button><button id="clear-yes" type="button">Clear history</button></div></div></section>
+    <section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
+      <div>
+        <p class="eyebrow">An occasional note</p>
+        <h2 id="newsletter-title">A little more room to listen.</h2>
+        <p class="newsletter-intro">New listening spaces and quiet notes from Josh, sent when there is something worth sharing. This is optional; the library is open either way.</p>
+      </div>
+      <div class="newsletter-form" id="newsletter-signup">
+        <form action="https://app.kit.com/forms/10010941/subscriptions" method="post">
+          <div class="newsletter-fields">
+            <label class="sr-only" for="newsletter-email">Email address</label>
+            <input id="newsletter-email" type="email" name="email_address" placeholder="Email address" autocomplete="email" required maxlength="254">
+            <button type="submit">Join the email list</button>
+          </div>
+          <label class="newsletter-choice"><input type="checkbox" name="newsletter_consent" value="yes" required> I want to receive occasional Superthoughts emails.</label>
+          <label class="newsletter-honeypot" aria-hidden="true">Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          <p class="newsletter-consent">Kit will send a confirmation email. You can unsubscribe whenever you like. <a href="privacy.html">How we use your email</a>.</p>
+        </form>
+      </div>
+    </section>
     <section class="pilot-feedback" aria-labelledby="feedback-heading">
       <details><summary id="feedback-heading">Help shape this space </summary>
         <p class="feedback-intro">What felt good? What would you change? These optional notes stay on your device. Export a copy whenever you want to share them.</p>
@@ -125,7 +145,8 @@
       </details>
     </section>
   </main>
-  <footer class="site-footer shell"><div class="footer-brand"><img src="images/superthoughts-symbol.svg" width="28" height="28" alt=""><span>superthoughts<span class="brand-dot">.</span></span></div><p>A small space to return to, anytime.</p><div><a href="#library">Explore the library</a><a href="privacy.html">Your data</a><a href="terms.html">Terms of use</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a></div><span>© 2026 Superthoughts</span></footer>
+  <footer class="site-footer shell"><div class="footer-brand"><img src="images/superthoughts-symbol.svg" width="28" height="28" alt=""><span>superthoughts<span class="brand-dot">.</span></span></div><p>A small space to return to, anytime.</p><div><a href="#library">Explore the library</a><a href="#newsletter">Email notes</a><a href="privacy.html">Your data</a><a href="terms.html">Terms of use</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a></div><span>© 2026 Superthoughts</span></footer>
+  <script src="newsletter.js" defer></script>
   <script src="homepage.js" defer></script>
   <script src="pilot-catalog.js"></script>
   <script src="collections.js" defer></script>
