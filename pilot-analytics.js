@@ -143,6 +143,7 @@ export function createAnalyticsController({ win = window, doc = document, storag
     .analytics-choice button[data-choice="denied"]{background:transparent;color:#f6f0e6}
     .analytics-choice button:focus-visible,.analytics-settings-button:focus-visible{outline:2px solid #f6d09e;outline-offset:3px}
     .analytics-settings-button{position:fixed;bottom:12px;left:12px;z-index:80;min-height:36px;padding:6px 10px;background:#222a26;color:#f6f0e6;font-weight:400;font-size:11px}
+    .analytics-settings-button.analytics-settings-inline{position:static;display:inline-block;margin:12px 0;min-height:44px}
     .session-toolbar .analytics-settings-button{position:static;min-height:0;background:#101916aa;color:#f6f0e6}
     @media(max-width:520px){.analytics-choice{left:10px;right:10px;bottom:55px;max-width:none}.analytics-settings-button{bottom:9px;left:9px}}
   `;
@@ -160,7 +161,9 @@ export function createAnalyticsController({ win = window, doc = document, storag
     settings.textContent = 'Privacy choices';
     settings.setAttribute('aria-label', 'Change analytics preference');
     const toolbar = doc.querySelector('.session-toolbar');
-    (toolbar || doc.body).append(settings);
+    const destination = toolbar || doc.querySelector('footer') || doc.querySelector('main') || doc.body;
+    if (!toolbar) settings.className += ' analytics-settings-inline';
+    destination.append(settings);
   }
   doc.body.append(panel);
   const render = () => { panel.hidden = preference !== null; };

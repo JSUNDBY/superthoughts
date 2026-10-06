@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v33-room-ready';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v34-privacy-in-flow';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
