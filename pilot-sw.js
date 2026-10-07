@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v44-diffusion';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v45-diffusion-signup';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
