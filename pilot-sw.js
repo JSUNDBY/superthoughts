@@ -1,10 +1,11 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v43-kit-signup';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v44-diffusion';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 const SHELL_FILES = [
+  'explore.html', 'library.html', 'diffusion-site.css', 'diffusion-session.css', 'diffusion-artwork.js', 'diffusion-nature.js', 'diffusion-catalog.js', 'diffusion-common.js', 'diffusion-session.js',
   'newsletter.css', 'newsletter.js', 'contact.html', 'contact.css', 'contact.js',
   'visual-system.css', 'practice.css', 'session-art.css', 'guided-room.js', 'let-them-think.html', 'precious-life.html', 'images/art/let-them-think.jpg', 'images/art/precious-life.jpg', 'homepage.css', 'homepage.js', 'soft-place-to-land.html', 'soft-place-to-land.js', 'images/art/soft-place-to-land.jpg', 'index.html', 'session.html', 'practice.html', 'still-enough.html', 'still-enough.css', 'still-enough.js', 'navigation.css', 'collections.js', 'pilot.html', 'privacy.html', 'pilot.css', 'pilot.js', 'pilot-catalog.js',
   'pilot-visuals.js', 'ambient-light.js', 'pilot-progress.mjs', 'pilot-offline.js',
@@ -87,7 +88,7 @@ self.addEventListener('activate', event => {
 async function shellResponse(request, isNavigation) {
   const cache = await caches.open(SHELL_CACHE);
   const requestPath = new URL(request.url).pathname;
-  const canonical = urlFor(isNavigation ? (['session.html', 'practice.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html'].find(file => pathFor(file) === requestPath) || 'index.html') :
+  const canonical = urlFor(isNavigation ? (['library.html', 'explore.html', 'session.html', 'practice.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html'].find(file => pathFor(file) === requestPath) || 'index.html') :
     SHELL_FILES.find(file => pathFor(file) === requestPath));
   try {
     const response = await fetch(request, { cache: 'no-cache' });
@@ -156,7 +157,7 @@ self.addEventListener('fetch', event => {
   if (url.origin !== ROOT.origin || url.hash) return;
   if ((url.pathname === ROOT.pathname || url.pathname === indexPath ||
        url.pathname === pilotPath || url.pathname === pathFor('session.html') ||
-       url.pathname === pathFor('practice.html') || url.pathname === pathFor('still-enough.html') || url.pathname === pathFor('soft-place-to-land.html') || url.pathname === pathFor('let-them-think.html') || url.pathname === pathFor('precious-life.html')) && request.mode === 'navigate') {
+       url.pathname === pathFor('library.html') || url.pathname === pathFor('explore.html') || url.pathname === pathFor('practice.html') || url.pathname === pathFor('still-enough.html') || url.pathname === pathFor('soft-place-to-land.html') || url.pathname === pathFor('let-them-think.html') || url.pathname === pathFor('precious-life.html')) && request.mode === 'navigate') {
     event.respondWith(shellResponse(request, true));
   } else if (url.search) {
     return;

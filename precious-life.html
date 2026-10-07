@@ -1,9 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!doctype html><html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
+
   <meta name="theme-color" content="#0b1118">
   <meta name="description" content="A little time with an ordinary moment, and the life here in this breath. Listen to This Precious Life on Superthoughts.">
   <link rel="canonical" href="https://superthoughts.com/precious-life.html">
@@ -17,51 +15,21 @@
   <title>This Precious Life · Superthoughts</title>
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="manifest" href="pilot.webmanifest">
-  <link rel="stylesheet" href="still-enough.css">
-  <link rel="stylesheet" href="session-art.css">
-  <link rel="stylesheet" href="visual-system.css">
+
+
+
+
+<link rel="stylesheet" href="diffusion-site.css"><link rel="stylesheet" href="diffusion-session.css">
 </head>
-<body>
-  <a class="skip" href="#player">Skip to listening controls</a>
-  <main class="room" id="room" data-session="precious-life" data-motion-rate="1">
-    <div class="art" aria-hidden="true">
-      <img src="images/art/precious-life.jpg" alt="" fetchpriority="high">
-      <video id="art-video" muted loop playsinline preload="none" poster="images/art/precious-life.jpg"><source src="images/art/precious-life-motion.mp4" type="video/mp4"></video>
-    </div>
-    <div class="wash" aria-hidden="true"></div>
-    <div class="dim-veil" aria-hidden="true"></div>
-    <header class="topbar" id="topbar">
-      <a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" alt="" width="30" height="30"><span>superthoughts<span class="period">.</span></span></a>
-      <a class="library-link" href="index.html#library">Explore the library</a>
-    </header>
-    <section class="introduction" aria-labelledby="title">
-      <p class="eyebrow">A space to listen <span class="separator" aria-hidden="true"></span> 11 minutes</p>
-      <h1 id="title">This precious<br>life.</h1>
-      <p class="description">A little time with an ordinary moment, and the life here in this breath.</p>
-    </section>
-    <p id="words" class="words" aria-live="off" aria-hidden="true"></p>
-    <section id="player" class="player" aria-label="This Precious Life player">
-      <div class="player-primary">
-        <button class="play" id="play" type="button" aria-label="Play This Precious Life"><svg class="transport-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="icon-play" d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/><path class="icon-pause" d="M7 5h3v14H7zm7 0h3v14h-3z" fill="currentColor"/></svg></button>
-        <div class="play-copy"><strong id="play-state">Ready when you are</strong><span>This Precious Life</span></div>
-        <div class="timing"><span id="elapsed">0:00</span><span class="time-divider">/</span><span>11:00</span></div>
-      </div>
-      <label class="sr-only" for="seek">Seek through the session</label>
-      <input id="seek" class="seek" type="range" min="0" max="660" value="0" step="1" aria-valuetext="0 minutes" disabled>
-      <div class="actions">
-        <button id="captions" type="button" aria-pressed="false">Words off</button>
-        <button id="motion" type="button" aria-pressed="false">Pause motion</button>
-        <button id="dim" type="button" aria-pressed="false">Dim visuals</button>
-        <button id="fullscreen" type="button">Full screen</button>
-        <button id="share" type="button">Share</button>
-      </div>
-      <p id="status" class="sr-only" role="status" aria-live="polite"></p>
-      <audio id="pilot-audio" preload="metadata" src="audio/this-precious-life-v3.mp3" aria-label="This Precious Life"></audio>
-    </section>
-    <div class="after"><details id="transcript"><summary>Read the words</summary><div id="transcript-lines"></div></details><p>The music continues after the last words. Come back at your own pace.</p><a href="privacy.html">Privacy</a><button type="button" data-analytics-settings>Privacy choices</button></div>
-  </main>
-  <script src="pilot-catalog.js"></script>
-  <script type="module" src="pilot-analytics.js"></script>
-  <script type="module" src="guided-room.js"></script>
-</body>
-</html>
+<body class="session-page page-session"><a class="skip" href="#player">Skip to player</a><main id="room" data-design="life" class="room" aria-label="Listening room"><canvas id="session-art" aria-hidden="true"></canvas><div class="room-shade" aria-hidden="true"></div>
+<header class="site-header room-ui"><a class="brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" width="30" height="30" alt=""><span>superthoughts.</span></a><nav class="site-nav" aria-label="Main navigation"><a id="session-back" href="library.html">Library</a></nav></header>
+<div class="session-intro room-ui"><p class="kicker">A guided practice</p><h1 id="title">This Precious Life</h1><p id="description">A little time with an ordinary moment, and the life here in this breath.</p></div>
+<div class="caption" id="caption" aria-hidden="true"><span></span></div>
+<section id="player" class="room-ui player" aria-label="Session player"><div class="player-main"><button id="play" class="play" aria-label="Play session"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-symbol" d="M8 5.5 18 12 8 18.5Z" fill="currentColor"/></svg></button><div class="playing"><span id="status" role="status">Ready when you are</span><small id="player-title">This Precious Life</small></div><span class="time"><span id="elapsed">0:00</span> <span class="separator">/</span> <span id="duration">11:00</span></span></div>
+<label class="sr-only" for="seek">Playback position</label><input id="seek" type="range" min="0" max="660" value="0" step="0.1" disabled>
+<div class="player-controls"><button id="captions" aria-pressed="false">Words off</button><button id="motion" aria-pressed="false">Pause motion</button><button id="dim" aria-pressed="false">Dim light</button><button id="restart" type="button">Restart</button><button id="share" type="button">Share</button><button id="fullscreen" aria-pressed="false">Full screen</button></div>
+<audio id="pilot-audio" preload="none" src="audio/this-precious-life-v3.mp3"></audio><p id="resume-note" class="resume-note"></p></section>
+<button class="wake" id="wake" tabindex="-1" aria-hidden="true">Show controls</button></main>
+<section class="after-room"><details id="transcript"><summary>Read the words</summary><div id="transcript-lines"><p>Loading the words…</p></div></details><p class="tail-note">The music continues after the last words.<br>Come back at your own pace.</p></section>
+
+<section class="offline-tools" aria-label="Offline listening"><button type="button" id="offline-button" disabled>Save for offline</button> <button id="install-button" type="button" hidden>Install Superthoughts</button><p id="offline-note">Offline saving is getting ready.</p></section><footer class="site-footer"><span>© 2026 Superthoughts</span><a href="explore.html#practice">Your practice</a><a href="index.html#newsletter">Email notes</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a></footer><script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script><script type="module" src="diffusion-session.js"></script><script src="pilot-offline.js" defer></script><noscript><p>Use the recording directly if JavaScript is unavailable. <a href="audio/this-precious-life-v3.mp3">Listen to This Precious Life</a>.</p></noscript></body></html>
