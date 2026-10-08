@@ -140,7 +140,7 @@ function revealing(ctx,w,h,t) {
  * @param {{variant?: 'opening'|'unwinding'|'revealing'|'diffusion'|'ripples'|'unfurling', layout?: 'normal'|'mirror'|'cross'|'inverted', phase?:number}} options
  * @returns {{setVariant(name:string):void,setPaused(value:boolean):void,setDim(value:boolean):void,getState():object,destroy():void,readonly state:object}}
  */
-export function createArtwork(canvas, { variant = "opening", layout = "normal", phase = 0 } = {}) {
+export function createArtwork(canvas, { variant = "opening", layout = "normal", phase = 0, color = "olive" } = {}) {
   if (!VARIANTS.has(variant)) throw new Error(`Unknown artwork variant: ${variant}`);
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
@@ -185,10 +185,10 @@ export function createArtwork(canvas, { variant = "opening", layout = "normal", 
     else if (current === "unwinding") unwinding(ctx,w,h,elapsed);
     else if (current === "revealing") revealing(ctx,w,h,elapsed);
     else if (current === "diffusion") {
-      if(layout === 'mirror'){ctx.translate(w,0);ctx.scale(-1,1);diffusion(ctx,w,h,elapsed+phase);}
-      else if(layout === 'cross'){ctx.translate(w,0);ctx.rotate(Math.PI/2);diffusion(ctx,h,w,elapsed+phase);}
-      else if(layout === 'inverted'){ctx.translate(w,h);ctx.rotate(Math.PI);diffusion(ctx,w,h,elapsed+phase);}
-      else diffusion(ctx,w,h,elapsed+phase);
+      if(layout === 'mirror'){ctx.translate(w,0);ctx.scale(-1,1);diffusion(ctx,w,h,elapsed+phase,color);}
+      else if(layout === 'cross'){ctx.translate(w,0);ctx.rotate(Math.PI/2);diffusion(ctx,h,w,elapsed+phase,color);}
+      else if(layout === 'inverted'){ctx.translate(w,h);ctx.rotate(Math.PI);diffusion(ctx,w,h,elapsed+phase,color);}
+      else diffusion(ctx,w,h,elapsed+phase,color);
     }
     else if (current === "ripples") ripples(ctx,w,h,elapsed);
     else unfurling(ctx,w,h,elapsed);

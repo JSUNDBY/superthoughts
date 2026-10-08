@@ -6,7 +6,7 @@ const session=sessions[id]||sessions.still;
 const $=s=>document.querySelector(s);
 const room=$('#room'),audio=$('#pilot-audio'),play=$('#play'),seek=$('#seek'),art=$('#session-art');
 art.dataset.color=session.color;
-const artwork=createArtwork(art,{variant:'diffusion',layout:session.layout,phase:session.phase});
+const artwork=createArtwork(art,{variant:'diffusion',layout:session.layout,phase:session.phase,color:session.color});
 $('#title').textContent=session.title;$('#description').textContent=session.description;$('#player-title').textContent=session.title;
 document.title=`${session.title} · Superthoughts`;
 const item=(window.STCatalog||[]).find(s=>s.id===session.id);

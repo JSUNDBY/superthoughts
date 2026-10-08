@@ -3,7 +3,7 @@ import {diffusion} from './diffusion-nature.js';
 import {sessions} from './diffusion-catalog.js';
 const hero = document.querySelector('#art');
 if (hero) {
- const artwork=createArtwork(hero,{variant:'diffusion'});
+ const artwork=createArtwork(hero,{variant:'diffusion',color:'arrival'});
  let userPaused=navigator.connection?.saveData===true;const control=document.querySelector('#home-motion');
  control?.addEventListener('click',()=>{userPaused=!userPaused;artwork.setPaused(userPaused);control.textContent=userPaused?'Resume artwork':'Pause artwork';control.setAttribute('aria-pressed',String(userPaused))});
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -25,7 +25,7 @@ function draw(canvas){
  if(session.layout==='mirror'){ctx.translate(w,0);ctx.scale(-1,1)}
  else if(session.layout==='cross'){ctx.translate(w,0);ctx.rotate(Math.PI/2)}
  else if(session.layout==='inverted'){ctx.translate(w,h);ctx.rotate(Math.PI)}
- diffusion(ctx,session.layout==='cross'?h:w,session.layout==='cross'?w:h,session.phase);ctx.restore();
+ diffusion(ctx,session.layout==='cross'?h:w,session.layout==='cross'?w:h,session.phase,session.color);ctx.restore();
  canvas.dataset.static='true';
 }
 const observer=new ResizeObserver(entries=>entries.forEach(({target})=>draw(target)));
