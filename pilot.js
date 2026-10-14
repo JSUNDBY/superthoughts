@@ -12,7 +12,7 @@ const store = createPracticeStore(browserStorage, () => new Date());
 const tracker = createPlaybackTracker(audio, store, { onUpdate: renderPractice, onComplete: acknowledgeCompletion });
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const heroScene = !isSessionPage && !isPracticePage && $('welcome-canvas') && typeof window.SuperthoughtsField === 'function' ? new window.SuperthoughtsField($('welcome-canvas')) : null;
-const sessionUrl = id => id === 'still-enough-to-listen' ? 'still-enough.html' : id === 'soft-place-to-land' ? 'soft-place-to-land.html' : id === 'let-them-think' ? 'let-them-think.html' : id === 'precious-life' ? 'precious-life.html' : `session.html?session=${encodeURIComponent(id)}`;
+const sessionUrl = id => id === 'still-enough-to-listen' ? 'still-enough.html' : id === 'soft-place-to-land' ? 'soft-place-to-land.html' : id === 'let-them-think' ? 'let-them-think.html' : id === 'precious-life' ? 'precious-life.html' : id === 'remembering-your-reason' ? '/sessions/remembering-your-reason/' : `session.html?session=${encodeURIComponent(id)}`;
 if (heroScene) heroScene.unfurl = true;
 heroScene?.setScene('first-light');
 if (heroScene) { heroScene.elapsed = 0; heroScene.render(); heroScene.setPlaying(true); }
@@ -56,6 +56,7 @@ const TILE_COLORS = {
   gratitude: ['#e07a2e', '#c94f3a', '#f0b441'], 'begin-day': ['#e0962a', '#b8502c', '#1f8f86'],
   reset: ['#1f9e74', '#0f6f7a', '#9cbf3a'], 'whole-body': ['#b83a6e', '#d9723a', '#e8b04a'],
   'still-enough-to-listen': ['#ba6946', '#3d8092', '#e9b77c'],
+  'remembering-your-reason': ['#455061', '#c8aeb0', '#8fb6af'],
   'after-conversation': ['#1f9c80', '#2a6fb0', '#d9a55a'], 'wind-down': ['#d07a2c', '#9e3350', '#3f8a6a'],
   'enter-your-work': ['#e08a2a', '#d4a52e', '#0f8f6f'], 'awake-again': ['#1d7a9c', '#2fae9e', '#d9a441'],
   'letting-go-into-sleep': ['#156a82', '#c9a86a', '#8f3f62'], 'frequency-of-abundance': ['#1fae74', '#e0a52e', '#d4593a'],
@@ -93,6 +94,10 @@ function buildLight(item, host, lazy = false) {
   host.style.setProperty('--g-shape-a', shape()); host.style.setProperty('--g-shape-b', shape());
   const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
   const motif = TILE_MOTIFS[item.id] || 'bloom'; host.dataset.motif = motif;
+  if (item.id === 'remembering-your-reason') {
+    light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">`;
+    return light;
+  }
   if (['still-enough-to-listen', 'soft-place-to-land', 'let-them-think', 'precious-life'].includes(item.id)) {
     light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">`;
     if (!lazy) {

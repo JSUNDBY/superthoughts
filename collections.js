@@ -3,7 +3,8 @@ const dedicatedRooms = {
   'still-enough-to-listen': 'still-enough.html',
   'soft-place-to-land': 'soft-place-to-land.html',
   'let-them-think': 'let-them-think.html',
-  'precious-life': 'precious-life.html'
+  'precious-life': 'precious-life.html',
+  'remembering-your-reason': '/sessions/remembering-your-reason/'
 };
 if (document.body.classList.contains('page-session')) {
   const destination = dedicatedRooms[new URLSearchParams(location.search).get('session')];
@@ -12,7 +13,7 @@ if (document.body.classList.contains('page-session')) {
 // Existing shared links keep leading directly to their listening room.
 if (!document.body.classList.contains('page-session') && !document.body.classList.contains('page-practice')) {
   const id = new URLSearchParams(location.search).get('session');
-  if ((window.STCatalog || []).some(item => item.id === id)) location.replace(id === 'still-enough-to-listen' ? 'still-enough.html' : id === 'soft-place-to-land' ? 'soft-place-to-land.html' : id === 'let-them-think' ? 'let-them-think.html' : id === 'precious-life' ? 'precious-life.html' : `session.html?session=${encodeURIComponent(id)}`);
+  if ((window.STCatalog || []).some(item => item.id === id)) location.replace(dedicatedRooms[id] || `session.html?session=${encodeURIComponent(id)}`);
 }
 const entries = {
   morning: { title: 'Begin gently', description: 'A little room to choose how your day begins.', hero: 'A softer beginning.' },

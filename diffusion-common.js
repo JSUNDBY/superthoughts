@@ -37,4 +37,4 @@ const requested=new URLSearchParams(location.search).get('session');
 const item=(window.STCatalog||[]).find(s=>s.id===requested);
 if(item){const featured=Object.values(sessions).find(s=>s.id===item.id);const destination=new URL(featured?.page||'session.html',location.href);destination.search=location.search;if(featured)destination.searchParams.delete('session');destination.hash=location.hash;location.replace(destination.href)}
 if(['#practice','#collections','#listen'].includes(location.hash))location.replace('explore.html'+location.hash);
-if('serviceWorker' in navigator && isSecureContext)navigator.serviceWorker.register('pilot-sw.js').catch(()=>{});
+if('serviceWorker' in navigator && isSecureContext)navigator.serviceWorker.register(new URL('pilot-sw.js', document.baseURI).href).catch(()=>{});

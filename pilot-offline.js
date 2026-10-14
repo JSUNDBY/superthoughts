@@ -9,7 +9,7 @@
   let saved = new Set();
   let busy = false;
   let installPrompt = null;
-  const current = () => catalog.find(item => new URL(item.src, location.href).href === audio.src);
+  const current = () => catalog.find(item => new URL(item.src, document.baseURI).href === audio.src);
   function update() {
     const item = current();
     button.disabled = busy || !worker || !item;
@@ -55,7 +55,7 @@
   });
   (async () => {
     try {
-      const registration = await navigator.serviceWorker.register('pilot-sw.js');
+      const registration = await navigator.serviceWorker.register(new URL('pilot-sw.js', document.baseURI).href);
       await navigator.serviceWorker.ready;
       worker = registration.active;
       if (!worker) throw new Error('Offline saving is getting ready. Reload once to try again.');
