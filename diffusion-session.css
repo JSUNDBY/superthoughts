@@ -10,6 +10,8 @@
 .room[data-design=let]{background:radial-gradient(ellipse at 58% 40%,#a3c7ba,#689279 60%,#1b2931)}
 .room[data-design=life]{background:radial-gradient(ellipse at 58% 40%,#b57c92,#609c97 60%,#182b35)}
 
+.room[data-design=ritual]{background:radial-gradient(ellipse at 58% 40%,#c5b8af,#495066 60%,#242a3b)}
+.room[data-design=ritual] .session-intro .pace-note{max-width:470px;margin:0 0 16px;color:#f2e6d0;font-size:13px;line-height:1.5;letter-spacing:.02em}
 .room[data-design=urge]{background:radial-gradient(ellipse at 58% 40%,#aac8b4,#31525a 60%,#183139)}
 
 .room[data-design=urge] .session-intro .pace-note{max-width:440px;margin:0 0 16px;color:#f1e1bd;font-size:13px;line-height:1.5;letter-spacing:.02em}

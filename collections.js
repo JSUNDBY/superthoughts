@@ -5,7 +5,8 @@ const dedicatedRooms = {
   'let-them-think': 'let-them-think.html',
   'precious-life': 'precious-life.html',
   'remembering-your-reason': '/sessions/remembering-your-reason/',
-  'when-the-urge-arrives': '/sessions/when-the-urge-arrives/'
+  'when-the-urge-arrives': '/sessions/when-the-urge-arrives/',
+  'a-new-small-ritual': '/sessions/a-new-small-ritual/'
 };
 if (document.body.classList.contains('page-session')) {
   const destination = dedicatedRooms[new URLSearchParams(location.search).get('session')];
