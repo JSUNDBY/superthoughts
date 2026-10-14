@@ -4,7 +4,8 @@ const dedicatedRooms = {
   'soft-place-to-land': 'soft-place-to-land.html',
   'let-them-think': 'let-them-think.html',
   'precious-life': 'precious-life.html',
-  'remembering-your-reason': '/sessions/remembering-your-reason/'
+  'remembering-your-reason': '/sessions/remembering-your-reason/',
+  'when-the-urge-arrives': '/sessions/when-the-urge-arrives/'
 };
 if (document.body.classList.contains('page-session')) {
   const destination = dedicatedRooms[new URLSearchParams(location.search).get('session')];
