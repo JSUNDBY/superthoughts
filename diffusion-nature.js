@@ -46,7 +46,8 @@ const LIGHT_PALETTES = {
   stress: {shadow:'#19323c', base:'#315561', fold:'#608a91', lit:'#d4b891', light:'#f7e4b7', edge:'#b77f78', air:'#93b9ae', reflection:'#ecc58f', undertone:'#87afb5'},
   ritual: {shadow:'#242a3b', base:'#495066', fold:'#748791', lit:'#c5b8af', light:'#f3e7cd', edge:'#a78c7f', air:'#a0bbbd', reflection:'#d8bd8d', undertone:'#a2a7bf'},
   urge: {shadow:'#183139', base:'#31525a', fold:'#6d9b99', lit:'#aac8b4', light:'#f0e0b4', edge:'#b18a74', air:'#8cb9ad', reflection:'#e4b78e', undertone:'#71b4b2'},
-  reason: {shadow:'#202a3a', base:'#455061', fold:'#6b8190', lit:'#c8aeb0', light:'#f4e5d7', edge:'#ac8299', air:'#98b9bd', reflection:'#d8a9a0', undertone:'#8fb6af'}
+  reason: {shadow:'#202a3a', base:'#455061', fold:'#6b8190', lit:'#c8aeb0', light:'#f4e5d7', edge:'#ac8299', air:'#98b9bd', reflection:'#d8a9a0', undertone:'#8fb6af'},
+  asking: {shadow:'#202b34', base:'#38545f', fold:'#678887', lit:'#d2b3a0', light:'#f4dfbd', edge:'#a16f78', air:'#86aeb7', reflection:'#e2b697', undertone:'#789e9c'}
 };
 function rgba(hex, opacity) {
   return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${opacity})`;

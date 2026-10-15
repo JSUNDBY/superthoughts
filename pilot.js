@@ -97,7 +97,7 @@ function buildLight(item, host, lazy = false) {
   host.style.setProperty('--g-shape-a', shape()); host.style.setProperty('--g-shape-b', shape());
   const light = document.createElement('div'); light.className = 'tile-light'; light.setAttribute('aria-hidden', 'true');
   const motif = TILE_MOTIFS[item.id] || 'bloom'; host.dataset.motif = motif;
-  if (item.id === 'remembering-your-reason' || item.id === 'when-the-urge-arrives' || item.id === 'a-new-small-ritual' || item.id === 'stress-without-the-cigarette') {
+  if (item.id === 'remembering-your-reason' || item.id === 'when-the-urge-arrives' || item.id === 'a-new-small-ritual' || item.id === 'stress-without-the-cigarette' || item.id === 'the-pause-before-asking') {
     light.innerHTML = `<img class="tl-still" src="images/art/${item.id}.jpg" alt="" ${lazy ? 'loading="lazy" ' : ''}decoding="async">`;
     return light;
   }
