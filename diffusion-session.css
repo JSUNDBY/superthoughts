@@ -19,9 +19,12 @@
 .room[data-design=stress]{background:radial-gradient(ellipse at 58% 40%,#d4b891,#315561 60%,#19323c)}
 .room[data-design=stress] .session-intro .pace-note{max-width:450px;margin:0 0 16px;color:#f7e4c8;font-size:13px;line-height:1.5;letter-spacing:.02em}
 /* A longer title stays in document flow so the player never covers its introduction. */
-.room[data-design=stress]{display:flex;flex-direction:column;height:auto;min-height:max(760px,calc(100svh - 70px))}
-.room[data-design=stress] .session-intro{position:relative;left:auto;right:auto;top:auto;margin:70px clamp(24px,7vw,110px) 40px}
-.room[data-design=stress] .player{position:relative;left:auto;bottom:auto;transform:none;margin:auto auto 44px}
-.room[data-design=stress].expanded,.room[data-design=stress]:fullscreen{height:100%;min-height:0;overflow:auto}
-@media(max-width:640px){.room[data-design=stress]{min-height:700px}.room[data-design=stress] .session-intro{margin:40px 26px}.room[data-design=stress] .player{margin:0 auto 24px}}
-.room[data-design=stress]>.site-header{width:100%;box-sizing:border-box;flex-shrink:0}
+.room:is([data-design=stress],[data-design=asking]){display:flex;flex-direction:column;height:auto;min-height:max(760px,calc(100svh - 70px))}
+.room:is([data-design=stress],[data-design=asking]) .session-intro{position:relative;left:auto;right:auto;top:auto;margin:70px clamp(24px,7vw,110px) 40px}
+.room:is([data-design=stress],[data-design=asking]) .player{position:relative;left:auto;bottom:auto;transform:none;margin:auto auto 44px}
+.room:is([data-design=stress],[data-design=asking]).expanded,.room:is([data-design=stress],[data-design=asking]):fullscreen{height:100%;min-height:0;overflow:auto}
+@media(max-width:640px){.room:is([data-design=stress],[data-design=asking]){min-height:700px}.room:is([data-design=stress],[data-design=asking]) .session-intro{margin:40px 26px}.room:is([data-design=stress],[data-design=asking]) .player{margin:0 auto 24px}}
+.room:is([data-design=stress],[data-design=asking])>.site-header{width:100%;box-sizing:border-box;flex-shrink:0}
+
+.room[data-design=asking]{background:radial-gradient(ellipse at 58% 40%,#d2b3a0,#38545f 60%,#202b34)}
+.room[data-design=asking] .session-intro .pace-note{max-width:450px;margin:0 0 16px;color:#f4dfbd;font-size:13px;line-height:1.5;letter-spacing:.02em}
