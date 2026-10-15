@@ -43,6 +43,7 @@ const LIGHT_PALETTES = {
   honey: {shadow:'#302433', base:'#523b50', fold:'#557b94', lit:'#d3a6b5', light:'#f3e8dd', edge:'#ac6f89', air:'#93bad1', reflection:'#93c7d6', undertone:'#ca87a5'},
   slate: {shadow:'#1b2931', base:'#345650', fold:'#689279', lit:'#a3c7ba', light:'#e3e5d3', edge:'#6d8eaa', air:'#89b9ba', reflection:'#9aa5d1', undertone:'#c18d9e'},
   linen: {shadow:'#182b35', base:'#355a67', fold:'#609c97', lit:'#b6c5bc', light:'#f1e2dc', edge:'#b57c92', air:'#9caed1', reflection:'#d998af', undertone:'#92bcb5'},
+  stress: {shadow:'#19323c', base:'#315561', fold:'#608a91', lit:'#d4b891', light:'#f7e4b7', edge:'#b77f78', air:'#93b9ae', reflection:'#ecc58f', undertone:'#87afb5'},
   ritual: {shadow:'#242a3b', base:'#495066', fold:'#748791', lit:'#c5b8af', light:'#f3e7cd', edge:'#a78c7f', air:'#a0bbbd', reflection:'#d8bd8d', undertone:'#a2a7bf'},
   urge: {shadow:'#183139', base:'#31525a', fold:'#6d9b99', lit:'#aac8b4', light:'#f0e0b4', edge:'#b18a74', air:'#8cb9ad', reflection:'#e4b78e', undertone:'#71b4b2'},
   reason: {shadow:'#202a3a', base:'#455061', fold:'#6b8190', lit:'#c8aeb0', light:'#f4e5d7', edge:'#ac8299', air:'#98b9bd', reflection:'#d8a9a0', undertone:'#8fb6af'}
