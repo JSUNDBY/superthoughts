@@ -47,7 +47,8 @@ const LIGHT_PALETTES = {
   ritual: {shadow:'#242a3b', base:'#495066', fold:'#748791', lit:'#c5b8af', light:'#f3e7cd', edge:'#a78c7f', air:'#a0bbbd', reflection:'#d8bd8d', undertone:'#a2a7bf'},
   urge: {shadow:'#183139', base:'#31525a', fold:'#6d9b99', lit:'#aac8b4', light:'#f0e0b4', edge:'#b18a74', air:'#8cb9ad', reflection:'#e4b78e', undertone:'#71b4b2'},
   reason: {shadow:'#202a3a', base:'#455061', fold:'#6b8190', lit:'#c8aeb0', light:'#f4e5d7', edge:'#ac8299', air:'#98b9bd', reflection:'#d8a9a0', undertone:'#8fb6af'},
-  asking: {shadow:'#202b34', base:'#38545f', fold:'#678887', lit:'#d2b3a0', light:'#f4dfbd', edge:'#a16f78', air:'#86aeb7', reflection:'#e2b697', undertone:'#789e9c'}
+  asking: {shadow:'#202b34', base:'#38545f', fold:'#678887', lit:'#d2b3a0', light:'#f4dfbd', edge:'#a16f78', air:'#86aeb7', reflection:'#e2b697', undertone:'#789e9c'},
+  tense: {shadow:'#1f242e', base:'#3f4a57', fold:'#6f7f86', lit:'#d6b49a', light:'#f6e3c9', edge:'#a9757a', air:'#90b1b9', reflection:'#e3b08f', undertone:'#86a9a4'}
 };
 function rgba(hex, opacity) {
   return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${opacity})`;
