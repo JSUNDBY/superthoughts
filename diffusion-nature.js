@@ -88,7 +88,9 @@ const LIGHT_PALETTES = {
   cUnivCreaEner: {shadow:'#231c14', base:'#4b3e2e', fold:'#7c684f', lit:'#d1da76', light:'#eff3cd', edge:'#a69c4e', air:'#bbaa95', reflection:'#d0e38b', undertone:'#a38c6f'},
   cAwakToTheFiftD: {shadow:'#142321', base:'#2e4b47', fold:'#4f7c75', lit:'#76b4da', light:'#cde4f3', edge:'#4e96a6', air:'#95bbb5', reflection:'#8bb6e3', undertone:'#6fa39b'},
   cFlowStatActi: {shadow:'#231421', base:'#4b2e47', fold:'#7c4f76', lit:'#da7696', light:'#f3cdd9', edge:'#a64e7c', air:'#bb95b6', reflection:'#e38b9c', undertone:'#a36f9c'},
-  cVitaAndBala: {shadow:'#1d2314', base:'#3f4b2e', fold:'#697c4f', lit:'#79da76', light:'#cef3cd', edge:'#63a64e', air:'#aabb95', reflection:'#8be393', undertone:'#8da36f'}
+  cVitaAndBala: {shadow:'#1d2314', base:'#3f4b2e', fold:'#697c4f', lit:'#79da76', light:'#cef3cd', edge:'#63a64e', air:'#aabb95', reflection:'#8be393', undertone:'#8da36f'},
+  yesmouth: {shadow:'#231416', base:'#4b2e33', fold:'#7c4f57', lit:'#da9476', light:'#f3d8cd', edge:'#a6574e', air:'#bb959b', reflection:'#e3b18b', undertone:'#a36f78'},
+  phone: {shadow:'#231c14', base:'#4b3e2e', fold:'#7c674f', lit:'#dac376', light:'#f3eacd', edge:'#a6804e', air:'#bba995', reflection:'#e3db8b', undertone:'#a38b6f'}
 };
 function rgba(hex, opacity) {
   return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${opacity})`;
