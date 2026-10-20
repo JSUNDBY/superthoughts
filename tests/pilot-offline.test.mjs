@@ -8,7 +8,7 @@ const catalogSource = readFileSync(new URL('../pilot-catalog.js', import.meta.ur
 const catalogContext = { window: {} };
 vm.runInNewContext(catalogSource, catalogContext, { filename: 'pilot-catalog.js' });
 const catalog = Array.from(catalogContext.window.STCatalog, item => ({
-  id: item.id, src: item.src, cues: item.cues
+  id: item.id, src: item.src, cues: item.cues, stream: item.stream === true
 }));
 const origin = 'http://localhost:8846/';
 const guided = catalog.find(item => item.id === 'gratitude');
@@ -167,15 +167,16 @@ test('a guided session is listed only after audio and cues are complete', async 
   assert.deepEqual(saved(removed), []);
 });
 
-test('every current catalog session can be saved and removed offline', async () => {
+test('every current downloadable catalog session can be saved and removed offline', async () => {
   const sw = worker();
-  for (const item of catalog) {
+  const local = catalog.filter(item => !item.stream);
+  for (const item of local) {
     const result = await sw.message({ type: 'CACHE_SESSION', src: item.src, cues: item.cues });
     assert.equal(result.ok, true, `${item.id}: ${result.error || ''}`);
     assert.ok(saved(result).includes(item.src), item.id);
   }
-  assert.deepEqual(saved(await sw.message({ type: 'LIST_SAVED' })), catalog.map(item => item.src));
-  for (const item of catalog) {
+  assert.deepEqual(saved(await sw.message({ type: 'LIST_SAVED' })), local.map(item => item.src));
+  for (const item of local) {
     const result = await sw.message({ type: 'REMOVE_SESSION', src: item.src, cues: item.cues });
     assert.equal(result.ok, true, item.id);
   }
@@ -256,11 +257,11 @@ test('imported catalog cannot expand the offline allowlist outside audio paths',
 test('focused session and practice query routes retain their own shell offline', async () => {
   const sw = worker({fetcher: async input => new Response(String(typeof input === 'string' ? input : input.url))});
   await sw.install();
-  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/', 'sessions/before-the-week-starts/']) {
+  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/', 'sessions/before-the-week-starts/', 'sessions/three-minute-reset/', 'sessions/five-minute-calm/', 'sessions/five-minute-morning-clarity/', 'sessions/a-practice-for-inner-peace/', 'sessions/calm-confidence-reset/', 'sessions/clear-your-mind-for-the-day/', 'sessions/stress-release/', 'sessions/creativity-reset/', 'sessions/set-down-guilt/', 'sessions/abundance-mindset/', 'sessions/clear-boundaries/', 'sessions/emotional-clarity/', 'sessions/evening-settle/', 'sessions/ground-your-mind/', 'sessions/let-the-day-close/', 'sessions/quiet-the-mind/', 'sessions/reignite-inner-vitality/', 'sessions/emotional-regulation/', 'sessions/emotional-softening/', 'sessions/evening-release/', 'sessions/evening-unwind/', 'sessions/gratitude-reset/', 'sessions/ground-into-your-body/', 'sessions/morning-calm-activation/', 'sessions/presence-recharge/', 'sessions/nervous-system-reset/', 'sessions/release-anxiety/', 'sessions/shifting-timelines/', 'sessions/grounded-in-gratitude/', 'sessions/quantum-abundance-tuning/', 'sessions/the-quantum-field/', 'sessions/pure-connection/', 'sessions/resonance-of-mind-and-heart/', 'sessions/universal-creative-energy/', 'sessions/awakening-to-the-fifth-dimension/', 'sessions/flow-state-activation/', 'sessions/vitality-and-balance/']) {
     await sw.route(origin + page, {mode:'navigate'});
   }
   sw.setFetcher(async () => { throw Error('offline'); });
-  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/', 'sessions/before-the-week-starts/']) {
+  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/', 'sessions/before-the-week-starts/', 'sessions/three-minute-reset/', 'sessions/five-minute-calm/', 'sessions/five-minute-morning-clarity/', 'sessions/a-practice-for-inner-peace/', 'sessions/calm-confidence-reset/', 'sessions/clear-your-mind-for-the-day/', 'sessions/stress-release/', 'sessions/creativity-reset/', 'sessions/set-down-guilt/', 'sessions/abundance-mindset/', 'sessions/clear-boundaries/', 'sessions/emotional-clarity/', 'sessions/evening-settle/', 'sessions/ground-your-mind/', 'sessions/let-the-day-close/', 'sessions/quiet-the-mind/', 'sessions/reignite-inner-vitality/', 'sessions/emotional-regulation/', 'sessions/emotional-softening/', 'sessions/evening-release/', 'sessions/evening-unwind/', 'sessions/gratitude-reset/', 'sessions/ground-into-your-body/', 'sessions/morning-calm-activation/', 'sessions/presence-recharge/', 'sessions/nervous-system-reset/', 'sessions/release-anxiety/', 'sessions/shifting-timelines/', 'sessions/grounded-in-gratitude/', 'sessions/quantum-abundance-tuning/', 'sessions/the-quantum-field/', 'sessions/pure-connection/', 'sessions/resonance-of-mind-and-heart/', 'sessions/universal-creative-energy/', 'sessions/awakening-to-the-fifth-dimension/', 'sessions/flow-state-activation/', 'sessions/vitality-and-balance/']) {
     const response = await sw.route(origin + page + '?session=warmth', {mode:'navigate'});
     assert.equal(await response.text(), origin + page);
   }
