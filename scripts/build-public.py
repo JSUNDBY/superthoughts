@@ -18,7 +18,7 @@ catalog=json.loads(subprocess.check_output(['node','-e',"global.window={};requir
 assert len(catalog)>=8
 assert len({item["id"] for item in catalog})==len(catalog)
 for item in catalog:
- files.append(item['src'])
+ if not item.get('stream'):files.append(item['src'])
  # Each track's own lock-screen and tile art (images/art/<id>.jpg).
  art=f"images/art/{item['id']}.jpg"
  if (ROOT/art).is_file():files.append(art)

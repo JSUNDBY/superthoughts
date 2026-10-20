@@ -22,6 +22,9 @@ const SESSION_FILES = (() => {
   if (!Array.isArray(catalog) || !catalog.length) throw new Error('Missing session catalog.');
   const files = new Map();
   for (const item of catalog) {
+    // Streamed catalog sessions live on the audio CDN and are never cached offline.
+    if (item && item.stream === true && typeof item.src === 'string' &&
+        /^https:\/\/superthoughts-audio\.b-cdn\.net\/site\/[a-z0-9][a-z0-9-]*\.mp3$/.test(item.src)) continue;
     const src = item && item.src;
     const cues = item && item.cues;
     // Restrict the imported data to versioned same-origin audio and cue paths.

@@ -12,6 +12,7 @@
   const current = () => catalog.find(item => new URL(item.src, document.baseURI).href === audio.src);
   function update() {
     const item = current();
+    if (item && item.stream) { button.hidden = true; note.textContent = 'This session streams. Offline saving is not available for it yet.'; return; }
     button.disabled = busy || !worker || !item;
     button.textContent = busy ? 'Saving…' : saved.has(item?.src) ? 'Remove offline copy' : 'Save for offline';
     if (!busy && worker) note.textContent = saved.has(item?.src)

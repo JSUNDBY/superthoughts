@@ -226,6 +226,20 @@ test('message validation rejects foreign origins, mismatched cues, and path trav
   assert.equal(sw.fetchCalls.length, 0);
 });
 
+test('streamed CDN sessions are skipped by the offline allowlist; other hosts still throw', async () => {
+  const streamed = { id: 's', src: 'https://superthoughts-audio.b-cdn.net/site/s-v1.mp3', cues: 'audio/s-v1-cues.json', stream: true };
+  const sw = worker({ catalogSource: `window.STCatalog = ${JSON.stringify([guided, streamed])};` });
+  const result = await sw.message({ type: 'CACHE_SESSION', src: streamed.src, cues: streamed.cues });
+  assert.equal(result.ok, false);
+  for (const entry of [
+    { src: 'https://elsewhere.example/site/s.mp3', cues: null, stream: true },
+    { src: 'https://superthoughts-audio.b-cdn.net/deep-sleep/s.mp3', cues: null, stream: true },
+    { src: 'https://superthoughts-audio.b-cdn.net/site/s.mp3', cues: null }
+  ]) {
+    assert.throws(() => worker({ catalogSource: `window.STCatalog = ${JSON.stringify([entry])};` }), /Invalid session catalog path/);
+  }
+});
+
 test('imported catalog cannot expand the offline allowlist outside audio paths', () => {
   for (const entry of [
     { src: '../private.mp3', cues: null },
