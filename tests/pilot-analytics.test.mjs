@@ -79,9 +79,9 @@ class Element extends EventTarget {
   querySelectorAll(selector) { return selector === '[data-choice]' ? this.buttons || [] : []; }
   querySelector(selector) { return selector === 'button' ? this.buttons?.[0] : null; }
 }
-function browserHarness(gpc = false, existingButton = false, href = 'https://example.test/session.html?session=secret', withAudio = false) {
+function browserHarness(gpc = false, existingButton = false, href = 'https://example.test/session.html?session=secret', withAudio = false, sharedStorage = null) {
   const data = new Map();
-  const storage = { getItem: key => data.get(key), setItem: (key, value) => data.set(key, value) };
+  const storage = sharedStorage || { getItem: key => data.get(key), setItem: (key, value) => data.set(key, value) };
   const head = new Element(), body = new Element();
   const existing = existingButton ? new Element() : null;
   const audio = withAudio ? new Audio() : null;
@@ -216,4 +216,21 @@ test('abundance launch links are attributed only with their matching medium', as
   assert.equal(approvedCampaign(`${base}&utm_medium=organic_video&utm_campaign=abundance_launch&utm_content=abundance_full`).campaign_content, 'abundance_full');
   assert.equal(approvedCampaign(`${base}&utm_medium=organic_short&utm_campaign=abundance_launch&utm_content=abundance_short`).campaign_content, 'abundance_short');
   assert.deepEqual(approvedCampaign(`${base}&utm_medium=organic_video&utm_campaign=abundance_launch&utm_content=abundance_short`), {});
+});
+
+test('consent choice is a bottom strip without a heading, shown once per browser and never over the player', () => {
+  const h = browserHarness(false, false, 'https://example.test/sessions/reset/');
+  const panel = h.body.children.find(child => child.className === 'analytics-choice');
+  assert.ok(panel, 'strip rendered on first visit');
+  assert.equal(panel.hidden, false);
+  assert.ok(!panel._html.includes('<h2'), 'no heading block; one line of text');
+  const style = h.head.children.find(e => typeof e.textContent === 'string' && e.textContent.includes('.analytics-choice{'));
+  assert.ok(style, 'strip styles injected');
+  assert.match(style.textContent, /\.analytics-choice\{position:fixed;left:0;right:0;bottom:0;/);
+  assert.ok(!/\.analytics-choice\{[^}]*max-width:430px/.test(style.textContent), 'no floating card width');
+  const again = browserHarness(false, false, 'https://example.test/library.html', false, h.storage);
+  const panel2 = again.body.children.find(child => child.className === 'analytics-choice');
+  assert.equal(panel2.hidden, true, 'already offered once; later pages stay clear');
+  again.controller.open();
+  assert.equal(panel2.hidden, false, 'the privacy control can still reopen it');
 });

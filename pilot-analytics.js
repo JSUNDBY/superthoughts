@@ -2,6 +2,7 @@ import { createListeningAnalytics } from './pilot-analytics-core.mjs';
 
 const MEASUREMENT_ID = 'G-93YX918L19';
 const CONSENT_KEY = 'st_analytics_consent_v1';
+const SEEN_KEY = 'st_analytics_seen_v1';
 const DENIED = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' };
 const GRANTED = { ...DENIED, analytics_storage: 'granted' };
 const APPROVED_CAMPAIGNS = {
@@ -135,23 +136,24 @@ export function createAnalyticsController({ win = window, doc = document, storag
   const style = doc.createElement('style');
   style.textContent = `
     .analytics-choice[hidden]{display:none!important}
-    .analytics-choice{position:fixed;inset:auto 16px 16px;z-index:100;max-width:430px;padding:22px;background:#222a26;color:#f6f0e6;border:1px solid #738173;box-shadow:0 12px 40px #0009;font:14px/1.5 system-ui,sans-serif}
-    .analytics-choice h2{font-size:19px;line-height:1.25;margin:0 0 9px;font-weight:600}
-    .analytics-choice p{margin:0 0 17px;color:#d7ddd3}
-    .analytics-choice-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .analytics-choice button,.analytics-settings-button{min-height:44px;padding:9px 14px;border:1px solid #b8c9b6;border-radius:4px;background:#dce8d8;color:#172019;font:600 13px system-ui,sans-serif;cursor:pointer}
+    .analytics-choice{position:fixed;left:0;right:0;bottom:0;z-index:100;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 16px;background:#222a26f2;color:#f6f0e6;border-top:1px solid #738173;font:13px/1.4 system-ui,sans-serif;backdrop-filter:blur(6px)}
+    .analytics-choice p{margin:0;flex:1 1 260px;color:#d7ddd3}
+    .analytics-choice a{color:#f6f0e6}
+    .analytics-choice-actions{display:flex;gap:8px;flex:0 0 auto}
+    .analytics-choice button,.analytics-settings-button{min-height:36px;padding:6px 14px;border:1px solid #b8c9b6;border-radius:4px;background:#dce8d8;color:#172019;font:600 13px system-ui,sans-serif;cursor:pointer}
     .analytics-choice button[data-choice="denied"]{background:transparent;color:#f6f0e6}
     .analytics-choice button:focus-visible,.analytics-settings-button:focus-visible{outline:2px solid #f6d09e;outline-offset:3px}
     .analytics-settings-button{position:fixed;bottom:12px;left:12px;z-index:80;min-height:36px;padding:6px 10px;background:#222a26;color:#f6f0e6;font-weight:400;font-size:11px}
     .analytics-settings-button.analytics-settings-inline{position:static;display:inline-block;margin:12px 0;min-height:44px}
     .session-toolbar .analytics-settings-button{position:static;min-height:0;background:#101916aa;color:#f6f0e6}
-    @media(max-width:520px){.analytics-choice{left:10px;right:10px;bottom:55px;max-width:none}.analytics-settings-button{bottom:9px;left:9px}}
+    @media(max-width:520px){.analytics-choice{padding:9px 12px}.analytics-choice-actions{width:100%;justify-content:flex-end}}
   `;
   doc.head.append(style);
   const panel = doc.createElement('section');
   panel.className = 'analytics-choice';
   panel.setAttribute('aria-label', 'Analytics preference');
-  panel.innerHTML = '<h2>Help improve this listening space?</h2><p>With your choice, Google Analytics measures page visits and how much of each session is actually heard. You can listen without analytics and change this choice anytime. <a href="/privacy.html">Privacy details</a></p><div class="analytics-choice-actions"><button type="button" data-choice="granted">Accept analytics</button><button type="button" data-choice="denied">Decline analytics</button></div>';
+  const privacyHref = '/privacy.html';
+  panel.innerHTML = '<p>Optional analytics measure visits and how much of each session is heard. <a href="' + privacyHref + '">Privacy</a></p><div class="analytics-choice-actions"><button type="button" data-choice="granted">Accept</button><button type="button" data-choice="denied">No thanks</button></div>';
   const existingSettings = [...doc.querySelectorAll('[data-analytics-settings]')];
   const settings = existingSettings[0] || doc.createElement('button');
   const generatedSettings = existingSettings.length === 0;
@@ -166,8 +168,11 @@ export function createAnalyticsController({ win = window, doc = document, storag
     destination.append(settings);
   }
   doc.body.append(panel);
-  const render = () => { panel.hidden = preference !== null; };
-  const open = () => { panel.hidden = false; panel.querySelector('button')?.focus(); };
+  // The strip is offered once per browser; with no choice it stays out of the way on later pages (analytics stay off).
+  let seen = false; try { seen = storage?.getItem(SEEN_KEY) === 'yes'; } catch {}
+  let forcedOpen = false;
+  const render = () => { panel.hidden = preference !== null || (seen && !forcedOpen); if (!panel.hidden && !seen) { seen = true; try { storage?.setItem(SEEN_KEY, 'yes'); } catch {} } };
+  const open = () => { forcedOpen = true; panel.hidden = false; panel.querySelector('button')?.focus(); };
   for (const button of existingSettings.length ? existingSettings : [settings]) button.addEventListener('click', open);
   for (const button of panel.querySelectorAll('[data-choice]')) button.addEventListener('click', () => {
     setPreference(button.dataset.choice);
