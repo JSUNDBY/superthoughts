@@ -242,11 +242,11 @@ test('imported catalog cannot expand the offline allowlist outside audio paths',
 test('focused session and practice query routes retain their own shell offline', async () => {
   const sw = worker({fetcher: async input => new Response(String(typeof input === 'string' ? input : input.url))});
   await sw.install();
-  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/']) {
+  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/', 'sessions/before-the-week-starts/']) {
     await sw.route(origin + page, {mode:'navigate'});
   }
   sw.setFetcher(async () => { throw Error('offline'); });
-  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/']) {
+  for (const page of ['session.html', 'practice.html', 'library.html', 'explore.html', 'still-enough.html', 'soft-place-to-land.html', 'let-them-think.html', 'precious-life.html', 'sessions/remembering-your-reason/', 'sessions/when-the-urge-arrives/', 'sessions/a-new-small-ritual/', 'sessions/stress-without-the-cigarette/', 'sessions/the-pause-before-asking/', 'sessions/after-a-tense-conversation/', 'sessions/the-abundance-practice/', 'sessions/the-empowerment-practice/', 'sessions/before-the-week-starts/']) {
     const response = await sw.route(origin + page + '?session=warmth', {mode:'navigate'});
     assert.equal(await response.text(), origin + page);
   }
