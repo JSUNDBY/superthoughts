@@ -116,7 +116,7 @@ function buildLight(item, host, lazy = false) {
 function renderLibrary() {
   if (isSessionPage) return;
   const saved = new Set(snapshot().favorites || []);
-  const shown = catalog.filter(item => filter === 'all' || (filter === 'favorites' ? saved.has(item.id) : filter === 'sound' ? item.type === 'sound' : item.category === filter));
+  const shown = catalog.filter(item => !item.unlisted).filter(item => filter === 'all' || (filter === 'favorites' ? saved.has(item.id) : filter === 'sound' ? item.type === 'sound' : item.category === filter));
   const grid = $('session-grid');
   const focused = document.activeElement;
   const focusedId = focused?.closest('.session-card')?.dataset.id;
