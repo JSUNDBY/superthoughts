@@ -143,3 +143,11 @@ main{max-width:1500px;margin:auto;padding:0 28px 0}
 .about-main p{font-size:clamp(18px,1.6vw,21px);line-height:1.6;color:#e4e6dc;margin:0 0 22px}
 .about-main .about-proof{color:#b9c0b7;font-size:16px}
 .about-links{display:flex;flex-wrap:wrap;gap:16px 36px;margin-top:44px}
+/* 2026-10-20 readability: small labels and numbers at 4.5:1 or better. */
+.art-number{background:#0d0b10cc;color:#f4efe4;padding:3px 7px;border-radius:3px;font-size:12px}
+.hero-index,.link-time,.kicker span{color:#eae5da}
+.hero-subtitle{color:#f4efe4}
+.kicker{font-size:12px;color:#ebe7dc}.library-intro .kicker span{color:#d9d6cc}
+.hero-index{font-size:13px;color:#f4efe4;text-shadow:0 1px 2px #000c,0 0 18px #000b}
+.hero-subtitle{text-shadow:0 1px 2px #000c,0 0 18px #000b}
+@media(max-width:640px){.hero-wash{background:linear-gradient(0deg,#120e16f2 0%,#120e16d9 45%,#120e1680 70%,#120e1610 92%)}}
