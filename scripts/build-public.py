@@ -10,6 +10,8 @@ files=['explore.html', 'library.html', 'about.html', 'diffusion-site.css', 'diff
  'CNAME','images/favicon.svg','images/superthoughts-symbol.svg','robots.txt','sitemap.xml']
 if (ROOT/'images/art/still-enough-motion-loop.mp4').is_file():files.append('images/art/still-enough-motion-loop.mp4')
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'sessions').rglob('*') if p.is_file() and p.suffix in ['.html','.js']]
+# Guides: text pages that answer one real question each and point to a free practice.
+files += ['guides.css']+[str(p.relative_to(ROOT)) for p in (ROOT/'guides').rglob('*.html')]
 files += [str(p.relative_to(ROOT)) for p in (ROOT/'fonts').iterdir() if p.is_file()]
 # Any optional new homepage module must be explicitly approved for publication here.
 if (ROOT/'homepage.js').is_file():files.append('homepage.js')

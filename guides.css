@@ -1,0 +1,30 @@
+/* Guides: text pages that answer one real question and point to one practice. */
+.guide-main{padding:96px 3.6vw 120px;max-width:760px}
+.guide-main .kicker{margin:0 0 22px}
+.guide-main h1{font-weight:300;font-size:clamp(36px,4.6vw,60px);letter-spacing:-.045em;line-height:1.08;margin:0 0 30px}
+.guide-main h2{font-weight:300;font-size:clamp(24px,2.6vw,32px);letter-spacing:-.03em;line-height:1.2;margin:52px 0 16px}
+.guide-main p,.guide-main li{font-size:clamp(17px,1.5vw,20px);line-height:1.6;color:#e4e6dc}
+.guide-main p{margin:0 0 20px}
+.guide-main .lead{font-size:clamp(19px,1.8vw,23px);color:#f1eee6}
+.guide-main ol,.guide-main ul{padding-left:1.2em;margin:0 0 22px}
+.guide-main li{margin:0 0 10px}
+.guide-main a{color:inherit}
+.guide-practice{display:block;text-decoration:none;color:#eeeae3;border:1px solid #ffffff2e;border-radius:6px;padding:22px 22px 20px;margin:12px 0 30px;background:#ffffff08}
+.guide-practice:hover,.guide-practice:focus-visible{border-color:#e7e7dd99;background:#ffffff10}
+.guide-practice .kicker{margin:0 0 10px}
+.guide-practice strong{display:block;font-weight:500;font-size:clamp(20px,2vw,24px);letter-spacing:-.02em;margin:0 0 8px}
+.guide-practice span{display:block;color:#b9c0b7;font-size:16px;line-height:1.5}
+.guide-practice em{display:inline-block;font-style:normal;margin-top:14px;border-bottom:1px solid #e7e7dd8e;padding-bottom:4px;font-size:14px}
+.guide-main details{border-top:1px solid #ffffff20;padding:16px 0}
+.guide-main details:last-of-type{border-bottom:1px solid #ffffff20}
+.guide-main summary{cursor:pointer;font-size:clamp(17px,1.5vw,20px);color:#f1eee6;list-style:none;padding-right:28px;position:relative}
+.guide-main summary::-webkit-details-marker{display:none}
+.guide-main summary::after{content:"+";position:absolute;right:4px;top:0;color:#b9c0b7}
+.guide-main details[open] summary::after{content:"\2013"}
+.guide-main details p{margin:14px 0 4px;color:#d9dbd2}
+.guide-more{margin-top:48px}
+.guide-more ul{list-style:none;padding:0}
+.guide-more li{margin:0 0 12px}
+.guide-main .guide-note{color:#b9c0b7;font-size:16px;margin-top:40px}
+.guide-index .guide-practice{margin:0 0 14px}
+@media(max-width:760px){.guide-main{padding:70px 24px 90px}.guide-main h2{margin-top:40px}}
