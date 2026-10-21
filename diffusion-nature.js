@@ -1,4 +1,5 @@
 /** Quiet, abstract studies of light passing through natural forms. Time is seconds. */
+import {WORLDS, WORLD_PALETTES} from './diffusion-worlds.js';
 const TAU = Math.PI * 2;
 
 function linear(ctx, x0, y0, x1, y1, stops) {
@@ -100,6 +101,7 @@ function rgba(hex, opacity) {
 function paintDiffusion(ctx, w, h, t, color = 'olive') {
   if (color === 'linen') { paintPrecious(ctx, w, h, t); return; }
   const p = LIGHT_PALETTES[color];
+  if (WORLDS[color]) { WORLDS[color](ctx, w, h, t, WORLD_PALETTES[color] || p); return; }
   const ink = (key, opacity=1) => p ? rgba(p[key], opacity) : null;
   const breathe = Math.sin(t * .25);
   const sway = Math.sin(t * .18 + .8);
