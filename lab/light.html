@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Light pieces · lab</title>
+<style>
+:root{color-scheme:dark}body{margin:0;background:#0b0a0d;color:#eee8dc;font:15px/1.5 system-ui,sans-serif}
+header{padding:20px 20px 8px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}h1{font-size:18px;font-weight:500;margin:0 16px 0 0}
+label{font-size:13px;color:#d8d2c6}input[type=range]{width:min(320px,70vw)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:16px 20px 40px}
+figure{margin:0}canvas{width:100%;aspect-ratio:4/3;display:block;background:#000}figcaption{font-size:13px;padding:8px 2px;color:#e8e2d6}
+figcaption b{font-weight:600;color:#fff}.full{position:fixed;inset:0;z-index:5;width:100vw;height:100vh;aspect-ratio:auto}
+</style></head><body>
+<header><h1>Light pieces</h1>
+<label>Point in the session <input id="k" type="range" min="0" max="1" step="0.001" value="0"> <span id="kv">0%</span></label>
+<label><input id="auto" type="checkbox"> Run the whole arc in 60 s</label></header>
+<p style="padding:0 20px;margin:0;font-size:13px;color:#cfc8bb">Tap a piece for full screen; tap again to close. Colour follows the slider (the listening position on the real page). Motion is real time.</p>
+<div class="grid" id="grid"></div>
+<script type="module">
+import {PIECES, createLight} from '../turrell.js';
+const names={still:['Still Enough to Listen','Elliptic opening, pearl'],soft:['A Soft Place to Land','Floating panel on honey light'],let:['Let Them Think What They Think','Two fields, breathing horizon'],life:['This Precious Life','Halo ring, rose-gold'],week:['Before the Week Starts','Skyspace, dusk into night'],yesmouth:['Before You Say Yes','Space Division, coral to rose'],tense:['After a Tense Conversation','Ganzfeld, settling'],phone:['Before You Pick Up the Phone','Slot of light, pre-dawn to gold'],empower:['The Empowerment Practice','Projected cube, ember to gold'],asking:['The Pause Before Asking','Wedgework, aurora colours'],urge:['When the Urge Arrives','A band of colour rises and passes'],stress:['Stress Without the Cigarette','Clearing, grey haze to clear air'],abundance:['The Abundance Practice','Oculus, warm gold'],ritual:['A New Small Ritual','Lit niche, jade and lime'],reason:['Remembering Your Reason','Tunnel to a lit centre']};
+let k=0;const slider=document.getElementById('k'),kv=document.getElementById('kv'),auto=document.getElementById('auto');
+slider.oninput=()=>{k=+slider.value;kv.textContent=Math.round(k*100)+'%'};
+let start=performance.now();(function tick(now){requestAnimationFrame(tick);if(auto.checked){k=((now-start)/60000)%1;slider.value=k;kv.textContent=Math.round(k*100)+'%'}})(start);
+const grid=document.getElementById('grid');
+for(const key of Object.keys(PIECES)){const f=document.createElement('figure');const c=document.createElement('canvas');f.append(c);
+ const cap=document.createElement('figcaption');cap.innerHTML=`<b>${names[key][0]}</b><br>${names[key][1]}`;f.append(cap);grid.append(f);
+ createLight(c,key,{progress:()=>k,scale:.6});c.onclick=()=>c.classList.toggle('full');}
+</script></body></html>

@@ -1,5 +1,6 @@
 import {createArtwork} from './diffusion-artwork.js';
 import {diffusion} from './diffusion-nature.js';
+import {drawStill} from './turrell.js';
 import {sessions} from './diffusion-catalog.js';
 const hero = document.querySelector('#art');
 if (hero) {
@@ -21,6 +22,7 @@ function draw(canvas){
  const box=canvas.getBoundingClientRect();if(!box.width||!box.height)return;
  canvas.width=Math.ceil(Math.min(box.width,800));canvas.height=Math.ceil(canvas.width*box.height/box.width);
  canvas.dataset.color=session.color;
+ if(drawStill(canvas,canvas.dataset.preview)){canvas.dataset.static='true';return}
  const ctx=canvas.getContext('2d',{alpha:false});const w=canvas.width,h=canvas.height;ctx.save();
  if(session.layout==='mirror'){ctx.translate(w,0);ctx.scale(-1,1)}
  else if(session.layout==='cross'){ctx.translate(w,0);ctx.rotate(Math.PI/2)}

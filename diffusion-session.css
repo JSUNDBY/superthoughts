@@ -43,3 +43,6 @@
 .separator{color:#eeede1d9}.time{color:#f2efe4}.playing small{color:#f2efe4e6}.player{background:#16121ad9}
 .player-controls button{color:#f4efe4;font-size:13px}
 @media(max-width:640px){.room-shade{background:linear-gradient(180deg,#0f0c12f2 0%,#0f0c12d9 50%,#0f0c12b3 70%,#0f0c12ee 100%)}.player-controls button{font-size:12px}}
+/* 2026-10-20 light pieces: the shade behind the text lifts while the controls are hidden during listening. */
+.room-shade{transition:opacity 1.5s ease}.immersed .room-shade{opacity:.15}
+.room .site-header{background:linear-gradient(180deg,#0f0c12d9 0%,#0f0c1299 55%,#0f0c1200 100%)}.session-page .site-header a{text-shadow:0 1px 2px #000c,0 0 14px #000a}

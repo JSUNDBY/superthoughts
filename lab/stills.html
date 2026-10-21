@@ -1,0 +1,5 @@
+<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><body><script type="module">
+import {PIECES, drawStill} from '../turrell.js';
+import {sessions} from '../diffusion-catalog.js';
+const out={};for(const key of Object.keys(PIECES)){const c=document.createElement('canvas');c.width=c.height=768;if(drawStill(c,key,.3,40))out[sessions[key].id]=c.toDataURL('image/jpeg',.88);}
+window.__stills=out;</script>

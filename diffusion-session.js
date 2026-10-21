@@ -1,12 +1,14 @@
 import {createPracticeStore,createPlaybackTracker} from './pilot-progress.mjs';
 import {createArtwork} from './diffusion-artwork.js';
+import {createLight} from './turrell.js';
 import {sessions,clock} from './diffusion-catalog.js';
 const id=document.querySelector('#room').dataset.design;
 const session=sessions[id]||sessions.still;
 const $=s=>document.querySelector(s);
 const room=$('#room'),audio=$('#pilot-audio'),play=$('#play'),seek=$('#seek'),art=$('#session-art');
 art.dataset.color=session.color;
-const artwork=createArtwork(art,{variant:'diffusion',layout:session.layout,phase:session.phase,color:session.color});
+const lightProgress=()=>audio.duration&&audio.currentTime>0?audio.currentTime/audio.duration:null;
+const artwork=createLight(art,id,{progress:lightProgress})||createArtwork(art,{variant:'diffusion',layout:session.layout,phase:session.phase,color:session.color});
 $('#title').textContent=session.title;$('#description').textContent=session.description;$('#player-title').textContent=session.title;
 document.title=`${session.title} · Superthoughts`;
 const item=(window.STCatalog||[]).find(s=>s.id===session.id);
