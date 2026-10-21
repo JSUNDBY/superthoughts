@@ -70,3 +70,6 @@ body:not(.page-session) .listening{display:none}
  .collection-links a:nth-child(3){--chip-a:#8a2f4a;--chip-b:#3a1f4f}
  .collection-links a:nth-child(4){--chip-a:#1f6f9c;--chip-b:#123a5c}
 }
+
+/* 2026-10-21 Josh: be explicit that the recordings are for entertainment */
+.site-disclaimer{max-width:1444px;margin:28px auto 0;padding:0 4.8vw;color:#c9c1bb;font-size:12px;line-height:1.6;letter-spacing:.02em}.site-disclaimer a{color:inherit;text-decoration:underline;text-underline-offset:3px}@media(max-width:640px){.site-disclaimer{padding:0 24px}}

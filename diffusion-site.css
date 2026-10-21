@@ -151,3 +151,6 @@ main{max-width:1500px;margin:auto;padding:0 28px 0}
 .hero-index{font-size:13px;color:#f4efe4;text-shadow:0 1px 2px #000c,0 0 18px #000b}
 .hero-subtitle{text-shadow:0 1px 2px #000c,0 0 18px #000b}
 @media(max-width:640px){.hero-wash{background:linear-gradient(0deg,#120e16f2 0%,#120e16d9 45%,#120e1680 70%,#120e1610 92%)}}
+
+/* 2026-10-21 Josh: be explicit that the recordings are for entertainment */
+.site-disclaimer{max-width:1444px;margin:28px auto 0;padding:0 4.8vw;color:#c9c1bb;font-size:12px;line-height:1.6;letter-spacing:.02em}.site-disclaimer a{color:inherit;text-decoration:underline;text-underline-offset:3px}@media(max-width:640px){.site-disclaimer{padding:0 24px}}
