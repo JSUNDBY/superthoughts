@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="data:,">
+<title>Connecting to Abundance and Prosperity: light space study</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0d0510; overflow: hidden; }
+  #session-art { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+  #arc { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); display: none;
+         font: 12px/1.2 -apple-system, system-ui, sans-serif; color: #f6d9c4; background: rgba(20,6,14,.55);
+         padding: 8px 12px; border-radius: 10px; gap: 10px; align-items: center; }
+  #arc.on { display: flex; }
+  #arc input { width: min(60vw, 360px); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js" } }
+</script>
+</head>
+<body>
+<canvas id="session-art"></canvas>
+<div id="arc"><label for="arc-t">arc</label><input id="arc-t" type="range" min="0" max="1" step="0.001"><span id="arc-v"></span></div>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from './vendor/postprocessing/EffectComposer.js';
+import { RenderPass } from './vendor/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from './vendor/postprocessing/OutputPass.js';
+
+// ?t=0..1 pins the arc position. ?dur=seconds sets the default arc length (9:00 session).
+// ?time=seconds sets the motion clock, ?freeze holds it (deterministic stills). ?ui=1 or key "u" shows the slider.
+const q = new URLSearchParams(location.search);
+const clamp01 = v => Math.min(1, Math.max(0, v));
+let pinnedT = q.has('t') ? clamp01(parseFloat(q.get('t')) || 0) : null;
+const DUR = parseFloat(q.get('dur')) || 540;
+const T0 = parseFloat(q.get('time')) || 0;
+const FREEZE = q.has('freeze');
+
+const canvas = document.getElementById('session-art');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.toneMapping = THREE.NeutralToneMapping;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+
+// ---------- shared GLSL ----------
+const NOISE = /* glsl */`
+float hash3(vec3 p){ p = fract(p*0.3183099 + 0.1); p *= 17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float vnoise(vec3 x){ vec3 i = floor(x); vec3 f = fract(x); f = f*f*(3.0-2.0*f);
+  return mix(mix(mix(hash3(i),hash3(i+vec3(1,0,0)),f.x), mix(hash3(i+vec3(0,1,0)),hash3(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(hash3(i+vec3(0,0,1)),hash3(i+vec3(1,0,1)),f.x), mix(hash3(i+vec3(0,1,1)),hash3(i+vec3(1,1,1)),f.x),f.y), f.z); }
+float fbm(vec3 p){ float a = 0.5, s = 0.0; for (int i = 0; i < 5; i++){ s += a*vnoise(p); p = p*2.03 + vec3(1.7,9.2,3.1); a *= 0.5; } return s; }
+`;
+
+// ---------- colour + motion arc ----------
+const C = h => new THREE.Color(h);
+const STOPS = { // t = 0, 0.5, 1
+  skyTop: [C('#0a030c'), C('#1c0619'), C('#3c0f26')],
+  skyMid: [C('#170610'), C('#420c20'), C('#6e1e2c')],
+  skyLow: [C('#260a14'), C('#6a1a28'), C('#9a3a30')],
+  gold:   [C('#ff8c22'), C('#ffae36'), C('#ffd27a')],
+  rose:   [C('#e0305e'), C('#ff4f74'), C('#ff8f86')],
+  deep:   [C('#10030a'), C('#260616'), C('#4a1828')],
+};
+const arcColor = (k, t) => { const s = STOPS[k]; return t < 0.5 ? s[0].clone().lerp(s[1], t*2) : s[1].clone().lerp(s[2], (t-0.5)*2); };
+const ss = (a, b, x) => { const u = clamp01((x-a)/(b-a)); return u*u*(3-2*u); };
+
+const U = { uTime: { value: 0 }, uGold: { value: new THREE.Color() }, uRose: { value: new THREE.Color() }, uDeep: { value: new THREE.Color() } };
+
+// ---------- sky dome: warm haze with an opening halo behind the vessels ----------
+const sky = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false,
+  uniforms: { ...U, uTop: { value: new THREE.Color() }, uMid: { value: new THREE.Color() }, uLow: { value: new THREE.Color() }, uHalo: { value: 0 } },
+  vertexShader: `varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: NOISE + `
+    varying vec3 vD; uniform float uTime, uHalo; uniform vec3 uTop, uMid, uLow, uGold, uRose;
+    void main(){
+      vec3 d = normalize(vD);
+      float h = d.y;
+      vec3 c = mix(uLow, uMid, smoothstep(-0.25, 0.08, h));
+      c = mix(c, uTop, smoothstep(0.05, 0.45, h));
+      vec3 p = d*3.0;
+      float w = fbm(p + vec3(0.0, -uTime*0.02, uTime*0.01));
+      float haze = fbm(p*1.6 + w*2.2 + vec3(0.0, -uTime*0.03, 0.0));
+      c *= 0.65 + 0.7*haze;
+      vec3 toC = normalize(vec3(0.0, 0.0, -1.0));
+      float a = acos(clamp(dot(d, toC), -1.0, 1.0));
+      float halo = exp(-a*a*6.0) * uHalo;
+      c += mix(uRose, uGold, smoothstep(0.3, 1.0, uHalo)) * halo * (0.12 + 0.16*haze);
+      gl_FragColor = vec4(c, 1.0);
+    }`
+}));
+scene.add(sky);
+
+// ---------- the cascade: three vessels at three heights ----------
+const VESSELS = [
+  { y: 1.95, r: 0.62 },
+  { y: 0.72, r: 1.12 },
+  { y: -0.62, r: 1.86 },
+];
+const FLOOR_Y = -1.62;
+
+const surfaceMat = (seed) => new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  uniforms: { ...U, uFill: { value: 0 }, uSeed: { value: seed }, uR: { value: 1 } },
+  vertexShader: `varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: NOISE + `
+    varying vec2 vP; uniform float uTime, uFill, uSeed, uR; uniform vec3 uGold, uRose, uDeep;
+    void main(){
+      float r = length(vP);
+      vec2 q = vP*1.7*uR;
+      float ang = uTime*0.04 + uSeed;
+      mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
+      float sw = fbm(vec3(rot*q*1.2, uTime*0.06 + uSeed));
+      float w  = fbm(vec3(rot*q*0.9 + sw*1.6, uTime*0.04 + uSeed*2.0));
+      float ripple = pow(0.5 + 0.5*sin(r*26.0 - uTime*0.9 + w*5.0), 3.0) * smoothstep(1.0, 0.15, r);
+      vec3 col = mix(uRose, uGold, smoothstep(0.25, 0.8, w + 0.35*(1.0 - r)));
+      float lit = uFill;
+      float depth = smoothstep(1.0, 0.0, r);
+      vec3 c = col * lit * (0.10 + 0.75*w*w) * (0.55 + 0.45*depth) + uGold*ripple*0.30*lit;
+      c += uGold * 0.9 * lit * smoothstep(0.88, 0.995, r);          // meniscus at the brim
+      c *= smoothstep(1.0, 0.985, r);
+      gl_FragColor = vec4(c, 1.0);
+    }`
+});
+
+const bodyMat = () => new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  uniforms: { ...U, uFill: { value: 0 } },
+  vertexShader: `varying vec3 vN; varying vec3 vV; varying float vH;
+    void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vN = normalize(mat3(modelMatrix)*normal); vV = normalize(cameraPosition - wp.xyz); vH = position.y;
+      gl_Position = projectionMatrix*viewMatrix*wp; }`,
+  fragmentShader: `varying vec3 vN; varying vec3 vV; varying float vH; uniform float uFill; uniform vec3 uGold, uRose;
+    void main(){ float e = 1.0 - abs(dot(normalize(vN), normalize(vV)));
+      float g = pow(e, 2.5)*0.55 + 0.10*uFill;
+      vec3 c = mix(uRose, uGold, smoothstep(-0.3, 0.0, vH)) * g * (0.35 + 0.9*uFill);
+      gl_FragColor = vec4(c, 1.0); }`
+});
+
+const curtainMat = (seed, start) => new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  uniforms: { ...U, uAmt: { value: 0 }, uSeed: { value: seed }, uStart: { value: start }, uStream: { value: 0 } },
+  vertexShader: `varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+    void main(){ vUv = uv; vec4 wp = modelMatrix*vec4(position,1.0); vN = normalize(mat3(modelMatrix)*normal); vV = normalize(cameraPosition - wp.xyz);
+      gl_Position = projectionMatrix*viewMatrix*wp; }`,
+  fragmentShader: NOISE + `
+    varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+    uniform float uTime, uAmt, uSeed, uStart, uStream; uniform vec3 uGold, uRose;
+    void main(){
+      float a = vUv.x, y = vUv.y;                          // y: 1 at the brim, 0 where it lands
+      float d = abs(fract(a - uStart + 0.5) - 0.5) * 2.0;  // angular distance from where the spill begins
+      float spread = uStream > 0.5 ? 2.0 : uAmt*1.25;
+      float cover = smoothstep(spread, spread - 0.25, d + 0.15*vnoise(vec3(a*12.0, uSeed, uTime*0.1)));
+      float streak = fbm(vec3(a*(uStream > 0.5 ? 10.0 : 70.0), y*1.4 + uTime*0.55, uSeed));
+      streak = pow(smoothstep(0.3, 0.85, streak), 1.6);
+      float e = 1.0 - abs(dot(normalize(vN), normalize(vV)));
+      float dens = 0.30 + 1.1*pow(e, 2.0);
+      float vfade = smoothstep(0.0, 0.18, y) * (0.55 + 0.45*y);
+      
+      float splash = exp(-y*y*60.0) * 1.6;
+      vec3 col = uStream > 0.5 ? mix(uGold, uRose*0.6, smoothstep(0.0, 1.0, y)) : mix(uRose, uGold, smoothstep(0.1, 0.9, y));
+      if (uStream > 0.5) vfade = smoothstep(0.78, 0.12, y) * (0.35 + 0.65*(1.0 - y));
+      float k = (streak*dens*vfade + splash*streak) * cover * uAmt;
+      gl_FragColor = vec4(col * k * 1.15, 1.0);
+    }`
+});
+
+const vessels = [];
+VESSELS.forEach((v, i) => {
+  const g = new THREE.Group(); g.position.y = v.y; scene.add(g);
+  const surf = new THREE.Mesh(new THREE.CircleGeometry(v.r, 128), surfaceMat(i*3.7 + 1.0));
+  surf.rotation.x = -Math.PI/2; surf.material.uniforms.uR.value = v.r; g.add(surf);
+  const prof = [[1.0, 0.0], [0.97, -0.05], [0.82, -0.14], [0.55, -0.22], [0.25, -0.27], [0.0, -0.285]]
+    .map(([x, y]) => new THREE.Vector2(x*v.r, y*v.r));
+  const body = new THREE.Mesh(new THREE.LatheGeometry(prof, 128), bodyMat()); g.add(body);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(v.r, 0.011 + 0.004*i, 12, 256), new THREE.ShaderMaterial({
+    uniforms: { ...U, uFill: { value: 0 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader: `varying vec2 vUv; uniform float uTime, uFill; uniform vec3 uGold, uRose;
+      void main(){ float p = 0.75 + 0.25*sin(vUv.x*6.2832*3.0 - uTime*0.4);
+        gl_FragColor = vec4(mix(uRose, uGold, 0.4 + 0.6*uFill) * (0.35 + 1.1*uFill) * p, 1.0); }`
+  }));
+  rim.rotation.x = Math.PI/2; g.add(rim);
+  vessels.push({ ...v, surf, body, rim });
+});
+
+// overflow curtains: each brim spills into the vessel below; the last spills onto the floor of light
+const curtains = [];
+const addCurtain = (yTop, rTop, yBot, rBot, seed, start, stream = false) => {
+  const h = yTop - yBot;
+  const geo = new THREE.CylinderGeometry(rTop, rBot, h, stream ? 32 : 192, 24, true);
+  const m = new THREE.Mesh(geo, curtainMat(seed, start));
+  m.position.y = yBot + h/2; m.material.uniforms.uStream.value = stream ? 1 : 0;
+  scene.add(m); curtains.push(m); return m;
+};
+addCurtain(VESSELS[0].y, VESSELS[0].r, VESSELS[1].y + 0.01, VESSELS[0].r + (VESSELS[1].r - VESSELS[0].r)*0.6, 2.1, 0.08);
+addCurtain(VESSELS[1].y, VESSELS[1].r, VESSELS[2].y + 0.01, VESSELS[1].r + (VESSELS[2].r - VESSELS[1].r)*0.6, 5.3, 0.58);
+addCurtain(VESSELS[2].y, VESSELS[2].r, FLOOR_Y, VESSELS[2].r + 0.55, 8.9, 0.30);
+// the stream received from above, into the top vessel
+const stream = addCurtain(6.5, 0.016, VESSELS[0].y + 0.005, 0.045, 11.0, 0.0, true);
+
+// floor of light the pool overflows onto
+const floor = new THREE.Mesh(new THREE.CircleGeometry(7.5, 128), new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { ...U, uAmt: { value: 0 } },
+  vertexShader: `varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: NOISE + `varying vec2 vP; uniform float uTime, uAmt; uniform vec3 uGold, uRose;
+    void main(){ float r = length(vP);
+      float n = fbm(vec3(vP*0.9, uTime*0.05));
+      float ring = pow(0.5 + 0.5*sin(r*9.0 - uTime*0.7 + n*3.0), 4.0) * smoothstep(1.6, 2.6, r) * smoothstep(7.0, 3.0, r);
+      float pool = exp(-pow(max(r - 1.6, 0.0)*0.55, 2.0)) * smoothstep(1.2, 2.3, r);
+      vec3 c = mix(uGold, uRose, smoothstep(2.0, 6.0, r)) * (pool*(0.6 + 0.8*n) + ring*0.5);
+      gl_FragColor = vec4(c * uAmt * 0.42, 1.0); }`
+}));
+floor.rotation.x = -Math.PI/2; floor.position.y = FLOOR_Y; scene.add(floor);
+
+// warm vapour rising off each vessel
+const mists = VESSELS.map((v, i) => {
+  const w = v.r*2.6, h = 1.0 + v.r*0.9;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: { ...U, uAmt: { value: 0 }, uSeed: { value: i*4.1 } },
+    vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader: NOISE + `varying vec2 vUv; uniform float uTime, uAmt, uSeed; uniform vec3 uGold, uRose;
+      void main(){ vec2 p = vUv; float n = fbm(vec3(p.x*3.0, p.y*2.0 - uTime*0.12, uSeed + uTime*0.03));
+        float wisp = fbm(vec3(p.x*5.0 + n*2.0, p.y*1.5 - uTime*0.18, uSeed));
+        float mask = smoothstep(0.0, 0.12, p.y) * smoothstep(1.0, 0.25, p.y) * smoothstep(0.5, 0.15, abs(p.x - 0.5));
+        vec3 c = mix(uGold, uRose, p.y) * pow(wisp, 2.2) * mask;
+        gl_FragColor = vec4(c * uAmt * 0.22, 1.0); }`
+  }));
+  m.position.set(0, v.y + h*0.5 - 0.05, 0.02); scene.add(m); return m;
+});
+
+// motes of light rising: few at first, many by the end
+const MOTES = 1600;
+const mg = new THREE.BufferGeometry();
+const mpos = new Float32Array(MOTES*3), mseed = new Float32Array(MOTES*4);
+for (let i = 0; i < MOTES; i++) {
+  const a = Math.random()*Math.PI*2, rr = Math.pow(Math.random(), 0.6)*3.4;
+  mpos.set([Math.cos(a)*rr, 0, Math.sin(a)*rr*0.8], i*3);
+  mseed.set([Math.random(), Math.random(), Math.random(), Math.random()], i*4);
+}
+mg.setAttribute('position', new THREE.BufferAttribute(mpos, 3));
+mg.setAttribute('aSeed', new THREE.BufferAttribute(mseed, 4));
+const motes = new THREE.Points(mg, new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { ...U, uAmt: { value: 0 }, uPx: { value: 1 } },
+  vertexShader: `attribute vec4 aSeed; uniform float uTime, uAmt, uPx; varying float vA; varying float vC; varying float vB;
+    void main(){ vec3 p = position; float span = 6.0;
+      float y = mod(aSeed.x*span + uTime*(0.05 + 0.10*aSeed.y), span);
+      p.y = -1.7 + y; p.x += sin(uTime*0.3 + aSeed.z*6.28)*0.12; p.z += cos(uTime*0.25 + aSeed.w*6.28)*0.12;
+      vec4 mv = modelViewMatrix*vec4(p, 1.0);
+      gl_Position = projectionMatrix*mv;
+      float big = step(0.955, aSeed.y);
+      gl_PointSize = uPx * mix(2.0 + 4.0*aSeed.w, 16.0 + 18.0*aSeed.w, big) * (6.0 / -mv.z);
+      vB = big;
+      vA = step(aSeed.z, 0.06 + 0.6*uAmt) * smoothstep(0.0, 0.8, y) * smoothstep(span, span - 1.6, y) * (0.4 + 0.6*aSeed.y);
+      vC = aSeed.w; }`,
+  fragmentShader: `varying float vA; varying float vC; varying float vB; uniform vec3 uGold, uRose;
+    void main(){ vec2 c = gl_PointCoord - 0.5; float d = dot(c, c)*4.0;
+      float s = mix(exp(-d*4.0), smoothstep(1.0, 0.1, d)*0.07 + exp(-d*3.0)*0.04, vB);
+      gl_FragColor = vec4(mix(uRose, uGold, vC) * s * vA * 0.9, 1.0); }`
+}));
+scene.add(motes);
+
+// ---------- post ----------
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.7, 0.6, 0.45);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+// ---------- layout ----------
+const BASE_DIST = 8.4, TARGET = new THREE.Vector3(0, 0.45, 0);
+let baseFov = 42;
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight, pr = renderer.getPixelRatio();
+  renderer.setSize(w, h, false); composer.setSize(w, h);
+  camera.aspect = w / h;
+  // keep the cascade (about 2.6 units each side, 3.4 up and down) in frame at any aspect
+  const halfV = Math.max(3.25, 2.55 / camera.aspect);
+  baseFov = THREE.MathUtils.radToDeg(2*Math.atan(halfV / BASE_DIST));
+  camera.updateProjectionMatrix();
+  motes.material.uniforms.uPx.value = pr * Math.min(w, h) / 500;
+}
+window.addEventListener('resize', resize); resize();
+
+// ---------- arc ----------
+function applyArc(t, time) {
+  U.uGold.value.copy(arcColor('gold', t)); U.uRose.value.copy(arcColor('rose', t)); U.uDeep.value.copy(arcColor('deep', t));
+  const su = sky.material.uniforms;
+  su.uTop.value.copy(arcColor('skyTop', t)); su.uMid.value.copy(arcColor('skyMid', t)); su.uLow.value.copy(arcColor('skyLow', t));
+  su.uHalo.value = 0.15 + 0.85*ss(0.2, 1.0, t);
+  // receiving fills the top vessel first, then each brim spills into the next
+  const fills = [0.22 + 0.78*ss(0.0, 0.28, t), ss(0.18, 0.55, t), ss(0.34, 0.88, t)];
+  vessels.forEach((v, i) => { v.surf.material.uniforms.uFill.value = fills[i]; v.body.material.uniforms.uFill.value = fills[i]; v.rim.material.uniforms.uFill.value = fills[i]; });
+  curtains[0].material.uniforms.uAmt.value = ss(0.12, 0.40, t);
+  curtains[1].material.uniforms.uAmt.value = ss(0.38, 0.66, t);
+  curtains[2].material.uniforms.uAmt.value = ss(0.70, 0.96, t);
+  stream.material.uniforms.uAmt.value = 0.75 + 0.25*ss(0.0, 0.3, t);
+  floor.material.uniforms.uAmt.value = 0.05 + 0.95*ss(0.72, 1.0, t);
+  mists.forEach((m, i) => m.material.uniforms.uAmt.value = fills[i]*(0.9 - 0.4*ss(0.6, 1.0, t)));
+  motes.material.uniforms.uAmt.value = ss(0.05, 0.95, t);
+  bloom.strength = 0.6 + 0.3*t; bloom.radius = 0.55 + 0.2*t;
+  renderer.toneMappingExposure = 1.0 + 0.05*t;
+  // slow drift: a small sway around the cascade, a gentle bob, and a slow approach as it fills
+  const yaw = Math.sin(time*0.021)*0.16 + Math.sin(time*0.0067)*0.07;
+  const dist = BASE_DIST * (1.0 - 0.06*t);
+  const lift = 2.05 + Math.sin(time*0.033)*0.18;
+  camera.position.set(Math.sin(yaw)*dist, lift, Math.cos(yaw)*dist);
+  camera.fov = baseFov * (1.0 - 0.03*t); camera.updateProjectionMatrix();
+  camera.lookAt(TARGET);
+  mists.forEach(m => m.quaternion.copy(camera.quaternion));
+}
+
+// ---------- slider ----------
+const ui = document.getElementById('arc'), slider = document.getElementById('arc-t'), label = document.getElementById('arc-v');
+if (q.get('ui') === '1') ui.classList.add('on');
+window.addEventListener('keydown', e => { if (e.key === 'u') ui.classList.toggle('on'); });
+slider.addEventListener('input', () => { pinnedT = parseFloat(slider.value); });
+
+// ---------- loop ----------
+const clock = new THREE.Clock();
+let frames = 0, fpsT = performance.now();
+window.__fps = 0;
+window.__renderAt = (t, time) => { U.uTime.value = time; applyArc(t, time); composer.render(); };
+function frame() {
+  const el = FREEZE ? 0 : clock.getElapsedTime();
+  const time = T0 + el;
+  const t = pinnedT !== null ? pinnedT : Math.min(1, el / DUR);
+  U.uTime.value = time;
+  applyArc(t, time);
+  composer.render();
+  if (!ui.classList.contains('on') || document.activeElement !== slider) slider.value = t;
+  label.textContent = t.toFixed(3);
+  frames++; const now = performance.now();
+  if (now - fpsT > 1000) { window.__fps = frames*1000/(now - fpsT); frames = 0; fpsT = now; }
+  requestAnimationFrame(frame);
+}
+window.__ready = true;
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
