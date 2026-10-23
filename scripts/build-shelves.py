@@ -154,6 +154,35 @@ library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by
 </body>
 </html>
 """
+
+about = f"""{head('About · Superthoughts', 'Superthoughts is guided sessions and original music by Josh Sundby, made slowly to be listened to slowly.', 'https://superthoughts.com/about.html', 'About Superthoughts')}
+<body class="threshold about-page">
+  <a class="th-skip" href="#main">Skip to content</a>
+{header('about')}
+  <main id="main">
+    <div class="th-wrap th-library-intro th-ethos">
+      <p class="th-label">About</p>
+      <h1 style="margin:0 0 36px">Made slowly, to be listened to slowly.</h1>
+      <p>Superthoughts is made by Josh Sundby, a meditation teacher and musician in Minneapolis. He has taught meditation for more than twenty-five years.</p>
+      <p>Every session starts with his own words, spoken in his own voice. The music is his too, composed for each session: slow, low and warm, made to be felt in the body as much as heard.</p>
+      <p>The sessions are sparse on purpose. A few words, then long, open pauses. That space is where the real work happens: room to arrive, to notice what is here, and to let something settle or open on its own. You are not missing anything in the quiet. The music is there to hold you in it.</p>
+      <p>Go at your own pace. There is nothing to learn and nothing to perform. Listen once or a hundred times, for a few minutes or all the way through, eyes closed or open.</p>
+      <p>Each session is made for a real moment in a day: the morning before you pick up the phone, the breath before you say yes, the night when your mind will not stop.</p>
+      <p>The name is the idea. When the noise quiets down, there is room for bigger thoughts: about yourself, your life, and what is possible.</p>
+      <div class="th-actions">
+        <a class="th-button" href="still-enough.html">Begin with Still Enough to Listen <span>9 min</span></a>
+        <a class="th-link" href="library.html">The whole library <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </main>
+{FOOT}
+  {TOGGLE}
+  <script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
+</body>
+</html>
+"""
+
 (ROOT / 'index.html').write_text(home)
+(ROOT / 'about.html').write_text(about)
 (ROOT / 'library.html').write_text(library)
-print(f'built index.html and library.html: {len(sessions)} sessions on {len(moments)} shelves')
+print(f'built index.html, library.html and about.html: {len(sessions)} sessions on {len(moments)} shelves')
