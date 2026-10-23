@@ -77,7 +77,7 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
         <h1 id="welcome-title">Make room for bigger thoughts.</h1>
         <p class="lede">Guided sessions and original music by Josh Sundby. Put on headphones, close your eyes, and let the space open up.</p>
         <div class="th-actions">
-          <a class="th-button" href="still-enough.html">Begin with Still Enough to Listen <span>9 min</span></a>
+          <a class="th-button" href="still-enough.html"><i class="th-play" aria-hidden="true"></i>Begin with Still Enough to Listen <span>9 min</span></a>
           <a class="th-link" href="#moments">Choose your moment <span aria-hidden="true">→</span></a>
         </div>
         <p class="th-free">{words[free_count].capitalize() if free_count < len(words) else free_count} sessions are always free.</p>
@@ -100,7 +100,7 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
 
     <section class="th-section th-ethos" aria-labelledby="space-title"><div class="th-wrap">
       <p class="th-label" id="space-title">Why there is so much space</p>
-      <p>These sessions are sparse on purpose.</p>
+      <p>These sessions are spacious.</p>
       <p>A few words, and then room. Long pauses between the lines, so there is time to arrive, to notice what is here, and to let something settle or open on its own. You are not missing anything in the quiet. The quiet is the practice, and the music is there to hold you in it.</p>
       <p>Go at your own pace. Listen once or a hundred times, for the whole session or for a few minutes, eyes closed or open. Nothing here needs to be done right.</p>
       <a class="th-link" href="about.html">About Superthoughts <span aria-hidden="true">→</span></a>
@@ -165,12 +165,12 @@ about = f"""{head('About · Superthoughts', 'Superthoughts is guided sessions an
       <h1 style="margin:0 0 36px">Made slowly, to be listened to slowly.</h1>
       <p>Superthoughts is made by Josh Sundby, a meditation teacher and musician in Minneapolis. He has taught meditation for more than twenty-five years.</p>
       <p>Every session starts with his own words, spoken in his own voice. The music is his too, composed for each session: slow, low and warm, made to be felt in the body as much as heard.</p>
-      <p>The sessions are sparse on purpose. A few words, then long, open pauses. That space is where the real work happens: room to arrive, to notice what is here, and to let something settle or open on its own. You are not missing anything in the quiet. The music is there to hold you in it.</p>
+      <p>These sessions are spacious. A few words, then long, open pauses. That space is where the real work happens: room to arrive, to notice what is here, and to let something settle or open on its own. You are not missing anything in the quiet. The music is there to hold you in it.</p>
       <p>Go at your own pace. There is nothing to learn and nothing to perform. Listen once or a hundred times, for a few minutes or all the way through, eyes closed or open.</p>
       <p>Each session is made for a real moment in a day: the morning before you pick up the phone, the breath before you say yes, the night when your mind will not stop.</p>
       <p>The name is the idea. When the noise quiets down, there is room for bigger thoughts: about yourself, your life, and what is possible.</p>
       <div class="th-actions">
-        <a class="th-button" href="still-enough.html">Begin with Still Enough to Listen <span>9 min</span></a>
+        <a class="th-button" href="still-enough.html"><i class="th-play" aria-hidden="true"></i>Begin with Still Enough to Listen <span>9 min</span></a>
         <a class="th-link" href="library.html">The whole library <span aria-hidden="true">→</span></a>
       </div>
     </div>
