@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Still Enough to Sleep: night field</title>
+<meta name="robots" content="noindex">
+<style>
+  html, body { margin: 0; height: 100%; background: #07090b; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<script>
+// Still Enough to Sleep: a dark field where warm colour settles low and a soft shadow drifts across it.
+// No bright light, no arcs (Josh 2026-10-21): eyes are closed, so the picture only sets the room before they close.
+// ?time=seconds pins the clock for a still; the motion is slow enough to read as almost still.
+const q = new URLSearchParams(location.search);
+const PIN = q.has('time') ? parseFloat(q.get('time')) : null;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv = document.getElementById('field');
+const ctx = cv.getContext('2d', { alpha: false });
+// Low-resolution buffer, upscaled with smoothing: soft by construction and cheap on phones.
+const buf = document.createElement('canvas'); buf.width = 96; buf.height = 160;
+const b = buf.getContext('2d');
+// Colour pools: ember low on the horizon, moss and slate drifting above, ink at the top.
+const pools = [
+  { x: .30, y: .80, r: .55, c: [178, 78, 34], a: .62, sx: .021, sy: .013, ph: 0.0 },
+  { x: .72, y: .86, r: .50, c: [172, 104, 46], a: .40, sx: .017, sy: .011, ph: 1.7 },
+  { x: .55, y: .60, r: .60, c: [34, 92, 78], a: .52, sx: .013, sy: .019, ph: 3.1 },
+  { x: .20, y: .38, r: .55, c: [44, 52, 62], a: .35, sx: .011, sy: .015, ph: 4.4 },
+  { x: .80, y: .30, r: .45, c: [70, 46, 40], a: .25, sx: .015, sy: .009, ph: 5.2 },
+];
+function draw(t) {
+  const W = buf.width, H = buf.height;
+  b.globalCompositeOperation = 'source-over';
+  b.fillStyle = '#07090b'; b.fillRect(0, 0, W, H);
+  b.globalCompositeOperation = 'lighter';
+  for (const p of pools) {
+    const x = (p.x + .08 * Math.sin(t * p.sx + p.ph)) * W;
+    const y = (p.y + .05 * Math.cos(t * p.sy + p.ph)) * H;
+    const r = p.r * Math.max(W, H) * (1 + .06 * Math.sin(t * .007 + p.ph));
+    const g = b.createRadialGradient(x, y, 0, x, y, r);
+    const [R, G, B] = p.c; const a = p.a * (.85 + .15 * Math.sin(t * .005 + p.ph * 2));
+    g.addColorStop(0, `rgba(${R},${G},${B},${a})`); g.addColorStop(1, `rgba(${R},${G},${B},0)`);
+    b.fillStyle = g; b.fillRect(0, 0, W, H);
+  }
+  // A long, soft shadow crossing the field very slowly, like a curtain moving in a dark room.
+  b.globalCompositeOperation = 'source-over';
+  const sx = ((t * .004) % 1.6 - .3) * W;
+  const sh = b.createLinearGradient(sx - W * .45, 0, sx + W * .45, H * .35);
+  sh.addColorStop(0, 'rgba(7,9,11,0)'); sh.addColorStop(.5, 'rgba(7,9,11,.55)'); sh.addColorStop(1, 'rgba(7,9,11,0)');
+  b.fillStyle = sh; b.fillRect(0, 0, W, H);
+  // Ink settles from the top so text above stays readable.
+  const top = b.createLinearGradient(0, 0, 0, H * .55);
+  top.addColorStop(0, 'rgba(7,9,11,.85)'); top.addColorStop(1, 'rgba(7,9,11,0)');
+  b.fillStyle = top; b.fillRect(0, 0, W, H);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.filter = `blur(${Math.round(cv.width / 60)}px)`;
+  ctx.drawImage(buf, -cv.width * .05, -cv.height * .05, cv.width * 1.1, cv.height * 1.1);
+  ctx.filter = 'none';
+  // Fine grain breaks up 8-bit banding in the dark gradients.
+  ctx.globalAlpha = .07; ctx.fillStyle = grain; ctx.fillRect(0, 0, cv.width, cv.height); ctx.globalAlpha = 1;
+}
+const g0 = document.createElement('canvas'); g0.width = g0.height = 128;
+const gx = g0.getContext('2d'); const img = gx.createImageData(128, 128);
+for (let i = 0; i < img.data.length; i += 4) { const v = Math.random() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+gx.putImageData(img, 0, 0);
+const grain = ctx.createPattern(g0, 'repeat');
+function resize() {
+  const pr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = Math.round(innerWidth * pr); cv.height = Math.round(innerHeight * pr);
+  buf.height = Math.round(buf.width * innerHeight / Math.max(innerWidth, 1));
+}
+addEventListener('resize', resize); resize();
+const start = performance.now(); let last = 0;
+function frame(now) {
+  if (PIN === null && !reduce) requestAnimationFrame(frame);
+  if (now - last < 66) return; last = now;   // about 15 fps: the motion is slow, the battery matters
+  draw(PIN !== null ? PIN : (now - start) / 1000 + 40);
+}
+requestAnimationFrame(frame);
+if (PIN !== null || reduce) draw(PIN !== null ? PIN : 40);
+</script>
+</body>
+</html>
