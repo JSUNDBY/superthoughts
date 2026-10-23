@@ -1,0 +1,242 @@
+{
+ "note": "Shelves for the library and home page. Edit here, then run scripts/build-shelves.py. Josh 2026-10-23: eight moments; one free session per shelf.",
+ "moments": [
+  {
+   "id": "morning",
+   "name": "Morning",
+   "line": "The day is starting",
+   "light": "morning"
+  },
+  {
+   "id": "before",
+   "name": "Before",
+   "line": "Something hard is coming",
+   "light": "before"
+  },
+  {
+   "id": "right-now",
+   "name": "Right now",
+   "line": "In the middle of it",
+   "light": "right-now"
+  },
+  {
+   "id": "after",
+   "name": "After",
+   "line": "It happened, or you're carrying it",
+   "light": "after"
+  },
+  {
+   "id": "heart",
+   "name": "Heart",
+   "line": "Love, connection, gratitude",
+   "light": "heart"
+  },
+  {
+   "id": "open",
+   "name": "Open",
+   "line": "Power, abundance, possibility",
+   "light": "open"
+  },
+  {
+   "id": "still",
+   "name": "Still",
+   "line": "Stop, and rest",
+   "light": "still"
+  },
+  {
+   "id": "night",
+   "name": "Night",
+   "line": "Sleep, and the hours before it",
+   "light": "night"
+  }
+ ],
+ "series": [
+  {
+   "id": "clear-air",
+   "name": "Clear Air",
+   "line": "A series for letting go of smoking"
+  }
+ ],
+ "sessions": [
+  {
+   "key": "still-enough-to-sleep",
+   "href": "/sessions/still-enough-to-sleep/",
+   "num": 18,
+   "title": "Still Enough to Sleep",
+   "line": "Let the day be done, and sink into sleep.",
+   "length": "45 min",
+   "moment": "night",
+   "free": true
+  },
+  {
+   "key": "connecting-to-abundance",
+   "href": "/sessions/connecting-to-abundance/",
+   "num": 17,
+   "title": "Connecting to Abundance and Prosperity",
+   "line": "Feel connected to everything, and open your hands to what is coming.",
+   "length": "9 min",
+   "moment": "open",
+   "free": true
+  },
+  {
+   "key": "the-frequency-of-enough",
+   "href": "/sessions/the-frequency-of-enough/",
+   "num": 16,
+   "title": "The Frequency of Enough",
+   "line": "When the day was all measuring, feel that you have done enough.",
+   "length": "9 min",
+   "moment": "still",
+   "free": false
+  },
+  {
+   "key": "before-you-pick-up-the-phone",
+   "href": "/sessions/before-you-pick-up-the-phone/",
+   "num": 15,
+   "title": "Before You Pick Up the Phone",
+   "line": "The first minutes of the day, before anything else gets in.",
+   "length": "6 min",
+   "moment": "morning",
+   "free": true
+  },
+  {
+   "key": "before-you-say-yes",
+   "href": "/sessions/before-you-say-yes/",
+   "num": 14,
+   "title": "Before You Say Yes",
+   "line": "Someone asks. One breath before you answer.",
+   "length": "8 min",
+   "moment": "before",
+   "free": true
+  },
+  {
+   "key": "before-the-week-starts",
+   "href": "/sessions/before-the-week-starts/",
+   "num": 13,
+   "title": "Before the Week Starts",
+   "line": "Sunday evening, when the week lands in your chest: name each thing, set the weight down.",
+   "length": "7 min",
+   "moment": "before",
+   "free": false
+  },
+  {
+   "key": "the-empowerment-practice",
+   "href": "/sessions/the-empowerment-practice/",
+   "num": 12,
+   "title": "The Empowerment Practice",
+   "line": "Remember that you are powerful: feet, breath, heat in the chest, and the fire that is already yours.",
+   "length": "9 min",
+   "moment": "open",
+   "free": false
+  },
+  {
+   "key": "the-abundance-practice",
+   "href": "/sessions/the-abundance-practice/",
+   "num": 11,
+   "title": "The Abundance Practice",
+   "line": "Feel abundance as something already here: warmth in the chest, one thing you have, the sense of enough.",
+   "length": "10 min",
+   "moment": "open",
+   "free": false
+  },
+  {
+   "key": "after-a-tense-conversation",
+   "href": "/sessions/after-a-tense-conversation/",
+   "num": 10,
+   "title": "After a Tense Conversation",
+   "line": "Let a tense conversation settle: jaw, shoulders, hands, feet on the ground.",
+   "length": "5 min",
+   "moment": "after",
+   "free": true
+  },
+  {
+   "key": "the-pause-before-asking",
+   "href": "/sessions/the-pause-before-asking/",
+   "num": 9,
+   "title": "The Pause Before Asking",
+   "line": "Name a price for your work, rehearse a real offer, and let the sentence end.",
+   "length": "4 min",
+   "moment": "before",
+   "free": false
+  },
+  {
+   "key": "stress-without-the-cigarette",
+   "href": "/sessions/stress-without-the-cigarette/",
+   "num": 8,
+   "title": "Stress Without the Cigarette",
+   "line": "Choose one small thing to try before reaching for a cigarette.",
+   "length": "3 min",
+   "moment": "clear-air",
+   "free": false
+  },
+  {
+   "key": "a-new-small-ritual",
+   "href": "/sessions/a-new-small-ritual/",
+   "num": 7,
+   "title": "A New Small Ritual",
+   "line": "Choose one small action for a familiar pause in your day.",
+   "length": "19:30",
+   "moment": "clear-air",
+   "free": false
+  },
+  {
+   "key": "when-the-urge-arrives",
+   "href": "/sessions/when-the-urge-arrives/",
+   "num": 6,
+   "title": "When the Urge Arrives",
+   "line": "Notice what is here, then choose one helpful next step.",
+   "length": "20:30",
+   "moment": "clear-air",
+   "free": false
+  },
+  {
+   "key": "remembering-your-reason",
+   "href": "/sessions/remembering-your-reason/",
+   "num": 5,
+   "title": "Remembering Your Reason",
+   "line": "Reconnect with your own reason for wanting to stop smoking.",
+   "length": "20:30",
+   "moment": "clear-air",
+   "free": false
+  },
+  {
+   "key": "precious-life",
+   "href": "precious-life.html",
+   "num": 4,
+   "title": "This Precious Life",
+   "line": "An ordinary moment, and life here in this breath.",
+   "length": "11 min",
+   "moment": "open",
+   "free": false
+  },
+  {
+   "key": "let-them-think",
+   "href": "let-them-think.html",
+   "num": 3,
+   "title": "Let Them Think What They Think",
+   "line": "Room to be yourself without carrying every opinion.",
+   "length": "11:25",
+   "moment": "after",
+   "free": false
+  },
+  {
+   "key": "soft-place-to-land",
+   "href": "soft-place-to-land.html",
+   "num": 2,
+   "title": "A Soft Place to Land",
+   "line": "Nothing to do for a while.",
+   "length": "9:30",
+   "moment": "after",
+   "free": false
+  },
+  {
+   "key": "still-enough",
+   "href": "still-enough.html",
+   "num": 1,
+   "title": "Still Enough to Listen",
+   "line": "Nine quiet minutes to be still and notice your breath.",
+   "length": "9 min",
+   "moment": "still",
+   "free": true
+  }
+ ]
+}
