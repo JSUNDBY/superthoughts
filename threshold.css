@@ -24,7 +24,7 @@
 
 /* header */
 .th-header{position:absolute;inset:0 0 auto;z-index:5}
-.th-header .th-wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px}
+.th-header .th-wrap{padding-top:env(safe-area-inset-top);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px}
 .th-brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
 .th-brand img{width:26px;height:26px}
 :root[data-theme="light"] .th-brand img{filter:invert(1)}
@@ -130,7 +130,7 @@
 .th-email .choice{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);line-height:1.5}
 .th-email .small{margin:0;font-size:13px;color:var(--quiet)}
 .th-email .honeypot{position:absolute;left:-9999px}
-.th-footer{padding:48px 0 56px;border-top:1px solid var(--line);font-size:14px;color:var(--quiet)}
+.th-footer{padding:48px 0 calc(56px + env(safe-area-inset-bottom));border-top:1px solid var(--line);font-size:14px;color:var(--quiet)}
 .th-footer .th-wrap{display:flex;flex-wrap:wrap;gap:12px 26px;align-items:center}
 .th-footer a,.th-footer button{color:var(--muted);text-decoration:none;font:inherit;background:none;border:0;padding:8px 0;cursor:pointer}
 .th-footer a:hover,.th-footer button:hover{color:var(--text)}

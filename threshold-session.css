@@ -39,3 +39,7 @@
 .session-page .site-disclaimer{color:#bfb5a2}
 .session-page .site-footer{color:#bfb5a2}
 .session-page .site-footer a,.session-page .site-footer button{color:#d6ccb8}
+
+/* inside the app the page fills the screen: keep the header clear of the clock and camera */
+.session-page .site-header{padding-top:env(safe-area-inset-top)}
+.session-page .site-footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}

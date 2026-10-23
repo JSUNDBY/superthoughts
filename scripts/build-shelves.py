@@ -25,7 +25,7 @@ def head(title, desc, canonical, og_title):
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1512">
   <title>{e(title)}</title>
   <meta name="description" content="{e(desc)}">
