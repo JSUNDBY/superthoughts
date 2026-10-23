@@ -40,6 +40,12 @@
 .session-page .site-footer{color:#bfb5a2}
 .session-page .site-footer a,.session-page .site-footer button{color:#d6ccb8}
 
+/* while a session plays the controls fade, but the way back to the library stays */
+.session-page #session-back::before{content:"\2190\00a0"}
+.session-page .room.immersed .site-header.room-ui{opacity:1;visibility:visible;pointer-events:none}
+.session-page .room.immersed .site-header .brand{opacity:0;visibility:hidden}
+.session-page .room.immersed #session-back{opacity:.7;pointer-events:auto}
+
 /* inside the app the page fills the screen: keep the header clear of the clock and camera */
 .session-page .site-header{padding-top:env(safe-area-inset-top)}
 .session-page .site-footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
