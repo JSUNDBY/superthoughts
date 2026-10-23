@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v67-threshold';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v68-sessions';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 // Free sessions and their cues live on the public audio host (2026-10-23 audio move, phase 3a).
@@ -16,7 +16,7 @@ const SHELL_FILES = [
   'pilot-visuals.js', 'ambient-light.js', 'pilot-progress.mjs', 'pilot-offline.js',
   'pilot-feedback.js', 'pilot-analytics.js', 'pilot-analytics-core.mjs', 'terms.html', 'pilot.webmanifest',
   'images/favicon.svg', 'images/superthoughts-symbol.svg', 'images/art/still-enough-to-listen.jpg', 'images/art/still-enough-motion-loop.mp4',
-  'fonts/dm-sans-300.woff2', 'threshold.css', 'fonts/manrope-latin.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
+  'fonts/dm-sans-300.woff2', 'threshold.css', 'threshold-session.css', 'fonts/manrope-latin.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
 ];
 // Import the same static catalog used by the player. A separate versioned list
 // silently broke offline saving each time an audio master changed.
