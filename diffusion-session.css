@@ -30,7 +30,7 @@
 .room[data-design=asking] .session-intro .pace-note{max-width:450px;margin:0 0 16px;color:#f4dfbd;font-size:13px;line-height:1.5;letter-spacing:.02em}
 /* 2026-10-20: intro and player flow in one column so long titles or descriptions never run under the player (Josh saw the overlap on a short desktop window). */
 .room{display:flex;flex-direction:column;height:auto;min-height:max(620px,calc(100svh - 70px))}
-.session-intro{position:relative;top:auto;left:auto;margin:clamp(16px,7vh,110px) clamp(24px,7vw,110px) 36px}
+.session-intro{position:relative;top:auto;left:auto;right:auto;margin:clamp(16px,7vh,110px) clamp(24px,7vw,110px) 36px}
 .room .player{position:relative;left:auto;bottom:auto;transform:none;margin:auto auto 44px;flex:none}
 .room.expanded,.room:fullscreen{min-height:0}
 @media(max-width:640px){.room{min-height:max(640px,calc(100svh - 40px))}.session-intro{margin:28px 26px 32px;top:auto}.room .player{margin:auto auto 24px}}
