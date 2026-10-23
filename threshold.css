@@ -148,7 +148,7 @@
   .th-actions{flex-direction:column;align-items:stretch;gap:6px}
   /* Josh 2026-10-23: no big block on phones; the start is a quiet line with a play mark */
   .threshold a.th-button{justify-content:flex-start;gap:14px;padding:0;min-height:60px;background:transparent;color:var(--text);border-radius:0;border-bottom:1px solid var(--line);font-size:16px;font-weight:400}
-  .threshold a.th-button span{margin-left:auto;color:var(--quiet)}
+  .threshold a.th-button span{margin-left:auto;color:var(--muted)}
   .th-play{display:inline-block;flex:none;width:34px;height:34px;border:1px solid var(--text);border-radius:50%;position:relative}
   .th-play::after{content:"";position:absolute;left:13px;top:10px;border-left:10px solid var(--text);border-top:7px solid transparent;border-bottom:7px solid transparent}.th-link{justify-content:space-between}
   .th-doors{grid-template-columns:1fr}.th-door{min-height:112px}

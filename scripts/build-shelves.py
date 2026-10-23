@@ -38,7 +38,7 @@ def head(title, desc, canonical, og_title):
 def header(current):
     cur = lambda p: ' aria-current="page"' if p == current else ''
     return f"""  <header class="th-header"><div class="th-wrap">
-    <a class="th-brand" href="index.html" aria-label="Superthoughts home"><img src="images/superthoughts-symbol.svg" width="26" height="26" alt=""><span>Superthoughts</span></a>
+    <a class="th-brand" href="index.html">Superthoughts</a>
     <nav class="th-nav" aria-label="Main navigation">
       <a href="library.html"{cur('library')}>Library</a>
       <a class="hide-sm" href="about.html"{cur('about')}>About</a>
