@@ -1,9 +1,14 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v64-sleep';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v65-audio3a';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
+// Free sessions and their cues live on the public audio host (2026-10-23 audio move, phase 3a).
+// Only its free/ and cues/ folders are accepted; member audio stays same-origin until the paywall launches.
+const AUDIO_HOST = 'https://audio.superthoughts.com';
+const HOSTED_AUDIO = /^https:\/\/audio\.superthoughts\.com\/free\/[a-z0-9][a-z0-9-]*\.mp3$/;
+const HOSTED_CUES = /^https:\/\/audio\.superthoughts\.com\/cues\/[a-z0-9][a-z0-9-]*-cues\.json$/;
 const SHELL_FILES = [
   'explore.html', 'library.html', 'diffusion-site.css', 'diffusion-session.css', 'diffusion-artwork.js', 'diffusion-nature.js', 'diffusion-catalog.js', 'diffusion-common.js', 'diffusion-session.js',
   'newsletter.css', 'newsletter.js', 'contact.html', 'contact.css', 'contact.js',
@@ -28,8 +33,9 @@ const SESSION_FILES = (() => {
     const src = item && item.src;
     const cues = item && item.cues;
     // Restrict the imported data to versioned same-origin audio and cue paths.
-    if (typeof src !== 'string' || !/^audio\/[a-z0-9][a-z0-9-]*\.mp3$/.test(src) ||
-        !(cues === null || (typeof cues === 'string' && /^audio\/[a-z0-9][a-z0-9-]*-cues\.json$/.test(cues))) ||
+    if (typeof src !== 'string' || !(/^audio\/[a-z0-9][a-z0-9-]*\.mp3$/.test(src) || HOSTED_AUDIO.test(src)) ||
+        !(cues === null || (typeof cues === 'string' &&
+          (/^audio\/[a-z0-9][a-z0-9-]*-cues\.json$/.test(cues) || HOSTED_CUES.test(cues)))) ||
         files.has(src)) throw new Error('Invalid session catalog path.');
     files.set(src, cues);
   }
@@ -39,8 +45,10 @@ const SESSION_FILES = (() => {
 const pathFor = relative => new URL(relative, ROOT).pathname;
 const urlFor = relative => new URL(relative, ROOT).href;
 const shellPaths = new Set(SHELL_FILES.map(pathFor));
-const audioByPath = new Map([...SESSION_FILES].map(([src, cues]) => [pathFor(src), { src, cues }]));
-const cuePaths = new Set([...SESSION_FILES.values()].filter(Boolean).map(pathFor));
+// Saved files are keyed by full address (origin + path), so same-origin and hosted files never collide.
+const keyFor = relative => { const url = new URL(relative, ROOT); return url.origin + url.pathname; };
+const audioByKey = new Map([...SESSION_FILES].map(([src, cues]) => [keyFor(src), { src, cues }]));
+const cueKeys = new Set([...SESSION_FILES.values()].filter(Boolean).map(keyFor));
 const indexPath = pathFor('index.html');
 const pilotPath = pathFor('pilot.html');
 
@@ -50,9 +58,10 @@ function cleanPath(raw) {
     const decoded = decodeURIComponent(raw);
     if (raw.includes('\\') || /(?:^|\/)\.\.?(?=\/|[?#]|$)/.test(decoded)) return null;
     const url = new URL(raw, ROOT);
-    if (url.origin !== ROOT.origin || url.search || url.hash ||
-        !url.pathname.startsWith(ROOT.pathname)) return null;
-    return url.pathname;
+    if (url.search || url.hash) return null;
+    if (url.origin === AUDIO_HOST) return url.origin + url.pathname;
+    if (url.origin !== ROOT.origin || !url.pathname.startsWith(ROOT.pathname)) return null;
+    return url.origin + url.pathname;
   } catch (_) {
     return null;
   }
@@ -60,11 +69,11 @@ function cleanPath(raw) {
 
 function validateSession(src, cues) {
   const path = cleanPath(src);
-  const session = audioByPath.get(path);
+  const session = audioByKey.get(path);
   if (!session) throw new Error('Unknown session audio.');
   if (session.cues === null) {
     if (cues !== null && cues !== undefined && cues !== '') throw new Error('Unexpected cue file.');
-  } else if (cleanPath(cues) !== pathFor(session.cues)) {
+  } else if (cleanPath(cues) !== keyFor(session.cues)) {
     throw new Error('Cue file does not match this session.');
   }
   return session;
@@ -157,6 +166,12 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
+  if (url.origin === AUDIO_HOST && !url.search && !url.hash) {
+    const key = url.origin + url.pathname;
+    if (audioByKey.has(key)) event.respondWith(audioResponse(request));
+    else if (cueKeys.has(key)) event.respondWith(cueResponse(request));
+    return;
+  }
   if (url.origin !== ROOT.origin || url.hash) return;
   if ((url.pathname === ROOT.pathname || url.pathname === indexPath ||
        url.pathname === pilotPath || url.pathname === pathFor('session.html') ||
@@ -164,17 +179,19 @@ self.addEventListener('fetch', event => {
     event.respondWith(shellResponse(request, true));
   } else if (url.search) {
     return;
-  } else if (audioByPath.has(url.pathname)) {
+  } else if (audioByKey.has(url.origin + url.pathname)) {
     event.respondWith(audioResponse(request));
   } else if (shellPaths.has(url.pathname)) {
     event.respondWith(shellResponse(request, false));
-  } else if (cuePaths.has(url.pathname)) {
-    event.respondWith((async () => {
-      const cache = await caches.open(SESSION_CACHE);
-      return (await cache.match(request)) || fetch(request);
-    })());
+  } else if (cueKeys.has(url.origin + url.pathname)) {
+    event.respondWith(cueResponse(request));
   }
 });
+
+async function cueResponse(request) {
+  const cache = await caches.open(SESSION_CACHE);
+  return (await cache.match(request)) || fetch(request);
+}
 
 async function completeResponse(relative, isAudio) {
   const response = await fetch(urlFor(relative), { cache: 'no-store' });

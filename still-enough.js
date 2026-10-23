@@ -79,7 +79,7 @@ audio.addEventListener('timeupdate', () => {
 });
 seek.addEventListener('input', () => { audio.currentTime = Math.min(duration, Number(seek.value)); wake(); });
 
-fetch('audio/still-enough-to-listen-v5-cues.json').then(response => response.ok ? response.json() : []).then(data => {
+fetch('https://audio.superthoughts.com/cues/still-enough-to-listen-v5-cues.json').then(response => response.ok ? response.json() : []).then(data => {
   cues = Array.isArray(data) ? data : [];
   const container = $('transcript-lines');
   for (const cue of cues) {

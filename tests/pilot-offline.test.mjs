@@ -266,3 +266,49 @@ test('focused session and practice query routes retain their own shell offline',
     assert.equal(await response.text(), origin + page);
   }
 });
+
+test('free sessions on the public audio host save, play offline with ranges, and stay host-scoped', async () => {
+  const hosted = { id: 'h', src: 'https://audio.superthoughts.com/free/h-v1.mp3', cues: 'https://audio.superthoughts.com/cues/h-v1-cues.json' };
+  const sw = worker({ catalogSource: `window.STCatalog = ${JSON.stringify([guided, hosted])};` });
+  const result = await sw.message({ type: 'CACHE_SESSION', src: hosted.src, cues: hosted.cues });
+  assert.equal(result.ok, true);
+  assert.ok(saved(result).includes(hosted.src));
+  assert.deepEqual(sw.fetchCalls, [hosted.cues, hosted.src]);
+  sw.setFetcher(async () => { throw new Error('offline'); });
+  const part = await sw.route(hosted.src, { mode: 'no-cors', range: 'bytes=2-5' });
+  assert.equal(part.status, 206);
+  assert.equal(part.headers.get('content-range'), 'bytes 2-5/10');
+  const cues = await sw.route(hosted.cues);
+  assert.equal(await cues.text(), '[]');
+  // Unknown files on the audio host, other folders, and query strings are not handled.
+  for (const url of ['https://audio.superthoughts.com/free/other-v1.mp3', 'https://audio.superthoughts.com/review/gCfh7/h-v1.mp3',
+                     hosted.src + '?v=1']) {
+    assert.equal(await sw.route(url), undefined, url);
+  }
+  const removed = await sw.message({ type: 'REMOVE_SESSION', src: hosted.src, cues: hosted.cues });
+  assert.deepEqual(saved(removed), []);
+});
+
+test('the public audio host is only accepted for its free/ audio and cues/ folders', () => {
+  for (const entry of [
+    { src: 'https://audio.superthoughts.com/library/m-v1.mp3', cues: null },
+    { src: 'https://audio.superthoughts.com/review/gCfh7/r.mp3', cues: null },
+    { src: 'https://audio.superthoughts.com/free/../library/m.mp3', cues: null },
+    { src: 'http://audio.superthoughts.com/free/h-v1.mp3', cues: null },
+    { src: 'https://audio.superthoughts.com.evil.example/free/h-v1.mp3', cues: null },
+    { src: 'https://audio.superthoughts.com/free/h-v1.mp3', cues: 'https://audio.superthoughts.com/free/h-v1-cues.json' },
+    { src: 'https://audio.superthoughts.com/free/h-v1.mp3', cues: 'https://elsewhere.example/cues/h-v1-cues.json' }
+  ]) {
+    assert.throws(() => worker({ catalogSource: `window.STCatalog = ${JSON.stringify([entry])};` }),
+      /Invalid session catalog path/, JSON.stringify(entry));
+  }
+});
+
+test('a hosted session cannot be saved with another session\'s cues', async () => {
+  const a = { id: 'a', src: 'https://audio.superthoughts.com/free/a-v1.mp3', cues: 'https://audio.superthoughts.com/cues/a-v1-cues.json' };
+  const b = { id: 'b', src: 'https://audio.superthoughts.com/free/b-v1.mp3', cues: 'https://audio.superthoughts.com/cues/b-v1-cues.json' };
+  const sw = worker({ catalogSource: `window.STCatalog = ${JSON.stringify([a, b])};` });
+  const result = await sw.message({ type: 'CACHE_SESSION', src: a.src, cues: b.cues });
+  assert.equal(result.ok, false);
+  assert.equal(sw.fetchCalls.length, 0);
+});
