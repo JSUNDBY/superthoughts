@@ -20,13 +20,16 @@ catalog=json.loads(subprocess.check_output(['node','-e',"global.window={};requir
 assert len(catalog)>=8
 assert len({item["id"] for item in catalog})==len(catalog)
 for item in catalog:
- if not item.get('stream'):files.append(item['src'])
+ # Free sessions now play from https://audio.superthoughts.com (audio move 3a, 2026-10-23). Keep publishing the
+ # repo copy at the old same-origin path until the move is complete, so older cached pages keep working.
+ local=lambda p:'audio/'+p.rsplit('/',1)[1] if p.startswith('https://') else p
+ if not item.get('stream') and (ROOT/local(item['src'])).is_file():files.append(local(item['src']))
  # Each track's own lock-screen and tile art (images/art/<id>.jpg).
  art=f"images/art/{item['id']}.jpg"
  if (ROOT/art).is_file():files.append(art)
  else:print(f'WARNING: no track art for {item["id"]}; render it before publishing')
  if item['cues']:
-  files.append(item['cues']);cues=json.loads((ROOT/item['cues']).read_text())
+  files.append(local(item['cues']));cues=json.loads((ROOT/local(item['cues'])).read_text())
   if not item.get('stream'):assert item['duration']-cues[-1]['end']>=30  # craft rule for new productions; legacy catalog recordings ship as published
 for filename in files:
  src=ROOT/filename
