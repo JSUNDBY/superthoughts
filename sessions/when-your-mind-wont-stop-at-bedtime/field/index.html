@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>When Your Mind Won't Stop at Bedtime: lights going out</title>
+<meta name="robots" content="noindex">
+<style>
+  html, body { margin: 0; height: 100%; background: #08080a; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<script>
+// When Your Mind Won't Stop at Bedtime: the open tabs of the day as small warm lights scattered through the dark.
+// Over the first ten minutes (while the voice talks) they go out one by one, until one low lamp is left and the
+// room belongs to the night. ?time=seconds pins the clock for a still.
+const q = new URLSearchParams(location.search);
+const PIN = q.has('time') ? parseFloat(q.get('time')) : null;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv = document.getElementById('field');
+const ctx = cv.getContext('2d', { alpha: false });
+const buf = document.createElement('canvas'); buf.width = 120; buf.height = 200;
+const b = buf.getContext('2d');
+// Lights: position, colour, and the second at which each one finishes going out.
+const lights = [
+  [.18, .30, [232, 170, 96], 90], [.74, .24, [214, 140, 88], 160], [.46, .40, [240, 190, 120], 230],
+  [.86, .50, [200, 120, 80], 300], [.28, .56, [226, 156, 92], 370], [.62, .62, [236, 176, 104], 440],
+  [.12, .70, [208, 132, 82], 510], [.80, .76, [230, 160, 96], 570],
+];
+const LAMP = [.50, .88, [196, 110, 60]];
+function draw(t) {
+  const W = buf.width, H = buf.height;
+  b.globalCompositeOperation = 'source-over';
+  b.fillStyle = '#08080a'; b.fillRect(0, 0, W, H);
+  // A faint deep-green dark so the black has depth.
+  const air = b.createRadialGradient(W * .4, H * .55, 0, W * .4, H * .55, W * 1.1);
+  air.addColorStop(0, 'rgba(24,40,34,.55)'); air.addColorStop(1, 'rgba(24,40,34,0)');
+  b.fillStyle = air; b.fillRect(0, 0, W, H);
+  b.globalCompositeOperation = 'lighter';
+  for (const [x, y, c, off] of lights) {
+    const life = Math.max(0, Math.min(1, (off - t) / 60));   // a minute to fade, then gone
+    if (!life) continue;
+    const flick = .9 + .1 * Math.sin(t * .4 + x * 20);
+    const r = W * .16 * (.6 + .4 * life);
+    const g = b.createRadialGradient(x * W, y * H, 0, x * W, y * H, r);
+    g.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${.55 * life * flick})`); g.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
+    b.fillStyle = g; b.fillRect(0, 0, W, H);
+  }
+  // One low lamp stays: dimming slowly, never quite out.
+  const lamp = .35 + .25 * Math.max(0, 1 - t / 900);
+  const lg = b.createRadialGradient(LAMP[0] * W, LAMP[1] * H, 0, LAMP[0] * W, LAMP[1] * H, W * .55);
+  lg.addColorStop(0, `rgba(196,110,60,${lamp})`); lg.addColorStop(1, 'rgba(196,110,60,0)');
+  b.fillStyle = lg; b.fillRect(0, 0, W, H);
+  b.globalCompositeOperation = 'source-over';
+  const top = b.createLinearGradient(0, 0, 0, H * .45);
+  top.addColorStop(0, 'rgba(8,8,10,.80)'); top.addColorStop(1, 'rgba(8,8,10,0)');
+  b.fillStyle = top; b.fillRect(0, 0, W, H);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.filter = `blur(${Math.round(cv.width / 80)}px)`;
+  ctx.drawImage(buf, -cv.width * .05, -cv.height * .05, cv.width * 1.1, cv.height * 1.1);
+  ctx.filter = 'none';
+  ctx.globalAlpha = .07; ctx.fillStyle = grain; ctx.fillRect(0, 0, cv.width, cv.height); ctx.globalAlpha = 1;
+}
+const g0 = document.createElement('canvas'); g0.width = g0.height = 128;
+const gx = g0.getContext('2d'); const img = gx.createImageData(128, 128);
+for (let i = 0; i < img.data.length; i += 4) { const v = Math.random() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+gx.putImageData(img, 0, 0);
+const grain = ctx.createPattern(g0, 'repeat');
+function resize() {
+  const pr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = Math.round(innerWidth * pr); cv.height = Math.round(innerHeight * pr);
+  buf.height = Math.round(buf.width * innerHeight / Math.max(innerWidth, 1));
+}
+addEventListener('resize', resize); resize();
+// The page has no access to the player's clock, so the lights follow time on the page: the same pace as the voice.
+const start = performance.now(); let last = 0;
+function frame(now) {
+  if (PIN === null && !reduce) requestAnimationFrame(frame);
+  if (now - last < 66) return; last = now;
+  draw(PIN !== null ? PIN : (now - start) / 1000);
+}
+requestAnimationFrame(frame);
+if (PIN !== null || reduce) draw(PIN !== null ? PIN : 0);
+</script>
+</body>
+</html>

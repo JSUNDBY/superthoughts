@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two Minutes Between Things: the gap</title>
+<meta name="robots" content="noindex">
+<style>
+  html, body { margin: 0; height: 100%; background: #0d1312; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<script>
+// Two Minutes Between Things: what you just left on one side, what's next on the other, and between them a
+// band of clear light that widens on the in-breath and narrows on the out-breath. The gap is the session.
+// ?time=seconds pins the clock for a still. Breath about 4 s in, 6 s out.
+const q = new URLSearchParams(location.search);
+const PIN = q.has('time') ? parseFloat(q.get('time')) : null;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv = document.getElementById('field');
+const ctx = cv.getContext('2d', { alpha: false });
+const buf = document.createElement('canvas'); buf.width = 120; buf.height = 200;
+const b = buf.getContext('2d');
+function breath(t) { const p = (t % 10) / 10; return p < .4 ? Math.sin(p / .4 * Math.PI / 2) : Math.cos((p - .4) / .6 * Math.PI / 2); }
+function draw(t) {
+  const W = buf.width, H = buf.height, k = breath(t);
+  b.globalCompositeOperation = 'source-over';
+  b.fillStyle = '#0d1312'; b.fillRect(0, 0, W, H);
+  // Left: the thing you just left, a muted warm stone that drifts slowly.
+  const L = b.createRadialGradient(W * (.10 + .03 * Math.sin(t * .02)), H * .62, 0, W * .1, H * .62, W * .85);
+  L.addColorStop(0, 'rgba(150,104,78,.70)'); L.addColorStop(1, 'rgba(150,104,78,0)');
+  b.fillStyle = L; b.fillRect(0, 0, W, H);
+  // Right: what's next, a cool sage, just as soft.
+  const R = b.createRadialGradient(W * (.92 + .03 * Math.cos(t * .017)), H * .48, 0, W * .92, H * .48, W * .85);
+  R.addColorStop(0, 'rgba(82,128,112,.72)'); R.addColorStop(1, 'rgba(82,128,112,0)');
+  b.fillStyle = R; b.fillRect(0, 0, W, H);
+  // The gap: a vertical band of clear, pale light that breathes.
+  b.globalCompositeOperation = 'lighter';
+  const cx = W * .5, w = W * (.05 + .07 * k);
+  const g = b.createLinearGradient(cx - w * 2.2, 0, cx + w * 2.2, 0);
+  g.addColorStop(0, 'rgba(226,232,214,0)'); g.addColorStop(.5, `rgba(226,232,214,${.30 + .22 * k})`); g.addColorStop(1, 'rgba(226,232,214,0)');
+  b.fillStyle = g; b.fillRect(cx - w * 2.2, 0, w * 4.4, H);
+  // A low horizon where the band meets the floor: feet on the ground.
+  const fl = b.createLinearGradient(0, H * .80, 0, H);
+  fl.addColorStop(0, 'rgba(60,70,60,0)'); fl.addColorStop(1, 'rgba(60,70,60,.35)');
+  b.fillStyle = fl; b.fillRect(0, H * .8, W, H * .2);
+  b.globalCompositeOperation = 'source-over';
+  const top = b.createLinearGradient(0, 0, 0, H * .5);
+  top.addColorStop(0, 'rgba(13,19,18,.82)'); top.addColorStop(1, 'rgba(13,19,18,0)');
+  b.fillStyle = top; b.fillRect(0, 0, W, H);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.filter = `blur(${Math.round(cv.width / 70)}px)`;
+  ctx.drawImage(buf, -cv.width * .05, -cv.height * .05, cv.width * 1.1, cv.height * 1.1);
+  ctx.filter = 'none';
+  ctx.globalAlpha = .07; ctx.fillStyle = grain; ctx.fillRect(0, 0, cv.width, cv.height); ctx.globalAlpha = 1;
+}
+const g0 = document.createElement('canvas'); g0.width = g0.height = 128;
+const gx = g0.getContext('2d'); const img = gx.createImageData(128, 128);
+for (let i = 0; i < img.data.length; i += 4) { const v = Math.random() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+gx.putImageData(img, 0, 0);
+const grain = ctx.createPattern(g0, 'repeat');
+function resize() {
+  const pr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = Math.round(innerWidth * pr); cv.height = Math.round(innerHeight * pr);
+  buf.height = Math.round(buf.width * innerHeight / Math.max(innerWidth, 1));
+}
+addEventListener('resize', resize); resize();
+const start = performance.now(); let last = 0;
+function frame(now) {
+  if (PIN === null && !reduce) requestAnimationFrame(frame);
+  if (now - last < 66) return; last = now;
+  draw(PIN !== null ? PIN : (now - start) / 1000 + 4);
+}
+requestAnimationFrame(frame);
+if (PIN !== null || reduce) draw(PIN !== null ? PIN : 4);
+</script>
+</body>
+</html>

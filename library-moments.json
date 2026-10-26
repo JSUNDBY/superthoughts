@@ -59,6 +59,36 @@
  ],
  "sessions": [
   {
+   "key": "when-your-mind-wont-stop-at-bedtime",
+   "href": "/sessions/when-your-mind-wont-stop-at-bedtime/",
+   "num": 21,
+   "title": "When Your Mind Won't Stop at Bedtime",
+   "line": "Close the day's open tabs and let the list wait for morning.",
+   "length": "25 min",
+   "moment": "night",
+   "free": false
+  },
+  {
+   "key": "two-minutes-between-things",
+   "href": "/sessions/two-minutes-between-things/",
+   "num": 20,
+   "title": "Two Minutes Between Things",
+   "line": "One slow reset between meetings or errands.",
+   "length": "5 min",
+   "moment": "right-now",
+   "free": true
+  },
+  {
+   "key": "when-you-wake-up-already-tense",
+   "href": "/sessions/when-you-wake-up-already-tense/",
+   "num": 19,
+   "title": "When You Wake Up Already Tense",
+   "line": "For mornings when the tightness gets there before the day does.",
+   "length": "9 min",
+   "moment": "morning",
+   "free": false
+  },
+  {
    "key": "still-enough-to-sleep",
    "href": "/sessions/still-enough-to-sleep/",
    "num": 18,
