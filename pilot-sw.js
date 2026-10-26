@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v73-wayback';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v74-approvals';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 // Free sessions and their cues live on the public audio host (2026-10-23 audio move, phase 3a).
