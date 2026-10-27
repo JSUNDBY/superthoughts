@@ -129,3 +129,40 @@ test('returns failure when provider rejects or omits id', async () => {
     assert.equal((await worker.fetch(request(), env)).status, 502);
   }
 });
+
+const pitch = { ...valid, name: 'Brian', message: 'I created a quick redesign mockup for you. Its completely free.' };
+function kv({ fail = false } = {}) {
+  const puts = [];
+  return { puts, put: async (key, value, options) => { if (fail) throw new Error('kv down'); puts.push({ key, value: JSON.parse(value), options }); } };
+}
+
+test('keeps a pitch in FILTERED instead of emailing it, with the normal reply', async () => {
+  const { calls, env } = setup();
+  env.FILTERED = kv();
+  const response = await worker.fetch(request(pitch), env);
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { ok: true, code: 'sent' });
+  assert.equal(calls.filter(c => c.url.includes('resend')).length, 0);
+  assert.equal(env.FILTERED.puts.length, 1);
+  assert.equal(env.FILTERED.puts[0].value.email, pitch.email);
+  assert.equal(env.FILTERED.puts[0].options.expirationTtl, 365 * 24 * 60 * 60);
+});
+
+test('emails a real message when FILTERED is bound', async () => {
+  const { calls, env } = setup();
+  env.FILTERED = kv();
+  const response = await worker.fetch(request(), env);
+  assert.equal(response.status, 200);
+  assert.equal(calls.filter(c => c.url.includes('resend')).length, 1);
+  assert.equal(env.FILTERED.puts.length, 0);
+});
+
+test('emails a pitch when FILTERED is missing or the write fails', async () => {
+  for (const binding of [undefined, kv({ fail: true })]) {
+    const { calls, env } = setup();
+    if (binding) env.FILTERED = binding;
+    const response = await worker.fetch(request(pitch), env);
+    assert.equal(response.status, 200);
+    assert.equal(calls.filter(c => c.url.includes('resend')).length, 1);
+  }
+});

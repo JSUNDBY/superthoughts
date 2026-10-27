@@ -10,6 +10,12 @@
   "observability": {
     "enabled": false
   },
+  "kv_namespaces": [
+    {
+      "binding": "FILTERED",
+      "id": "3e74062913bb4985a1fb735680896222"
+    }
+  ],
   "ratelimits": [
     {
       "name": "CONTACT_RATE_LIMIT",

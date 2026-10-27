@@ -1,8 +1,11 @@
+import { looksLikeSolicitation } from './solicitation.mjs';
+
 const ALLOWED_ORIGINS = new Set(['https://superthoughts.com', 'https://www.superthoughts.com']);
 const ALLOWED_HOSTNAMES = new Set(['superthoughts.com', 'www.superthoughts.com']);
 const MAX_BODY_BYTES = 20 * 1024;
 const FROM = 'Superthoughts <hello@superthoughts.com>';
 const TO = 'josh@superthoughts.com';
+const FILTERED_TTL_SECONDS = 365 * 24 * 60 * 60;
 
 function reply(status, code, origin) {
   const headers = {
@@ -137,6 +140,15 @@ export default {
     catch { return reply(502, 'verification_unavailable', origin); }
     if (!challenge.available) return reply(502, 'verification_unavailable', origin);
     if (!challenge.valid) return reply(400, 'invalid_challenge', origin);
+    // A pitch is kept for a year and gets the same reply as a real message.
+    // Without the binding, or if the write fails, it is emailed as usual.
+    if (env.FILTERED && looksLikeSolicitation(input.message, input.name)) {
+      try {
+        const record = { name: input.name.trim(), email: input.email, message: input.message.trim() };
+        await env.FILTERED.put(`${new Date().toISOString()}-${crypto.randomUUID()}`, JSON.stringify(record), { expirationTtl: FILTERED_TTL_SECONDS });
+        return reply(200, 'sent', origin);
+      } catch {}
+    }
     try {
       const accepted = await sendEmail(input, env.RESEND_API_KEY);
       return accepted ? reply(200, 'sent', origin) : reply(502, 'delivery_unavailable', origin);
