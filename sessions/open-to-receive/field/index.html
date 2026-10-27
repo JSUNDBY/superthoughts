@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Open to Receive: light</title>
+<meta name="robots" content="noindex">
+<style>
+  html, body { margin: 0; height: 100%; background: #13241a; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; animation: breathe 14s ease-in-out infinite alternate; }
+  @keyframes breathe { from { opacity: .82; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { canvas { animation: none; } }
+</style>
+</head>
+<body>
+<canvas id="light" aria-hidden="true"></canvas>
+<script>/* Superthoughts — the light recipe (2026-10-26), for single views only: a session's room, its cover and its share image.
+   Taken from the Open door: a dark room, one soft column (or horizon) of light, a warm core meeting a cool edge.
+   Lights are never shown side by side (Josh: "individually they look cool"), so every variation comes from a seed made
+   from the session title, and the colour pair is spread across the library by the publish history.
+   STLight.recipe(title, history) -> R, where history is [{pair, horizontal}] in publish order (library-lights.json).
+   STLight.draw(canvas, R, shade) paints it; shade is 'none' (the room has its own), 'left' (share image) or 'bottom'. */
+(()=>{
+'use strict';
+const ROOMS = ['#102522', '#0f1f1a', '#13241a', '#0c2229', '#171c1f', '#2a1214', '#1d1a12', '#0f1a2a'];
+// [warm, core, cool]: curated so nothing darkens into brown; the warm side is always bright enough to stay a colour.
+const PAIRS = [
+  ['242,180,100', '255,232,190', '168,205,191'],  // gold and sage (Open itself)
+  ['255,128,96',  '255,226,206', '96,214,200'],   // coral and aqua
+  ['255,140,170', '255,232,236', '150,236,200'],  // rose and mint
+  ['255,176,72',  '255,240,200', '140,200,255'],  // amber and sky
+  ['255,200,60',  '255,246,200', '60,200,150'],   // saffron and jade
+  ['255,160,120', '255,236,220', '120,230,220'],  // peach and seafoam
+  ['255,96,72',   '255,214,190', '255,200,120'],  // vermilion into warm gold (all warm)
+  ['210,255,150', '244,255,226', '70,200,190'],   // lime and teal (all cool-green)
+];
+function seed(str) { let h = 2166136261; for (const c of str) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rng(s) { return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+function recipe(title, history = []) {
+  const r = rng(seed(title)), used = PAIRS.map(() => 0), shape = {};
+  for (const h of history) { used[h.pair]++; shape[h.pair] = h.horizontal; }
+  const last = history.length ? history[history.length - 1].pair : -1;
+  // A pair comes back only after every pair has been used, and never twice in a row.
+  const least = Math.min(...used);
+  const open = PAIRS.map((_, i) => i).filter(i => used[i] === least && i !== last);
+  const pair = open[Math.floor(r() * open.length)];
+  return {
+    room: ROOMS[Math.floor(r() * ROOMS.length)], pair,
+    horizontal: shape[pair] === undefined ? r() < 0.25 : !shape[pair],   // a quarter are horizons; a returning pair takes the other shape
+    pos: 0.48 + r() * 0.34,              // where the column stands (right of the words)
+    width: 0.10 + r() * 0.22,            // narrow slit to wide doorway
+    tilt: (r() - 0.5) * 0.36,            // up to about ten degrees either way
+    flip: r() < 0.5,                     // warm on the left or on the right
+    glow: 0.5 + r() * 0.5,               // how far the light spills into the room
+  };
+}
+
+function draw(cv, R, shade = 'none') {
+  const W = cv.width, H = cv.height, x = cv.getContext('2d');
+  const [warm, core, cool] = PAIRS[R.pair];
+  const L = 2 * (W + H);   // every band runs well past the frame, so no end ever shows (a horizon stopped short, 2026-10-26)
+  x.fillStyle = R.room; x.fillRect(0, 0, W, H);
+  x.save();
+  // Draw in a frame where the light always runs along x. A column stands upright; a horizon is the same band turned on
+  // its side, lying 24-41% down the room so it is fully in view.
+  let c, w;
+  if (R.horizontal) {
+    const yc = (0.24 + (R.pos - 0.48) * 0.5) * H;
+    x.translate(W / 2, yc); x.rotate(Math.PI / 2 + R.tilt * .25);
+    c = 0; w = R.width * Math.min(W, H) * 0.8;
+  } else {
+    x.translate(W / 2, H / 2); x.rotate(R.tilt); x.translate(-W / 2, -H / 2);
+    c = R.pos * W; w = R.width * W;
+  }
+  // the spill: a wide, faint wash of the core colour into the room
+  let g = x.createLinearGradient(c - w * 3 * R.glow - w, 0, c + w * 3 * R.glow + w, 0);
+  g.addColorStop(0, `rgba(${core},0)`); g.addColorStop(.5, `rgba(${core},${.18 * R.glow})`); g.addColorStop(1, `rgba(${core},0)`);
+  x.fillStyle = g; x.fillRect(-L, -L, 2 * L, 2 * L);
+  // the column: warm edge, bright core, cool edge (Open's stops)
+  const a = R.flip ? cool : warm, b = R.flip ? warm : cool;
+  g = x.createLinearGradient(c - w, 0, c + w, 0);
+  g.addColorStop(0, `rgba(${a},0)`); g.addColorStop(.32, `rgba(${a},.78)`); g.addColorStop(.5, `rgba(${core},.96)`);
+  g.addColorStop(.68, `rgba(${b},.62)`); g.addColorStop(1, `rgba(${b},0)`);
+  x.fillStyle = g; x.fillRect(c - w, -L, w * 2, 2 * L);
+  x.restore();
+  // soften like the door, then the shade that keeps words readable, then grain
+  const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H; const t = tmp.getContext('2d');
+  t.filter = `blur(${Math.round(Math.max(W, H) / 45)}px)`; t.drawImage(cv, 0, 0); x.drawImage(tmp, 0, 0);
+  if (shade === 'left') {
+    g = x.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0, 'rgba(10,10,8,.84)'); g.addColorStop(.5, 'rgba(10,10,8,.5)'); g.addColorStop(1, 'rgba(10,10,8,0)');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+  } else if (shade === 'bottom') {
+    // a dark floor for the words: the light hangs above it and never runs behind the title (2026-10-26)
+    g = x.createLinearGradient(0, H, 0, 0);
+    g.addColorStop(0, 'rgba(10,10,8,.94)'); g.addColorStop(.36, 'rgba(10,10,8,.86)'); g.addColorStop(.62, 'rgba(10,10,8,.2)'); g.addColorStop(1, 'rgba(10,10,8,0)');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+  }
+  const n = x.getImageData(0, 0, W, H), d = n.data, nr = rng(seed(R.room + R.pair));
+  for (let i = 0; i < d.length; i += 4) { const v = (nr() - .5) * 10; d[i] += v; d[i + 1] += v; d[i + 2] += v; }
+  x.putImageData(n, 0, 0);
+}
+
+window.STLight = { ROOMS, PAIRS, recipe, draw };
+})();
+</script>
+<script>
+// Open to Receive: one light from the Superthoughts light recipe, painted once as a still; only its brightness breathes.
+const R = {"room": "#13241a", "pair": 2, "horizontal": false, "pos": 0.5753977691056207, "width": 0.14752958418801426, "tilt": -0.16998634907416998, "flip": true, "glow": 0.8665060633793473};
+const cv = document.getElementById('light');
+function paint() {
+  const s = Math.min(devicePixelRatio || 1, 1.5);
+  cv.width = Math.round(innerWidth * s); cv.height = Math.round(innerHeight * s);
+  STLight.draw(cv, R, 'none');
+}
+paint();
+let wait; addEventListener('resize', () => { clearTimeout(wait); wait = setTimeout(paint, 200); });
+</script>
+</body>
+</html>

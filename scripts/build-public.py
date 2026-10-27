@@ -28,6 +28,9 @@ for item in catalog:
  art=f"images/art/{item['id']}.jpg"
  if (ROOT/art).is_file():files.append(art)
  else:print(f'WARNING: no track art for {item["id"]}; render it before publishing')
+ # A session with a light (sessions/light.js) also has its 1200x630 link share image.
+ share=f"images/share/{item['id']}.jpg"
+ if (ROOT/share).is_file():files.append(share)
  if item['cues']:
   files.append(local(item['cues']));cues=json.loads((ROOT/local(item['cues'])).read_text())
   if not item.get('stream'):assert item['duration']-cues[-1]['end']>=30  # craft rule for new productions; legacy catalog recordings ship as published

@@ -96,7 +96,9 @@ const LIGHT_PALETTES = {
   stillsleep: {shadow:'#07090b', base:'#1a1712', fold:'#3a2a1e', lit:'#b2582a', light:'#e2b98a', edge:'#7a4a2a', air:'#22423a', reflection:'#c98a50', undertone:'#2c3a3e'},
   waketense: {shadow:'#120d0a', base:'#2c2118', fold:'#5a3e2a', lit:'#ff9650', light:'#ecc480', edge:'#d6965c', air:'#2e3e42', reflection:'#ecc480', undertone:'#6a3a24'},
   twomin: {shadow:'#0d1312', base:'#26302c', fold:'#4a5a52', lit:'#e2e8d6', light:'#eef0e4', edge:'#96684e', air:'#52806f', reflection:'#cfd8c4', undertone:'#3c4a40'},
-  bedmind: {shadow:'#08080a', base:'#14181a', fold:'#18281f', lit:'#e8aa60', light:'#f0be78', edge:'#c46e3c', air:'#18281f', reflection:'#d68c58', undertone:'#2a1a12'}
+  bedmind: {shadow:'#08080a', base:'#14181a', fold:'#18281f', lit:'#e8aa60', light:'#f0be78', edge:'#c46e3c', air:'#18281f', reflection:'#d68c58', undertone:'#2a1a12'},
+  receive: {shadow:'#0a120d', base:'#13241a', fold:'#2a4a36', lit:'#ff8caa', light:'#ffe8ec', edge:'#96ecc8', air:'#24403a', reflection:'#ffe8ec', undertone:'#5a2a3a'},
+  qreset: {shadow:'#100e09', base:'#1d1a12', fold:'#3a3a22', lit:'#d2ff96', light:'#f4ffe2', edge:'#46c8be', air:'#1e3a36', reflection:'#f4ffe2', undertone:'#3a4a1e'}
 };
 function rgba(hex, opacity) {
   return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${opacity})`;

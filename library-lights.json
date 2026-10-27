@@ -1,0 +1,32 @@
+{
+ "lights": [
+  {
+   "slug": "open-to-receive",
+   "title": "Open to Receive",
+   "recipe": {
+    "room": "#13241a",
+    "pair": 2,
+    "horizontal": false,
+    "pos": 0.5753977691056207,
+    "width": 0.14752958418801426,
+    "tilt": -0.16998634907416998,
+    "flip": true,
+    "glow": 0.8665060633793473
+   }
+  },
+  {
+   "slug": "the-quantum-reset",
+   "title": "The Quantum Reset",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 7,
+    "horizontal": false,
+    "pos": 0.6655481485882774,
+    "width": 0.2098424477595836,
+    "tilt": 0.09361673237755894,
+    "flip": false,
+    "glow": 0.9057511843275279
+   }
+  }
+ ]
+}

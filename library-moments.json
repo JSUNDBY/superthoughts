@@ -59,6 +59,26 @@
  ],
  "sessions": [
   {
+   "key": "the-quantum-reset",
+   "href": "/sessions/the-quantum-reset/",
+   "num": 23,
+   "title": "The Quantum Reset",
+   "line": "For evenings when you want to put the day's self down and start fresh.",
+   "length": "28 min",
+   "moment": "open",
+   "free": false
+  },
+  {
+   "key": "open-to-receive",
+   "href": "/sessions/open-to-receive/",
+   "num": 22,
+   "title": "Open to Receive",
+   "line": "For when some part of you is still braced against having more.",
+   "length": "29 min",
+   "moment": "open",
+   "free": false
+  },
+  {
    "key": "when-your-mind-wont-stop-at-bedtime",
    "href": "/sessions/when-your-mind-wont-stop-at-bedtime/",
    "num": 21,
