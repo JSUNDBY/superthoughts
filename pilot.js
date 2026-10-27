@@ -273,6 +273,7 @@ function select(id, options = {}) {
   $('time-total').textContent = formatTime(item.duration);
   $('resume-message').hidden = !(pendingResume > 5);
   $('resume-message').textContent = pendingResume > 5 ? `Your place at ${formatTime(pendingResume)} is saved on this device. Use restart to begin again.` : '';
+  if (item.access === 'member') window.STAccess.isMember();  // ask now, so the Play tap does not wait on the network
   audio.src = item.src;
   audio.setAttribute('aria-label', item.title);
   audio.load();
@@ -386,7 +387,7 @@ audio.addEventListener('seeked', animateCaptions);
 document.addEventListener('visibilitychange', animateCaptions);
 audio.addEventListener('pause', () => { if (active && !audio.ended && !audio.error) setStatus('Paused. Press play to continue.'); updateTransport(); });
 audio.addEventListener('ended', () => { updateTransport(); if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch {} } const earned = earnedCompletionId === active?.id; setStatus(earned ? 'A moment well spent. Thank you for making this time for yourself.' : 'You are welcome back whenever you like.'); $('resume-message').hidden = false; $('resume-message').textContent = earned ? 'A practice you can return to whenever you like.' : 'Your listening time has been saved on this device.'; });
-audio.addEventListener('error', () => { if (active) setStatus('This audio is unavailable right now. Please try again later.'); updateTransport(); });
+audio.addEventListener('error', async () => { if (active?.access === 'member' && !(await window.STAccess.isMember())) window.STAccess.lockNote($('play-status')); else if (active) setStatus('This audio is unavailable right now. Please try again later.'); updateTransport(); });
 window.addEventListener('pagehide', () => tracker.flush());
 if ('mediaSession' in navigator) {
   try {

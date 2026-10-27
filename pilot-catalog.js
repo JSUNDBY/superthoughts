@@ -101,9 +101,10 @@ window.STAccess = {
  for (const item of window.STCatalog) if (A.members.includes(item.id)) {
   item.src = `${A.app}/audio/${item.id}`; item.access = 'member'; delete item.stream;
  }
- let me = null;
- A.isMember = () => me || (me = fetch(`${A.app}/api/me`, {credentials: 'include', cache: 'no-store'})
-  .then(r => r.ok ? r.json() : {}).then(d => d.member === true).catch(() => false));
+ // Only a yes is remembered; a no or a failed check (weak signal, signed in since) asks again on the next Play.
+ let yes = false, asking = null;
+ A.isMember = () => yes ? Promise.resolve(true) : (asking = asking || fetch(`${A.app}/api/me`, {credentials: 'include', cache: 'no-store'})
+  .then(r => r.ok ? r.json() : {}).then(d => (yes = d.member === true)).catch(() => false).finally(() => { asking = null; }));
  A.lockNote = el => {
   el.textContent = 'This is a members session. ';
   const join = Object.assign(document.createElement('a'), {href: `${A.app}/join`, textContent: 'Join'});
