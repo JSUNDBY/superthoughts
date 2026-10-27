@@ -76,3 +76,38 @@ window.STCatalog = [
  {id:'afterglow',title:'Afterglow',description:'Warm bowl tones and slow twilight harmonies. A little longer to let the day settle.',category:'evening',type:'sound',duration:720,src:'audio/afterglow-v2.mp3',cues:null,visual:'afterglow',accent:'#e6a18f',kicker:'Stay a little longer'},
  {id:'first-light',title:'First light',description:'Soft rising harmonies and open space. A wordless beginning, at your own pace.',category:'morning',type:'sound',duration:480,src:'audio/first-light-v2.mp3',cues:null,visual:'first-light',accent:'#98d6da',kicker:'A little light comes through'}
 ];
+
+/* Members gate (built 2026-10-27, off until Josh switches it on).
+   gate: false  -> every session plays from this site, as before.
+   gate: true   -> the sessions in `members` stream from the members app, which plays them only to a signed-in
+                   member; everyone else gets the join note. The public build also stops publishing their files.
+   To try it in one browser before the switch: localStorage.setItem('st-gate', 'on') on superthoughts.com.
+   The rewrite runs only in a page (the service worker imports this file too and must keep the plain paths).
+   `members` must match the member slugs in superthoughts-members/src/catalog.ts. */
+window.STAccess = {
+ gate: false,
+ app: 'https://members.superthoughts.com',
+ members: ['let-them-think', 'soft-place-to-land', 'precious-life', 'the-pause-before-asking', 'before-the-week-starts',
+  'the-abundance-practice', 'the-empowerment-practice', 'the-frequency-of-enough', 'stress-without-the-cigarette',
+  'a-new-small-ritual', 'when-the-urge-arrives', 'remembering-your-reason', 'when-you-wake-up-already-tense',
+  'when-your-mind-wont-stop-at-bedtime', 'open-to-receive', 'the-quantum-reset']
+};
+(() => {
+ const A = window.STAccess;
+ if (typeof document === 'undefined') return;
+ let preview = false; try { preview = localStorage.getItem('st-gate') === 'on'; } catch {}
+ A.on = A.gate || preview;
+ if (!A.on) return;
+ for (const item of window.STCatalog) if (A.members.includes(item.id)) {
+  item.src = `${A.app}/audio/${item.id}`; item.access = 'member'; delete item.stream;
+ }
+ let me = null;
+ A.isMember = () => me || (me = fetch(`${A.app}/api/me`, {credentials: 'include', cache: 'no-store'})
+  .then(r => r.ok ? r.json() : {}).then(d => d.member === true).catch(() => false));
+ A.lockNote = el => {
+  el.textContent = 'This is a members session. ';
+  const join = Object.assign(document.createElement('a'), {href: `${A.app}/join`, textContent: 'Join'});
+  const login = Object.assign(document.createElement('a'), {href: `${A.app}/login`, textContent: 'sign in'});
+  el.append(join, ' or ', login, ' to listen.');
+ };
+})();

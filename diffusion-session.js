@@ -19,6 +19,9 @@ const resume=playback.select(session.id,session.duration);
 if(resume>10&&resume<session.duration-30){audio.preload='metadata';$('#resume-note').textContent=`Your place at ${clock(resume)} is saved on this device.`}
 let cues=[],words=false,hideTimer,captionTimer,captionKey='',keyboard=false;
 const setStatus=text=>$('#status').textContent=text;
+// Members gate: a member session asks the members app before it plays (pilot-catalog.js, STAccess).
+const locked=item.access==='member'?async()=>!(await window.STAccess.isMember()):null;
+if(locked)locked().then(no=>{if(no)window.STAccess.lockNote($('#status'))});
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 function reveal(){room.classList.remove('immersed');$('#wake').tabIndex=-1;$('#wake').setAttribute('aria-hidden','true');clearTimeout(hideTimer);if(!audio.paused&&!audio.ended)hideTimer=setTimeout(()=>{if(!(keyboard&&room.contains(document.activeElement))){room.classList.add('immersed');$('#wake').tabIndex=0;$('#wake').setAttribute('aria-hidden','false')}},6500)}
 room.addEventListener('pointerdown',()=>{keyboard=false;reveal()});room.addEventListener('pointermove',reveal);
@@ -32,7 +35,7 @@ function updateCaption(){
  if(cue)captionTimer=setTimeout(()=>{if(words&&captionKey===key){caption.querySelector('span').textContent=cue.text;caption.classList.add('visible');caption.setAttribute('aria-hidden','false')}},450);
 }
 function update(){seek.setAttribute('aria-valuetext',clock(audio.currentTime));seek.value=audio.currentTime;$('#elapsed').textContent=clock(audio.currentTime);updateCaption()}
-play.addEventListener('click',async()=>{if(!audio.paused){audio.pause();return}try{if(audio.ended){playback.select(session.id,session.duration,{restart:true});audio.currentTime=0;$('#resume-note').textContent='';}setStatus('Loading the session…');await audio.play()}catch{setStatus('Could not start. Please try Play again.');reveal()}});
+play.addEventListener('click',async()=>{if(!audio.paused){audio.pause();return}if(locked&&await locked()){window.STAccess.lockNote($('#status'));return}try{if(audio.ended){playback.select(session.id,session.duration,{restart:true});audio.currentTime=0;$('#resume-note').textContent='';}setStatus('Loading the session…');await audio.play()}catch{setStatus('Could not start. Please try Play again.');reveal()}});
 audio.addEventListener('loadedmetadata',()=>{seek.disabled=false;seek.max=audio.duration;if(resume>10&&resume<audio.duration-30)audio.currentTime=resume;$('#duration').textContent=clock(audio.duration)});
 audio.addEventListener('play',()=>{$('#play-symbol').setAttribute('d','M7 5h3v14H7zM14 5h3v14h-3z');play.setAttribute('aria-label',`Pause ${session.title}`);setStatus('Listening now');reveal()});
 audio.addEventListener('pause',()=>{$('#play-symbol').setAttribute('d','M8 5.5 18 12 8 18.5Z');play.setAttribute('aria-label',`Play ${session.title}`);setStatus(audio.ended?'Welcome back':'Paused');reveal()});

@@ -292,6 +292,8 @@ async function playAudio() {
   if (!active) return;
   if (audio.ended) restartRun();
   const request = ++playRequest;
+  // Members gate: a member session asks the members app first (pilot-catalog.js, STAccess).
+  if (active.access === 'member' && !(await window.STAccess.isMember())) { if (request === playRequest) window.STAccess.lockNote($('play-status')); return; }
   setStatus('Opening audio…');
   try { await audio.play(); }
   catch { if (request === playRequest) { setStatus('Audio could not start. Check your connection and try again.'); updateTransport(); } }

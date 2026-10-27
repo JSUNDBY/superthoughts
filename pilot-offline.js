@@ -13,6 +13,7 @@
   function update() {
     const item = current();
     if (item && item.stream) { button.hidden = true; note.textContent = 'This session streams. Offline saving is not available for it yet.'; return; }
+    if (item && item.access === 'member') { button.hidden = true; note.textContent = 'Offline saving is not available for members sessions yet.'; return; }
     button.disabled = busy || !worker || !item;
     button.textContent = busy ? 'Saving…' : saved.has(item?.src) ? 'Remove offline copy' : 'Save for offline';
     if (!busy && worker) note.textContent = saved.has(item?.src)
