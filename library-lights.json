@@ -27,6 +27,20 @@
     "flip": false,
     "glow": 0.9057511843275279
    }
+  },
+  {
+   "slug": "for-someone-you-love-and-miss",
+   "title": "For Someone You Love and Miss",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 1,
+    "horizontal": true,
+    "pos": 0.6085947001213208,
+    "width": 0.19848914836533368,
+    "tilt": -0.024462612653151153,
+    "flip": true,
+    "glow": 0.5472973255673423
+   }
   }
  ]
 }

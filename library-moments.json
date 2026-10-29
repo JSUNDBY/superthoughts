@@ -59,6 +59,16 @@
  ],
  "sessions": [
   {
+   "key": "for-someone-you-love-and-miss",
+   "href": "/sessions/for-someone-you-love-and-miss/",
+   "num": 24,
+   "title": "For Someone You Love and Miss",
+   "line": "For when you miss someone and want to feel close to them.",
+   "length": "10 min",
+   "moment": "heart",
+   "free": true
+  },
+  {
    "key": "the-quantum-reset",
    "href": "/sessions/the-quantum-reset/",
    "num": 23,
