@@ -59,7 +59,7 @@ free_count = sum(1 for s in sessions if s['free'])
 newest = sorted(sessions, key=lambda s: -s['num'])[:3]
 needs = ''.join(f"""<li><a class="th-row" href="library.html#{m['id']}"><strong>{e(m['name'])}</strong><span class="len">{count_text(len(on(m['id'])))}</span><span class="line">{e(m['line'])}</span></a></li>""" for m in moments + series if on(m['id']))
 
-home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessions and original music by Josh Sundby. Put on headphones, close your eyes, and let the space open up.", 'https://superthoughts.com/', 'Superthoughts. Make room for bigger thoughts.')}
+home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessions and original music. Put on headphones, close your eyes, and let the space open up.", 'https://superthoughts.com/', 'Superthoughts. Make room for bigger thoughts.')}
 <body class="threshold home-page page-home">
   <a class="th-skip" href="#main">Skip to content</a>
 {header('home')}
@@ -69,7 +69,7 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
       <div class="th-wrap">
         <p class="th-label">Deep listening</p>
         <h1 id="welcome-title">Make room for bigger thoughts.</h1>
-        <p class="lede">Guided sessions and original music by Josh Sundby. Put on headphones, close your eyes, and let the space open up.</p>
+        <p class="lede">Guided sessions and original music. Put on headphones, close your eyes, and let the space open up.</p>
         <div class="th-actions">
           <a class="th-button" href="still-enough.html"><i class="th-play" aria-hidden="true"></i>Begin with Still Enough to Listen <span>9 min</span></a>
           <a class="th-link" href="#find">Find a session <span aria-hidden="true">→</span></a>
@@ -99,7 +99,7 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
     </div></section>
 
     <section class="th-section" id="newsletter" aria-labelledby="newsletter-title"><div class="th-wrap th-email">
-      <div><p class="th-label">An occasional note</p><h2 id="newsletter-title">Only when there is something new to hear.</h2><p class="intro">New sessions arrive most weeks. Josh writes only when something new is ready or something matters, so you can stay close to what is happening here without a crowded inbox. The library stays open either way.</p></div>
+      <div><p class="th-label">An occasional note</p><h2 id="newsletter-title">Only when there is something new to hear.</h2><p class="intro">New sessions arrive most weeks. You'll hear from us only when something new is ready or something matters, so you can stay close to what is happening here without a crowded inbox. The library stays open either way.</p></div>
       <div id="newsletter-signup"><form action="https://app.kit.com/forms/10010941/subscriptions" method="post" style="display:flex;flex-direction:column;gap:14px">
         <div class="fields"><label class="sr-only" for="newsletter-email">Email address</label><input id="newsletter-email" type="email" name="email_address" placeholder="Email address" autocomplete="email" required maxlength="254"><button type="submit">Join the email list</button></div>
         <label class="choice"><input type="checkbox" name="newsletter_consent" value="yes" required> I want to receive occasional Superthoughts emails.</label>
@@ -135,7 +135,7 @@ library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by
     <div class="th-wrap th-library-intro">
       <p class="th-label">The library</p>
       <h1>Find what you need.</h1>
-      <p class="intro">{len(sessions)} sessions in Josh's voice, each with its own music. The free ones are marked.</p>
+      <p class="intro">{len(sessions)} guided sessions, each with its own music. The free ones are marked.</p>
       <nav class="th-jump" aria-label="What each session is for">{jump}</nav>
     </div></div>
 {chr(10).join(shelves)}
