@@ -41,6 +41,20 @@
     "flip": true,
     "glow": 0.5472973255673423
    }
+  },
+  {
+   "slug": "tapping-into-your-creative-energy",
+   "title": "Tapping Into Your Creative Energy",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 5,
+    "horizontal": false,
+    "pos": 0.7215223861951381,
+    "width": 0.19239773050881923,
+    "tilt": -0.11813330168835819,
+    "flip": false,
+    "glow": 0.603823461686261
+   }
   }
  ]
 }
