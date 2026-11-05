@@ -55,6 +55,118 @@
     "flip": false,
     "glow": 0.603823461686261
    }
+  },
+  {
+   "slug": "still-enough",
+   "title": "Still Enough to Listen",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 6,
+    "horizontal": false,
+    "pos": 0.5018176550231874,
+    "width": 0.14202118787914514,
+    "tilt": -0.001474251877516508,
+    "flip": true,
+    "glow": 0.78750413749367
+   }
+  },
+  {
+   "slug": "soft-place-to-land",
+   "title": "A Soft Place to Land",
+   "recipe": {
+    "room": "#171c1f",
+    "pair": 4,
+    "horizontal": false,
+    "pos": 0.7410638777771965,
+    "width": 0.13237783754710108,
+    "tilt": 0.1472222345508635,
+    "flip": false,
+    "glow": 0.6493505411781371
+   }
+  },
+  {
+   "slug": "let-them-think",
+   "title": "Let Them Think What They Think",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 0,
+    "horizontal": false,
+    "pos": 0.8073168351361528,
+    "width": 0.2836303948936984,
+    "tilt": 0.11514768529683352,
+    "flip": true,
+    "glow": 0.8661350787151605
+   }
+  },
+  {
+   "slug": "precious-life",
+   "title": "This Precious Life",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 3,
+    "horizontal": false,
+    "pos": 0.6420982181606814,
+    "width": 0.23799217996187508,
+    "tilt": -0.12258582497946918,
+    "flip": false,
+    "glow": 0.569759015343152
+   }
+  },
+  {
+   "slug": "remembering-your-reason",
+   "title": "Remembering Your Reason",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 2,
+    "horizontal": true,
+    "pos": 0.7863780714478343,
+    "width": 0.14089290849398822,
+    "tilt": 0.019474800992757082,
+    "flip": false,
+    "glow": 0.5530244667315856
+   }
+  },
+  {
+   "slug": "stress-without-the-cigarette",
+   "title": "Stress Without the Cigarette",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 6,
+    "horizontal": true,
+    "pos": 0.6763849832629785,
+    "width": 0.23719967420212926,
+    "tilt": 0.15008571521379052,
+    "flip": false,
+    "glow": 0.823009364423342
+   }
+  },
+  {
+   "slug": "the-pause-before-asking",
+   "title": "The Pause Before Asking",
+   "recipe": {
+    "room": "#171c1f",
+    "pair": 4,
+    "horizontal": true,
+    "pos": 0.5277047611353919,
+    "width": 0.21526021644007415,
+    "tilt": 0.10956022281199693,
+    "flip": false,
+    "glow": 0.7893962956732139
+   }
+  },
+  {
+   "slug": "a-new-small-ritual",
+   "title": "A New Small Ritual",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 1,
+    "horizontal": false,
+    "pos": 0.544180697388947,
+    "width": 0.1263429636042565,
+    "tilt": 0.026841303566470742,
+    "flip": true,
+    "glow": 0.5251234675524756
+   }
   }
  ]
 }

@@ -114,7 +114,7 @@ function paint() {
   cv.width = Math.round(innerWidth * s); cv.height = Math.round(innerHeight * s);
   STLight.draw(cv, R, 'none');
 }
-paint();
+(function go() { if (!innerWidth || !innerHeight) return requestAnimationFrame(go); paint(); })();   // an iframe can report 0x0 at load; never paint a blank room (2026-11-05)
 let wait; addEventListener('resize', () => { clearTimeout(wait); wait = setTimeout(paint, 200); });
 </script>
 </body>

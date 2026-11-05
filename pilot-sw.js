@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v82-kindling';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v83-calm';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 // Free sessions and their cues live on the public audio host (2026-10-23 audio move, phase 3a).
@@ -16,7 +16,7 @@ const SHELL_FILES = [
   'pilot-visuals.js', 'ambient-light.js', 'pilot-progress.mjs', 'pilot-offline.js',
   'pilot-feedback.js', 'pilot-analytics.js', 'pilot-analytics-core.mjs', 'terms.html', 'pilot.webmanifest',
   'images/favicon.svg', 'images/superthoughts-symbol.svg', 'images/art/still-enough-to-listen.jpg', 'images/art/still-enough-motion-loop.mp4',
-  'fonts/dm-sans-300.woff2', 'threshold.css', 'threshold-session.css', 'fonts/manrope-latin.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
+  'fonts/dm-sans-300.woff2', 'threshold.css', 'threshold-session.css', 'calm-room.css', 'calm-room.js', 'fonts/manrope-latin.woff2', 'fonts/fonts.css', 'fonts/space-grotesk-400.woff2'
 ];
 // Import the same static catalog used by the player. A separate versioned list
 // silently broke offline saving each time an audio master changed.
@@ -162,6 +162,22 @@ async function audioResponse(request) {
   catch (_) { return fetch(request); }
 }
 
+// A session's light (sessions/<slug>/field/) is a framed page: online first, cached as it is seen, and offline it
+// falls back to a plain dark room instead of the browser's offline page (2026-11-05).
+const FIELD_PATH = /\/sessions\/[a-z0-9-]+\/field\/(index\.html)?$/;
+async function fieldResponse(request) {
+  const cache = await caches.open(SHELL_CACHE);
+  try {
+    const response = await fetch(request, { cache: 'no-cache' });
+    if (response.ok) { try { await cache.put(request.url.replace(/index\.html$/, ''), response.clone()); } catch (_) {} }
+    return response;
+  } catch (_) {
+    return (await cache.match(request.url.replace(/index\.html$/, ''))) ||
+      new Response('<!doctype html><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#0b1512}</style>',
+        { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+  }
+}
+
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
@@ -173,6 +189,7 @@ self.addEventListener('fetch', event => {
     return;
   }
   if (url.origin !== ROOT.origin || url.hash) return;
+  if (!url.search && FIELD_PATH.test(url.pathname)) { event.respondWith(fieldResponse(request)); return; }
   if ((url.pathname === ROOT.pathname || url.pathname === indexPath ||
        url.pathname === pilotPath || url.pathname === pathFor('session.html') ||
        url.pathname === pathFor('library.html') || url.pathname === pathFor('explore.html') || url.pathname === pathFor('practice.html') || url.pathname === pathFor('still-enough.html') || url.pathname === pathFor('soft-place-to-land.html') || url.pathname === pathFor('let-them-think.html') || url.pathname === pathFor('precious-life.html') || url.pathname === pathFor('sessions/remembering-your-reason/') || url.pathname === pathFor('sessions/when-the-urge-arrives/') || url.pathname === pathFor('sessions/a-new-small-ritual/') || url.pathname === pathFor('sessions/stress-without-the-cigarette/') || url.pathname === pathFor('sessions/the-pause-before-asking/') || url.pathname === pathFor('sessions/after-a-tense-conversation/') || url.pathname === pathFor('sessions/the-abundance-practice/') || url.pathname === pathFor('sessions/the-empowerment-practice/') || url.pathname === pathFor('sessions/before-the-week-starts/') || url.pathname === pathFor('sessions/three-minute-reset/') || url.pathname === pathFor('sessions/five-minute-calm/') || url.pathname === pathFor('sessions/five-minute-morning-clarity/') || url.pathname === pathFor('sessions/a-practice-for-inner-peace/') || url.pathname === pathFor('sessions/calm-confidence-reset/') || url.pathname === pathFor('sessions/clear-your-mind-for-the-day/') || url.pathname === pathFor('sessions/stress-release/') || url.pathname === pathFor('sessions/creativity-reset/') || url.pathname === pathFor('sessions/set-down-guilt/') || url.pathname === pathFor('sessions/abundance-mindset/') || url.pathname === pathFor('sessions/clear-boundaries/') || url.pathname === pathFor('sessions/emotional-clarity/') || url.pathname === pathFor('sessions/evening-settle/') || url.pathname === pathFor('sessions/ground-your-mind/') || url.pathname === pathFor('sessions/let-the-day-close/') || url.pathname === pathFor('sessions/quiet-the-mind/') || url.pathname === pathFor('sessions/reignite-inner-vitality/') || url.pathname === pathFor('sessions/emotional-regulation/') || url.pathname === pathFor('sessions/emotional-softening/') || url.pathname === pathFor('sessions/evening-release/') || url.pathname === pathFor('sessions/evening-unwind/') || url.pathname === pathFor('sessions/gratitude-reset/') || url.pathname === pathFor('sessions/ground-into-your-body/') || url.pathname === pathFor('sessions/morning-calm-activation/') || url.pathname === pathFor('sessions/presence-recharge/') || url.pathname === pathFor('sessions/nervous-system-reset/') || url.pathname === pathFor('sessions/release-anxiety/') || url.pathname === pathFor('sessions/shifting-timelines/') || url.pathname === pathFor('sessions/grounded-in-gratitude/') || url.pathname === pathFor('sessions/quantum-abundance-tuning/') || url.pathname === pathFor('sessions/the-quantum-field/') || url.pathname === pathFor('sessions/pure-connection/') || url.pathname === pathFor('sessions/resonance-of-mind-and-heart/') || url.pathname === pathFor('sessions/universal-creative-energy/') || url.pathname === pathFor('sessions/awakening-to-the-fifth-dimension/') || url.pathname === pathFor('sessions/flow-state-activation/') || url.pathname === pathFor('sessions/vitality-and-balance/') || url.pathname === pathFor('sessions/before-you-say-yes/') || url.pathname === pathFor('sessions/before-you-pick-up-the-phone/') || url.pathname === pathFor('sessions/the-frequency-of-enough/') || url.pathname === pathFor('sessions/connecting-to-abundance/') || url.pathname === pathFor('sessions/still-enough-to-sleep/') || url.pathname === pathFor('sessions/when-you-wake-up-already-tense/') || url.pathname === pathFor('sessions/two-minutes-between-things/') || url.pathname === pathFor('sessions/when-your-mind-wont-stop-at-bedtime/') || url.pathname === pathFor('sessions/open-to-receive/') || url.pathname === pathFor('sessions/the-quantum-reset/') || url.pathname === pathFor('sessions/for-someone-you-love-and-miss/') || url.pathname === pathFor('sessions/tapping-into-your-creative-energy/')) && request.mode === 'navigate') {

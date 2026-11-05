@@ -3,58 +3,58 @@
  "moments": [
   {
    "id": "morning",
-   "name": "Morning",
-   "line": "The day is starting",
+   "name": "Start the day",
+   "line": "For the first minutes of the morning",
    "light": "morning"
   },
   {
    "id": "before",
-   "name": "Before",
-   "line": "Something hard is coming",
+   "name": "Before something hard",
+   "line": "A conversation, a decision, a week ahead",
    "light": "before"
   },
   {
    "id": "right-now",
-   "name": "Right now",
-   "line": "In the middle of it",
+   "name": "A short reset",
+   "line": "A few minutes in the middle of the day",
    "light": "right-now"
   },
   {
    "id": "after",
-   "name": "After",
-   "line": "It happened, or you're carrying it",
+   "name": "After something hard",
+   "line": "When it happened and you are still carrying it",
    "light": "after"
   },
   {
    "id": "heart",
-   "name": "Heart",
-   "line": "Love, connection, gratitude",
+   "name": "Love and connection",
+   "line": "Warmth for someone, and for yourself",
    "light": "heart"
   },
   {
    "id": "open",
-   "name": "Open",
-   "line": "Power, abundance, possibility",
+   "name": "Confidence and possibility",
+   "line": "Creativity, abundance, your own power",
    "light": "open"
   },
   {
    "id": "still",
-   "name": "Still",
-   "line": "Stop, and rest",
+   "name": "Rest and stillness",
+   "line": "Stop for a while",
    "light": "still"
   },
   {
    "id": "night",
-   "name": "Night",
-   "line": "Sleep, and the hours before it",
+   "name": "Sleep",
+   "line": "For bedtime and the hours before it",
    "light": "night"
   }
  ],
  "series": [
   {
    "id": "clear-air",
-   "name": "Clear Air",
-   "line": "A series for letting go of smoking"
+   "name": "Letting go of smoking",
+   "line": "A series for the moments a cigarette used to fill"
   }
  ],
  "sessions": [

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Build index.html and library.html from library-moments.json (threshold design, Josh 2026-10-23).
+"""Build index.html and library.html from library-moments.json (threshold design 2026-10-23, calm refresh 2026-11-05).
 
-The library is eight moments, each a door with its own light; sessions sit on their moment's shelf. The home page
-shows the arrival, the eight doors, the three newest sessions, why there is so much space, and the email list.
+2026-11-05 (Josh): one soft light for the whole site, no per-shelf art doors, no "What is this moment?". Shelves are
+plain words for what each session is for; the session page is where each light stands out. The home page shows the
+arrival, the plain list of needs, the three newest sessions, why there is so much space, and the email list.
 Edit library-moments.json (publish_session.py adds new sessions there), then run:  python3 scripts/build-shelves.py
 """
 import html, json, pathlib
@@ -49,13 +50,6 @@ def header(current):
 FOOT = """  <div class="th-wrap"><p class="th-disclaimer">Superthoughts recordings are for relaxation and entertainment, made as art. They are not medical or mental health care. <a href="/terms.html">Terms</a></p></div>
   <footer class="th-footer"><div class="th-wrap"><span>© 2026 Superthoughts</span><a href="about.html">About</a><a href="guides/">Guides</a><a href="explore.html#practice">Your practice</a><a href="index.html#newsletter">Email notes</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a><a href="https://www.google.com/preferences/source?q=superthoughts.com">Add us on Google</a></div></footer>"""
 
-def door(m, tag='a', href=None, heading='strong'):
-    n = len(on(m['id']))
-    inner = f"""<span class="door-light" aria-hidden="true"></span><span class="door-shade" aria-hidden="true"></span><span class="count">{count_text(n)}</span><span class="door-text"><{heading}>{e(m['name'])}</{heading}><small>{e(m['line'])}</small></span>"""
-    if tag == 'a':
-        return f"""<a class="th-door door-{m['id']}" href="{href}">{inner}</a>"""
-    return f"""<div class="th-door door-{m['id']}">{inner}</div>"""
-
 def row(s, show_moment=False):
     free = '<span class="free">Free</span>' if s['free'] else ''
     where = f" · {e(next(m['name'] for m in moments + series if m['id'] == s['moment']))}" if show_moment else ''
@@ -63,7 +57,7 @@ def row(s, show_moment=False):
 
 free_count = sum(1 for s in sessions if s['free'])
 newest = sorted(sessions, key=lambda s: -s['num'])[:3]
-doors = '\n        '.join(door(m, href=f"library.html#{m['id']}") for m in moments)
+needs = ''.join(f"""<li><a class="th-row" href="library.html#{m['id']}"><strong>{e(m['name'])}</strong><span class="len">{count_text(len(on(m['id'])))}</span><span class="line">{e(m['line'])}</span></a></li>""" for m in moments + series if on(m['id']))
 
 home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessions and original music by Josh Sundby. Put on headphones, close your eyes, and let the space open up.", 'https://superthoughts.com/', 'Superthoughts. Make room for bigger thoughts.')}
 <body class="threshold home-page page-home">
@@ -78,17 +72,15 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
         <p class="lede">Guided sessions and original music by Josh Sundby. Put on headphones, close your eyes, and let the space open up.</p>
         <div class="th-actions">
           <a class="th-button" href="still-enough.html"><i class="th-play" aria-hidden="true"></i>Begin with Still Enough to Listen <span>9 min</span></a>
-          <a class="th-link" href="#moments">Choose your moment <span aria-hidden="true">→</span></a>
+          <a class="th-link" href="#find">Find a session <span aria-hidden="true">→</span></a>
         </div>
         <p class="th-free">{words[free_count].capitalize() if free_count < len(words) else free_count} sessions are always free.</p>
       </div>
     </section>
 
-    <section class="th-section" id="moments" aria-labelledby="moments-title"><div class="th-wrap">
-      <div class="th-head"><div><h2 id="moments-title">What is this moment?</h2><p class="intro">Choose where you are. Each room holds a few sessions made for it.</p></div><a class="th-link" href="library.html">The whole library <span aria-hidden="true">→</span></a></div>
-      <div class="th-doors">
-        {doors}
-      </div>
+    <section class="th-section" id="find" aria-labelledby="find-title"><div class="th-wrap">
+      <div class="th-head"><div><h2 id="find-title">Find a session</h2><p class="intro">Choose what you need. Each session is a few spoken words, room to breathe, and music made for it.</p></div><a class="th-link" href="library.html">All {len(sessions)} sessions <span aria-hidden="true">→</span></a></div>
+      <ul class="th-rows">{needs}</ul>
     </div></section>
 
     <section class="th-section" aria-labelledby="new-title"><div class="th-wrap">
@@ -129,22 +121,23 @@ for m in moments + series:
     if not items and m in series: continue
     rows = f"""<ul class="th-rows">{''.join(row(s) for s in items)}</ul>""" if items else '<p class="th-empty">New sessions for this moment are on their way.</p>'
     shelves.append(f"""    <section class="th-shelf" id="{m['id']}" aria-labelledby="shelf-{m['id']}"><div class="th-wrap th-shelf-head">
-      {door(m, tag='div', heading='h2').replace('<h2>', f'<h2 id="shelf-{m["id"]}" style="margin:0;font:inherit;font-size:22px;font-weight:400;color:#f8f0e2">')}
+      <div class="th-shelf-title"><h2 id="shelf-{m['id']}">{e(m['name'])}</h2><p>{e(m['line'])}</p></div>
       <div>{rows}</div>
     </div></section>""")
-jump = ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in moments)
+jump = ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in moments + series if on(m['id']))
 
-library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by moment: morning, before, right now, after, heart, open, still and night.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
+library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by what it is for: starting the day, before and after something hard, a short reset, love, confidence, rest and sleep.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
 <body class="threshold library-page">
   <a class="th-skip" href="#main">Skip to content</a>
 {header('library')}
   <main id="main">
+    <div class="th-library-top"><div class="th-light th-soft" aria-hidden="true"><span class="teal"></span><span class="glow"></span><span class="seam"></span><span class="shade"></span><span class="grain"></span></div>
     <div class="th-wrap th-library-intro">
       <p class="th-label">The library</p>
-      <h1>What is this moment?</h1>
-      <p class="intro" style="margin:18px 0 0;max-width:34em;font-size:17px;line-height:1.6;color:var(--muted)">{len(sessions)} sessions, each made for a moment in your day. One on every shelf is always free.</p>
-      <nav class="th-jump" aria-label="Moments">{jump}</nav>
-    </div>
+      <h1>Find what you need.</h1>
+      <p class="intro">{len(sessions)} sessions in Josh's voice, each with its own music. The free ones are marked.</p>
+      <nav class="th-jump" aria-label="What each session is for">{jump}</nav>
+    </div></div>
 {chr(10).join(shelves)}
     <div class="th-wrap" style="padding:56px 0 24px;display:flex;flex-wrap:wrap;gap:12px 32px"><a class="th-link" href="guides/">Guides: one question, one practice</a><a class="th-link" href="about.html">About Superthoughts</a><a class="th-link" href="explore.html#practice">Your listening history</a></div>
   </main>

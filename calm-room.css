@@ -1,0 +1,42 @@
+/* Calm room (Josh 2026-11-05): the session's own light, always dim; a few words, then a simple player.
+   Loaded last on every session page. Control ids are unchanged, so diffusion-session.js keeps working. */
+.session-page .room{min-height:100svh}
+.session-page .room-shade{background:linear-gradient(180deg,rgba(5,9,8,.66) 0%,rgba(5,9,8,.4) 38%,rgba(5,9,8,.74) 68%,rgba(5,9,8,.93) 100%)}
+.session-page .room.has-field>#session-art{display:none}
+.session-page .session-intro{margin:auto clamp(24px,7vw,110px) 30px;max-width:640px;text-shadow:0 1px 18px rgba(5,9,8,.9)}
+.session-page .session-intro .kicker{font-size:12px;letter-spacing:.24em;color:#e0d6c2}
+.session-page .session-intro h1{margin:14px 0 14px;font-size:clamp(34px,5.2vw,62px);line-height:1.07}
+.session-page .session-intro .pace-note{display:none}
+.session-page #description{margin:0;font-size:17px;line-height:1.6;color:#e9dfcd;max-width:32em}
+
+.session-page .room .player{width:auto;margin:0 clamp(24px,7vw,110px) calc(30px + env(safe-area-inset-bottom));max-width:640px;padding:0;background:none;border:0;border-radius:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+.session-page .player-main{display:flex;align-items:center;gap:18px;flex-wrap:nowrap}
+.session-page .play{flex:none;width:64px;height:64px;border-radius:50%;border:1.5px solid #f3ead9;background:rgba(11,21,18,.3);color:#f3ead9;display:grid;place-items:center}
+.session-page .play:hover{background:rgba(243,234,217,.12)}
+.session-page .play svg{width:24px;height:24px}
+.session-page .playing{flex:1;min-width:0;font-size:16px;color:#f3ead9}
+.session-page .playing small{display:none}
+.session-page .time{margin-left:auto;font-size:15px;font-variant-numeric:tabular-nums;color:#e6dccb;white-space:nowrap}
+.session-page #seek{display:block;width:100%;margin:22px 0 4px;accent-color:#ece2cf}
+.session-page .player-controls{display:flex;flex-wrap:wrap;gap:0 24px;margin-top:6px;padding:0;border:0}
+.session-page .player-controls button{min-height:44px;padding:0;background:none;border:0;font-size:14px;color:#d6ccb8;cursor:pointer}
+.session-page .player-controls button:hover{color:#fff6e8}
+.session-page .player-controls .extra{display:none}
+.session-page .player.more-open .player-controls .extra{display:inline-flex;align-items:center}
+.session-page #dim{display:none!important}               /* always dim: Josh, 2026-11-04 */
+
+.session-page .resume-note{font-size:13px;color:#cfc5b1}
+@media (max-width:640px){
+  .session-page .session-intro{margin:auto 24px 26px}
+  .session-page .session-intro h1{font-size:clamp(32px,9vw,42px)}
+  .session-page #description{font-size:16px}
+  .session-page .room .player{margin:0 24px calc(24px + env(safe-area-inset-bottom))}
+  .session-page .player-controls button{font-size:14px}
+}
+.session-page .room>.site-header{display:flex;justify-content:space-between;align-items:center;width:100%;box-sizing:border-box;margin:0;padding:calc(env(safe-area-inset-top) + 16px) clamp(24px,7vw,110px) 0;min-height:64px}
+.session-page .time{width:auto;flex:none}
+.session-page .player-controls{justify-content:flex-start}
+@media (max-width:640px){.session-page .room>.site-header{padding-left:24px;padding-right:24px}}
+.session-page .player-controls button{min-width:44px}
+.th-jump a{min-width:44px}
+.session-page .playing{font-size:15px}
