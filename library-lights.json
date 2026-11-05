@@ -167,6 +167,188 @@
     "flip": true,
     "glow": 0.5251234675524756
    }
+  },
+  {
+   "slug": "when-the-urge-arrives",
+   "title": "When the Urge Arrives",
+   "recipe": {
+    "room": "#13241a",
+    "pair": 0,
+    "horizontal": true,
+    "pos": 0.731867772419937,
+    "width": 0.10568082332611084,
+    "tilt": 0.08600940951146185,
+    "flip": true,
+    "glow": 0.8272499996237457
+   }
+  },
+  {
+   "slug": "after-a-tense-conversation",
+   "title": "After a Tense Conversation",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 3,
+    "horizontal": true,
+    "pos": 0.5049587151501328,
+    "width": 0.10895365537609905,
+    "tilt": -0.14139157407917083,
+    "flip": true,
+    "glow": 0.5139276590198278
+   }
+  },
+  {
+   "slug": "the-abundance-practice",
+   "title": "The Abundance Practice",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 5,
+    "horizontal": true,
+    "pos": 0.5608029537368566,
+    "width": 0.3041863800864667,
+    "tilt": -0.04564281729049981,
+    "flip": false,
+    "glow": 0.5029220423894003
+   }
+  },
+  {
+   "slug": "the-empowerment-practice",
+   "title": "The Empowerment Practice",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 7,
+    "horizontal": true,
+    "pos": 0.7477537340437994,
+    "width": 0.3194061241485179,
+    "tilt": -0.057636109879240394,
+    "flip": true,
+    "glow": 0.7661184821045026
+   }
+  },
+  {
+   "slug": "before-the-week-starts",
+   "title": "Before the Week Starts",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 0,
+    "horizontal": false,
+    "pos": 0.6818644204968587,
+    "width": 0.10628818545956165,
+    "tilt": 0.0156155561003834,
+    "flip": false,
+    "glow": 0.9710399982286617
+   }
+  },
+  {
+   "slug": "before-you-say-yes",
+   "title": "Before You Say Yes",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 6,
+    "horizontal": false,
+    "pos": 0.547710429476574,
+    "width": 0.2586914431024343,
+    "tilt": -0.1095652216952294,
+    "flip": false,
+    "glow": 0.8080250169150531
+   }
+  },
+  {
+   "slug": "before-you-pick-up-the-phone",
+   "title": "Before You Check Anything",
+   "recipe": {
+    "room": "#102522",
+    "pair": 4,
+    "horizontal": false,
+    "pos": 0.7864613183308393,
+    "width": 0.1584087719814852,
+    "tilt": -0.08995433715172112,
+    "flip": false,
+    "glow": 0.5218935169978067
+   }
+  },
+  {
+   "slug": "the-frequency-of-enough",
+   "title": "The Frequency of Enough",
+   "recipe": {
+    "room": "#171c1f",
+    "pair": 5,
+    "horizontal": false,
+    "pos": 0.5733498864108697,
+    "width": 0.1074788130633533,
+    "tilt": 0.17728441902436315,
+    "flip": false,
+    "glow": 0.7009772929595783
+   }
+  },
+  {
+   "slug": "connecting-to-abundance",
+   "title": "Connecting to Abundance and Prosperity",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 2,
+    "horizontal": false,
+    "pos": 0.7417966793011874,
+    "width": 0.31516797945369035,
+    "tilt": -0.048680914454162116,
+    "flip": false,
+    "glow": 0.9475363661767915
+   }
+  },
+  {
+   "slug": "still-enough-to-sleep",
+   "title": "Still Enough to Sleep",
+   "recipe": {
+    "room": "#171c1f",
+    "pair": 7,
+    "horizontal": false,
+    "pos": 0.745901766223833,
+    "width": 0.17561092916410417,
+    "tilt": 0.047742184046655894,
+    "flip": true,
+    "glow": 0.9319499366683885
+   }
+  },
+  {
+   "slug": "when-you-wake-up-already-tense",
+   "title": "When You Wake Up Already Tense",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 3,
+    "horizontal": false,
+    "pos": 0.6909734801249579,
+    "width": 0.263318762104027,
+    "tilt": -0.05940995964221656,
+    "flip": false,
+    "glow": 0.7673483833204955
+   }
+  },
+  {
+   "slug": "two-minutes-between-things",
+   "title": "Two Minutes Between Things",
+   "recipe": {
+    "room": "#13241a",
+    "pair": 1,
+    "horizontal": true,
+    "pos": 0.6815434623276815,
+    "width": 0.12634943252429368,
+    "tilt": -0.07511583175510168,
+    "flip": true,
+    "glow": 0.9806943224975839
+   }
+  },
+  {
+   "slug": "when-your-mind-wont-stop-at-bedtime",
+   "title": "When Your Mind Won't Stop at Bedtime",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 2,
+    "horizontal": true,
+    "pos": 0.4865658363047987,
+    "width": 0.2978314304444939,
+    "tilt": -0.15818783816881477,
+    "flip": true,
+    "glow": 0.9490562747232616
+   }
   }
  ]
 }
