@@ -59,6 +59,26 @@
  ],
  "sessions": [
   {
+   "key": "a-five-minute-reset",
+   "href": "/sessions/a-five-minute-reset/",
+   "num": 28,
+   "title": "A Five-Minute Reset",
+   "line": "For the middle of a full day.",
+   "length": "6 min",
+   "moment": "right-now",
+   "free": false
+  },
+  {
+   "key": "letting-love-in",
+   "href": "/sessions/letting-love-in/",
+   "num": 27,
+   "title": "Letting Love In",
+   "line": "For when you need to feel loved, starting with yourself.",
+   "length": "10 min",
+   "moment": "heart",
+   "free": false
+  },
+  {
    "key": "letting-stress-leave-your-body",
    "href": "/sessions/letting-stress-leave-your-body/",
    "num": 26,

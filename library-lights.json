@@ -363,6 +363,34 @@
     "flip": false,
     "glow": 0.9245976094389334
    }
+  },
+  {
+   "slug": "letting-love-in",
+   "title": "Letting Love In",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 6,
+    "horizontal": true,
+    "pos": 0.531628431463614,
+    "width": 0.10953051344491542,
+    "tilt": 0.12126055338419973,
+    "flip": false,
+    "glow": 0.7720446195453405
+   }
+  },
+  {
+   "slug": "a-five-minute-reset",
+   "title": "A Five-Minute Reset",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 4,
+    "horizontal": true,
+    "pos": 0.6570676498068496,
+    "width": 0.31674072379246354,
+    "tilt": 0.11987473418936133,
+    "flip": false,
+    "glow": 0.824820032576099
+   }
   }
  ]
 }
