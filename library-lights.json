@@ -349,6 +349,20 @@
     "flip": true,
     "glow": 0.9490562747232616
    }
+  },
+  {
+   "slug": "letting-stress-leave-your-body",
+   "title": "Letting Stress Leave Your Body",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 1,
+    "horizontal": false,
+    "pos": 0.7990272803045809,
+    "width": 0.13177016203291714,
+    "tilt": 0.03532331130467355,
+    "flip": false,
+    "glow": 0.9245976094389334
+   }
   }
  ]
 }
