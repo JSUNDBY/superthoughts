@@ -1,5 +1,5 @@
 {
- "note": "Shelves for the library and home page. Edit here, then run scripts/build-shelves.py. Josh 2026-10-23: eight moments; one free session per shelf.",
+ "note": "Shelves for the library and home page. Edit here, then run scripts/build-shelves.py. Josh 2026-10-23: eight moments; one free session per shelf. 2026-11-17 preview: each session also has plain-word needs (filter chips on the library).",
  "moments": [
   {
    "id": "morning",
@@ -66,7 +66,11 @@
    "line": "For the middle of a full day.",
    "length": "6 min",
    "moment": "right-now",
-   "free": false
+   "free": false,
+   "needs": [
+    "stress",
+    "beginners"
+   ]
   },
   {
    "key": "letting-love-in",
@@ -76,7 +80,10 @@
    "line": "For when you need to feel loved, starting with yourself.",
    "length": "10 min",
    "moment": "heart",
-   "free": false
+   "free": false,
+   "needs": [
+    "love"
+   ]
   },
   {
    "key": "letting-stress-leave-your-body",
@@ -86,7 +93,11 @@
    "line": "For when the day is still sitting in your shoulders.",
    "length": "11 min",
    "moment": "still",
-   "free": false
+   "free": false,
+   "needs": [
+    "stress",
+    "body"
+   ]
   },
   {
    "key": "tapping-into-your-creative-energy",
@@ -96,7 +107,10 @@
    "line": "For the minute before you start making something.",
    "length": "10 min",
    "moment": "open",
-   "free": false
+   "free": false,
+   "needs": [
+    "confidence"
+   ]
   },
   {
    "key": "for-someone-you-love-and-miss",
@@ -106,7 +120,10 @@
    "line": "For when you miss someone and want to feel close to them.",
    "length": "9 min",
    "moment": "heart",
-   "free": true
+   "free": true,
+   "needs": [
+    "love"
+   ]
   },
   {
    "key": "the-quantum-reset",
@@ -116,7 +133,11 @@
    "line": "For evenings when you want to put the day's self down and start fresh.",
    "length": "28 min",
    "moment": "open",
-   "free": false
+   "free": false,
+   "needs": [
+    "confidence",
+    "stress"
+   ]
   },
   {
    "key": "open-to-receive",
@@ -126,7 +147,10 @@
    "line": "For when some part of you is still braced against having more.",
    "length": "29 min",
    "moment": "open",
-   "free": false
+   "free": false,
+   "needs": [
+    "abundance"
+   ]
   },
   {
    "key": "when-your-mind-wont-stop-at-bedtime",
@@ -136,7 +160,12 @@
    "line": "Close the day's open tabs and let the list wait for morning.",
    "length": "25 min",
    "moment": "night",
-   "free": false
+   "free": false,
+   "needs": [
+    "sleep",
+    "overthinking",
+    "anxiety"
+   ]
   },
   {
    "key": "two-minutes-between-things",
@@ -146,7 +175,12 @@
    "line": "One slow reset between meetings or errands.",
    "length": "5 min",
    "moment": "right-now",
-   "free": true
+   "free": true,
+   "needs": [
+    "stress",
+    "anxiety",
+    "beginners"
+   ]
   },
   {
    "key": "when-you-wake-up-already-tense",
@@ -156,7 +190,12 @@
    "line": "For mornings when the tightness gets there before the day does.",
    "length": "9 min",
    "moment": "morning",
-   "free": false
+   "free": false,
+   "needs": [
+    "morning",
+    "anxiety",
+    "body"
+   ]
   },
   {
    "key": "still-enough-to-sleep",
@@ -166,7 +205,11 @@
    "line": "Let the day be done, and sink into sleep.",
    "length": "45 min",
    "moment": "night",
-   "free": true
+   "free": true,
+   "needs": [
+    "sleep",
+    "body"
+   ]
   },
   {
    "key": "connecting-to-abundance",
@@ -176,7 +219,10 @@
    "line": "Feel connected to everything, and open your hands to what is coming.",
    "length": "9 min",
    "moment": "open",
-   "free": true
+   "free": true,
+   "needs": [
+    "abundance"
+   ]
   },
   {
    "key": "the-frequency-of-enough",
@@ -186,7 +232,11 @@
    "line": "When the day was all measuring, feel that you have done enough.",
    "length": "9 min",
    "moment": "still",
-   "free": false
+   "free": false,
+   "needs": [
+    "stress",
+    "love"
+   ]
   },
   {
    "key": "before-you-pick-up-the-phone",
@@ -196,7 +246,11 @@
    "line": "The first minutes of the day, before anything else gets in.",
    "length": "7 min",
    "moment": "morning",
-   "free": true
+   "free": true,
+   "needs": [
+    "morning",
+    "anxiety"
+   ]
   },
   {
    "key": "before-you-say-yes",
@@ -206,7 +260,11 @@
    "line": "Someone asks. One breath before you answer.",
    "length": "8 min",
    "moment": "before",
-   "free": true
+   "free": true,
+   "needs": [
+    "anxiety",
+    "confidence"
+   ]
   },
   {
    "key": "before-the-week-starts",
@@ -216,7 +274,11 @@
    "line": "Sunday evening, when the week lands in your chest: name each thing, set the weight down.",
    "length": "7 min",
    "moment": "before",
-   "free": false
+   "free": false,
+   "needs": [
+    "anxiety",
+    "overthinking"
+   ]
   },
   {
    "key": "the-empowerment-practice",
@@ -226,7 +288,10 @@
    "line": "Remember that you are powerful: feet, breath, heat in the chest, and the fire that is already yours.",
    "length": "9 min",
    "moment": "open",
-   "free": false
+   "free": false,
+   "needs": [
+    "confidence"
+   ]
   },
   {
    "key": "the-abundance-practice",
@@ -236,7 +301,10 @@
    "line": "Feel abundance as something already here: warmth in the chest, one thing you have, the sense of enough.",
    "length": "10 min",
    "moment": "open",
-   "free": false
+   "free": false,
+   "needs": [
+    "abundance"
+   ]
   },
   {
    "key": "after-a-tense-conversation",
@@ -246,7 +314,12 @@
    "line": "Let a tense conversation settle: jaw, shoulders, hands, feet on the ground.",
    "length": "5 min",
    "moment": "after",
-   "free": true
+   "free": true,
+   "needs": [
+    "anxiety",
+    "stress",
+    "body"
+   ]
   },
   {
    "key": "the-pause-before-asking",
@@ -256,7 +329,11 @@
    "line": "Name a price for your work, rehearse a real offer, and let the sentence end.",
    "length": "4 min",
    "moment": "before",
-   "free": false
+   "free": false,
+   "needs": [
+    "confidence",
+    "anxiety"
+   ]
   },
   {
    "key": "stress-without-the-cigarette",
@@ -266,7 +343,11 @@
    "line": "Choose one small thing to try before reaching for a cigarette.",
    "length": "3 min",
    "moment": "clear-air",
-   "free": false
+   "free": false,
+   "needs": [
+    "smoking",
+    "stress"
+   ]
   },
   {
    "key": "a-new-small-ritual",
@@ -276,7 +357,10 @@
    "line": "Choose one small action for a familiar pause in your day.",
    "length": "19:30",
    "moment": "clear-air",
-   "free": false
+   "free": false,
+   "needs": [
+    "smoking"
+   ]
   },
   {
    "key": "when-the-urge-arrives",
@@ -286,7 +370,10 @@
    "line": "Notice what is here, then choose one helpful next step.",
    "length": "20:30",
    "moment": "clear-air",
-   "free": false
+   "free": false,
+   "needs": [
+    "smoking"
+   ]
   },
   {
    "key": "remembering-your-reason",
@@ -296,7 +383,10 @@
    "line": "Reconnect with your own reason for wanting to stop smoking.",
    "length": "20:30",
    "moment": "clear-air",
-   "free": false
+   "free": false,
+   "needs": [
+    "smoking"
+   ]
   },
   {
    "key": "precious-life",
@@ -306,7 +396,10 @@
    "line": "An ordinary moment, and life here in this breath.",
    "length": "11 min",
    "moment": "open",
-   "free": false
+   "free": false,
+   "needs": [
+    "stress"
+   ]
   },
   {
    "key": "let-them-think",
@@ -316,7 +409,11 @@
    "line": "Room to be yourself without carrying every opinion.",
    "length": "11:25",
    "moment": "after",
-   "free": false
+   "free": false,
+   "needs": [
+    "overthinking",
+    "confidence"
+   ]
   },
   {
    "key": "soft-place-to-land",
@@ -326,7 +423,11 @@
    "line": "Nothing to do for a while.",
    "length": "9:30",
    "moment": "after",
-   "free": false
+   "free": false,
+   "needs": [
+    "stress",
+    "anxiety"
+   ]
   },
   {
    "key": "still-enough",
@@ -336,7 +437,57 @@
    "line": "Nine quiet minutes to be still and notice your breath.",
    "length": "9 min",
    "moment": "still",
-   "free": true
+   "free": true,
+   "needs": [
+    "beginners",
+    "stress"
+   ]
+  }
+ ],
+ "needs": [
+  {
+   "id": "sleep",
+   "name": "Sleep"
+  },
+  {
+   "id": "anxiety",
+   "name": "Anxiety"
+  },
+  {
+   "id": "stress",
+   "name": "Stress"
+  },
+  {
+   "id": "overthinking",
+   "name": "Overthinking"
+  },
+  {
+   "id": "body",
+   "name": "Tension in the body"
+  },
+  {
+   "id": "beginners",
+   "name": "New to meditation"
+  },
+  {
+   "id": "morning",
+   "name": "Morning"
+  },
+  {
+   "id": "love",
+   "name": "Love and self-worth"
+  },
+  {
+   "id": "confidence",
+   "name": "Confidence"
+  },
+  {
+   "id": "abundance",
+   "name": "Abundance"
+  },
+  {
+   "id": "smoking",
+   "name": "Quitting smoking"
   }
  ]
 }

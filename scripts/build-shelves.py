@@ -11,6 +11,7 @@ import html, json, pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 data = json.loads((ROOT / 'library-moments.json').read_text())
 moments, series, sessions = data['moments'], data['series'], data['sessions']
+need_list = data.get('needs', [])   # 2026-11-17: plain-word needs for the filter chips
 e = lambda s: html.escape(s, quote=True)
 on = lambda mid: [s for s in sessions if s['moment'] == mid]
 words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
@@ -50,14 +51,22 @@ def header(current):
 FOOT = """  <div class="th-wrap"><p class="th-disclaimer">Superthoughts recordings are for relaxation and entertainment, made as art. They are not medical or mental health care. <a href="/terms.html">Terms</a></p></div>
   <footer class="th-footer"><div class="th-wrap"><span>© 2026 Superthoughts</span><a href="about.html">About</a><a href="guides/">Guides</a><a href="explore.html#practice">Your practice</a><a href="index.html#newsletter">Email notes</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a><a href="https://www.google.com/preferences/source?q=superthoughts.com">Add us on Google</a></div></footer>"""
 
+def minutes(length):
+    """'19:30' -> 20, '9 min' -> 9. One format everywhere (Josh 2026-11-17)."""
+    if ':' in length:
+        m, sec = length.split(':'); return int(m) + (1 if int(sec) >= 30 else 0)
+    return int(length.split()[0])
+
 def row(s, show_moment=False):
     free = '<span class="free">Free</span>' if s['free'] else ''
     where = f" · {e(next(m['name'] for m in moments + series if m['id'] == s['moment']))}" if show_moment else ''
-    return f"""<li><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{e(s['length'])}</span><span class="line">{e(s['line'])}{where}</span></a></li>"""
+    return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{minutes(s['length'])} min</span><span class="line">{e(s['line'])}{where}</span></a></li>"""
 
 free_count = sum(1 for s in sessions if s['free'])
 newest = sorted(sessions, key=lambda s: -s['num'])[:3]
 needs = ''.join(f"""<li><a class="th-row" href="library.html#{m['id']}"><strong>{e(m['name'])}</strong><span class="len">{count_text(len(on(m['id'])))}</span><span class="line">{e(m['line'])}</span></a></li>""" for m in moments + series if on(m['id']))
+
+need_links = ''.join(f'<a href="library.html?need={n["id"]}">{e(n["name"])}</a>' for n in need_list if any(n['id'] in s.get('needs', []) for s in sessions))
 
 home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessions and original music. Put on headphones, close your eyes, and let the space open up.", 'https://superthoughts.com/', 'Superthoughts. Make room for bigger thoughts.')}
 <body class="threshold home-page page-home">
@@ -80,6 +89,8 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
 
     <section class="th-section" id="find" aria-labelledby="find-title"><div class="th-wrap">
       <div class="th-head"><div><h2 id="find-title">Find a session</h2><p class="intro">Choose what you need. Each session is a few spoken words, room to breathe, and music made for it.</p></div><a class="th-link" href="library.html">All {len(sessions)} sessions <span aria-hidden="true">→</span></a></div>
+      <nav class="th-jump th-needs" aria-label="Sessions by need">{need_links}</nav>
+      <p class="th-label th-or">Or by moment</p>
       <ul class="th-rows">{needs}</ul>
     </div></section>
 
@@ -124,9 +135,10 @@ for m in moments + series:
       <div class="th-shelf-title"><h2 id="shelf-{m['id']}">{e(m['name'])}</h2><p>{e(m['line'])}</p></div>
       <div>{rows}</div>
     </div></section>""")
+chips = ''.join(f'<button type="button" data-need="{n["id"]}" aria-pressed="false">{e(n["name"])}</button>' for n in need_list if any(n['id'] in s.get('needs', []) for s in sessions))
 jump = ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in moments + series if on(m['id']))
 
-library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by what it is for: starting the day, before and after something hard, a short reset, love, confidence, rest and sleep.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
+library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, anxiety, stress, overthinking, tension in the body, morning, love, confidence and abundance. Filter by need and length. Some are free.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
 <body class="threshold library-page">
   <a class="th-skip" href="#main">Skip to content</a>
 {header('library')}
@@ -136,6 +148,14 @@ library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by
       <p class="th-label">The library</p>
       <h1>Find what you need.</h1>
       <p class="intro">{len(sessions)} guided sessions, each with its own music. The free ones are marked.</p>
+      <div class="th-filter" data-filter hidden>
+        <p class="th-label">What do you need?</p>
+        <div class="th-chips" role="group" aria-label="Filter by need">{chips}</div>
+        <p class="th-label">How long?</p>
+        <div class="th-chips" role="group" aria-label="Filter by length"><button type="button" data-len="short" aria-pressed="false">Under 10 min</button><button type="button" data-len="mid" aria-pressed="false">10 to 20 min</button><button type="button" data-len="long" aria-pressed="false">Over 20 min</button><button type="button" data-free-only aria-pressed="false">Free only</button></div>
+        <p class="th-filter-status" aria-live="polite"><span data-status></span> <button type="button" class="th-clear" data-clear hidden>Show all</button></p>
+      </div>
+      <p class="th-label th-or">Or by moment</p>
       <nav class="th-jump" aria-label="What each session is for">{jump}</nav>
     </div></div>
 {chr(10).join(shelves)}
@@ -143,7 +163,7 @@ library = f"""{head('Library · Superthoughts', 'Every Superthoughts session, by
   </main>
 {FOOT}
   {TOGGLE}
-  <script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
+  <script src="library-filter.js" defer></script><script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
 </body>
 </html>
 """
