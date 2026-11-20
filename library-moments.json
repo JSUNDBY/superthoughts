@@ -59,6 +59,20 @@
  ],
  "sessions": [
   {
+   "key": "five-minute-morning-clarity",
+   "href": "/sessions/five-minute-morning-clarity/",
+   "num": 39,
+   "title": "5 Minute Morning Clarity",
+   "line": "For the first few minutes of the day.",
+   "length": "5 min",
+   "moment": "morning",
+   "free": false,
+   "needs": [
+    "morning",
+    "beginners"
+   ]
+  },
+  {
    "key": "set-down-guilt",
    "href": "/sessions/set-down-guilt/",
    "num": 38,

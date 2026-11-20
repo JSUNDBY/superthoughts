@@ -531,6 +531,20 @@
     "flip": false,
     "glow": 0.7470709099434316
    }
+  },
+  {
+   "slug": "five-minute-morning-clarity",
+   "title": "5 Minute Morning Clarity",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 7,
+    "horizontal": false,
+    "pos": 0.6355955585325137,
+    "width": 0.2703557836310938,
+    "tilt": -0.018343130573630333,
+    "flip": false,
+    "glow": 0.8426160764647648
+   }
   }
  ]
 }
