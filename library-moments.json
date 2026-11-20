@@ -59,6 +59,148 @@
  ],
  "sessions": [
   {
+   "key": "set-down-guilt",
+   "href": "/sessions/set-down-guilt/",
+   "num": 38,
+   "title": "Set Down What You Carry",
+   "line": "For a weight you have been carrying.",
+   "length": "5 min",
+   "moment": "after",
+   "free": false,
+   "needs": [
+    "love",
+    "stress"
+   ]
+  },
+  {
+   "key": "three-minute-reset",
+   "href": "/sessions/three-minute-reset/",
+   "num": 37,
+   "title": "Three Minute Reset",
+   "line": "For a three-minute pause.",
+   "length": "3 min",
+   "moment": "right-now",
+   "free": false,
+   "needs": [
+    "stress",
+    "beginners"
+   ]
+  },
+  {
+   "key": "quiet-the-mind",
+   "href": "/sessions/quiet-the-mind/",
+   "num": 36,
+   "title": "Quiet the Mind",
+   "line": "For when your thoughts keep moving.",
+   "length": "6 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "overthinking",
+    "anxiety"
+   ]
+  },
+  {
+   "key": "ground-your-mind",
+   "href": "/sessions/ground-your-mind/",
+   "num": 35,
+   "title": "Ground Your Mind",
+   "line": "For when your head is louder than your feet.",
+   "length": "5 min",
+   "moment": "right-now",
+   "free": false,
+   "needs": [
+    "overthinking",
+    "body"
+   ]
+  },
+  {
+   "key": "ground-into-your-body",
+   "href": "/sessions/ground-into-your-body/",
+   "num": 34,
+   "title": "Ground Into Your Body",
+   "line": "For when you feel scattered and want to land.",
+   "length": "4 min",
+   "moment": "right-now",
+   "free": false,
+   "needs": [
+    "body",
+    "anxiety",
+    "beginners"
+   ]
+  },
+  {
+   "key": "evening-settle",
+   "href": "/sessions/evening-settle/",
+   "num": 33,
+   "title": "Evening Settle",
+   "line": "For the end of a long day.",
+   "length": "6 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "stress",
+    "body"
+   ]
+  },
+  {
+   "key": "let-the-day-close",
+   "href": "/sessions/let-the-day-close/",
+   "num": 32,
+   "title": "Let the Day Close",
+   "line": "For when the day is still running in your head.",
+   "length": "9 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "stress",
+    "overthinking"
+   ]
+  },
+  {
+   "key": "morning-calm-activation",
+   "href": "/sessions/morning-calm-activation/",
+   "num": 31,
+   "title": "Morning Calm, Focused Activation",
+   "line": "For a calm, focused start.",
+   "length": "6 min",
+   "moment": "morning",
+   "free": false,
+   "needs": [
+    "morning",
+    "overthinking"
+   ]
+  },
+  {
+   "key": "five-minute-calm",
+   "href": "/sessions/five-minute-calm/",
+   "num": 30,
+   "title": "5 Minute Calm",
+   "line": "For a pause in the middle of the day.",
+   "length": "5 min",
+   "moment": "right-now",
+   "free": false,
+   "needs": [
+    "stress",
+    "beginners"
+   ]
+  },
+  {
+   "key": "nervous-system-reset",
+   "href": "/sessions/nervous-system-reset/",
+   "num": 29,
+   "title": "Nervous System Reset",
+   "line": "For when you have about two minutes.",
+   "length": "3 min",
+   "moment": "right-now",
+   "free": false,
+   "needs": [
+    "stress",
+    "body",
+    "beginners"
+   ]
+  },
+  {
    "key": "a-five-minute-reset",
    "href": "/sessions/a-five-minute-reset/",
    "num": 28,

@@ -391,6 +391,146 @@
     "flip": false,
     "glow": 0.824820032576099
    }
+  },
+  {
+   "slug": "nervous-system-reset",
+   "title": "Nervous System Reset",
+   "recipe": {
+    "room": "#102522",
+    "pair": 7,
+    "horizontal": true,
+    "pos": 0.812259054663591,
+    "width": 0.2168718264438212,
+    "tilt": 0.026352465441450475,
+    "flip": true,
+    "glow": 0.7179540828801692
+   }
+  },
+  {
+   "slug": "five-minute-calm",
+   "title": "5 Minute Calm",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 0,
+    "horizontal": true,
+    "pos": 0.7069571701297537,
+    "width": 0.3195443804236129,
+    "tilt": -0.16283086543902756,
+    "flip": true,
+    "glow": 0.7945513192098588
+   }
+  },
+  {
+   "slug": "morning-calm-activation",
+   "title": "Morning Calm, Focused Activation",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 3,
+    "horizontal": true,
+    "pos": 0.6036935745971277,
+    "width": 0.10216810534242542,
+    "tilt": -0.16095031505450605,
+    "flip": false,
+    "glow": 0.8353156790835783
+   }
+  },
+  {
+   "slug": "let-the-day-close",
+   "title": "Let the Day Close",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 5,
+    "horizontal": true,
+    "pos": 0.7537482537468896,
+    "width": 0.17687356462236495,
+    "tilt": -0.1458803628478199,
+    "flip": true,
+    "glow": 0.8445449726423249
+   }
+  },
+  {
+   "slug": "evening-settle",
+   "title": "Evening Settle",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 2,
+    "horizontal": false,
+    "pos": 0.6672042790334671,
+    "width": 0.11497491067741067,
+    "tilt": -0.0773570073209703,
+    "flip": false,
+    "glow": 0.8150037231389433
+   }
+  },
+  {
+   "slug": "ground-into-your-body",
+   "title": "Ground Into Your Body",
+   "recipe": {
+    "room": "#171c1f",
+    "pair": 6,
+    "horizontal": false,
+    "pos": 0.5056460550427436,
+    "width": 0.20933817164972424,
+    "tilt": 0.07528961777687072,
+    "flip": false,
+    "glow": 0.810551161179319
+   }
+  },
+  {
+   "slug": "ground-your-mind",
+   "title": "Ground Your Mind",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 5,
+    "horizontal": false,
+    "pos": 0.6021464202459902,
+    "width": 0.17987283368129284,
+    "tilt": 0.14881582067348062,
+    "flip": false,
+    "glow": 0.5809452708344907
+   }
+  },
+  {
+   "slug": "quiet-the-mind",
+   "title": "Quiet the Mind",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 0,
+    "horizontal": false,
+    "pos": 0.7400801386684179,
+    "width": 0.21939209694508466,
+    "tilt": 0.15354134020395577,
+    "flip": true,
+    "glow": 0.9584201795514673
+   }
+  },
+  {
+   "slug": "three-minute-reset",
+   "title": "Three Minute Reset",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 3,
+    "horizontal": false,
+    "pos": 0.7104496764857322,
+    "width": 0.1456977888243273,
+    "tilt": 0.02203146276064217,
+    "flip": false,
+    "glow": 0.960428410791792
+   }
+  },
+  {
+   "slug": "set-down-guilt",
+   "title": "Set Down What You Carry",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 1,
+    "horizontal": true,
+    "pos": 0.6189889806183055,
+    "width": 0.10640321462880821,
+    "tilt": 0.1488476857356727,
+    "flip": false,
+    "glow": 0.7470709099434316
+   }
   }
  ]
 }
