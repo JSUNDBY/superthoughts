@@ -104,6 +104,7 @@ window.STCatalog = [
  {id:'deep-tonal-rest',title:'Deep Tonal Rest',description:'Thirty minutes of slow, sustained tone. Only sound.',category:'sound',type:'sound',duration:1838,stream:true,src:'https://superthoughts-audio.b-cdn.net/site/deep-tonal-rest-v1.mp3',cues:null,visual:'warmth',accent:'#c9a27e',kicker:'Half an hour, no words'},
  {id:'extended-stillness',title:'Extended Stillness',description:'An hour of slow, unhurried sound for a long rest. Only sound.',category:'sound',type:'sound',duration:3600,stream:true,src:'https://superthoughts-audio.b-cdn.net/site/extended-stillness-v1.mp3',cues:null,visual:'drift',accent:'#9fa8d6',kicker:'An hour, no words'},
  {id:'drift-beyond-thought',title:'Drift Beyond Thought',description:'An hour of slow sound to drift with. Only sound.',category:'sound',type:'sound',duration:3600,stream:true,src:'https://superthoughts-audio.b-cdn.net/site/drift-beyond-thought-v1.mp3',cues:null,visual:'open-space',accent:'#a6c3e0',kicker:'An hour, no words'},
+ {id:'breath-of-stillness',title:'Breath of Stillness',description:'An hour of slow sound to breathe with. Only sound.',category:'sound',type:'sound',duration:3600,stream:true,src:'https://superthoughts-audio.b-cdn.net/site/breath-of-stillness-v1.mp3',cues:null,visual:'warmth',accent:'#d4a99a',kicker:'An hour, no words'},
  {id:'spacious-rest',title:'Spacious Rest',description:'An hour and forty minutes of open, spacious sound. Room for a nap or a whole evening. Only sound.',category:'sound',type:'sound',duration:5979,stream:true,src:'https://superthoughts-audio.b-cdn.net/site/spacious-rest-v1.mp3',cues:null,visual:'drift',accent:'#b3a6d9',kicker:'The longest one'},
  {id:'afterglow',title:'Afterglow',description:'Warm bowl tones and slow twilight harmonies. A little longer to let the day settle.',category:'evening',type:'sound',duration:720,src:'audio/afterglow-v2.mp3',cues:null,visual:'afterglow',accent:'#e6a18f',kicker:'Stay a little longer'},
  {id:'first-light',title:'First light',description:'Soft rising harmonies and open space. A wordless beginning, at your own pace.',category:'morning',type:'sound',duration:480,src:'audio/first-light-v2.mp3',cues:null,visual:'first-light',accent:'#98d6da',kicker:'A little light comes through'}
@@ -131,7 +132,7 @@ window.STAccess = {
   // Added 2026-11-24: three most-played IT tracks and nine IT premium tracks (members-only, Josh).
   'drift-into-sleep', 'frequency-of-abundance', 'shifting-timelines', 'morning-clarity-deep-start', 'quiet-confidence', 'opening-into-abundance', 'steady-calm', 'sleep-ritual-light-within', 'sleep-ritual-grounded-and-safe', 'weightless', 'deep-nervous-system-reset', 'grounded-in-light', 'the-whole-being', 'resting-in-shared-awareness', 'settling-back-into-the-body', 'steady-and-alive', 'deep-confidence-activation', 'emotional-renewal', 'quantum-identity', 'empathic-journey-steady-presence', 'empathic-journey-what-is-yours', 'suspended-in-light', 'eight-minutes-of-peace',
     // Added 2026-11-24: IT premium Tier 2 + five sound journeys (members-only, Josh).
-    'deep-tonal-rest', 'extended-stillness', 'drift-beyond-thought', 'spacious-rest']
+    'deep-tonal-rest', 'extended-stillness', 'drift-beyond-thought', 'breath-of-stillness', 'spacious-rest']
 };
 (() => {
  const A = window.STAccess;
