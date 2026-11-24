@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const catalogSource = readFileSync(new URL('../pilot-catalog.js', import.meta.url), 'utf8');
 
 function load({ page = true, gate, preview = false } = {}) {
-  const source = gate === undefined ? catalogSource : catalogSource.replace(/^ gate: false,$/m, ` gate: ${gate},`);
+  const source = gate === undefined ? catalogSource : catalogSource.replace(/^ gate: (true|false),$/m, ` gate: ${gate},`);
   const context = { window: {} };
   if (page) {
     context.document = { createElement: () => ({ append() {} }) };
@@ -16,8 +16,12 @@ function load({ page = true, gate, preview = false } = {}) {
   return context.window;
 }
 
-test('the gate ships switched off', () => {
-  const { STAccess, STCatalog } = load();
+test('launched (2026-11-24): the gate ships switched on', () => {
+  assert.equal(load().STAccess.gate, true);
+});
+
+test('gate off: every session plays from the site', () => {
+  const { STAccess, STCatalog } = load({ gate: false });
   assert.equal(STAccess.gate, false);
   assert.equal(STAccess.on, false);
   assert.ok(STCatalog.every(item => item.access === undefined && !item.src.startsWith(STAccess.app)));
@@ -32,7 +36,7 @@ test('every member slug is a session in the catalog once the gate is on', () => 
 
 for (const [name, opts] of [['switched on', { gate: true }], ['previewed in one browser', { preview: true }]]) {
   test(`${name}: member sessions stream from the members app, free ones do not change`, () => {
-    const plain = load().STCatalog;
+    const plain = load({ gate: true, page: false }).STCatalog;
     const { STAccess, STCatalog } = load(opts);
     assert.equal(STAccess.on, true);
     for (const item of STCatalog) {
@@ -50,7 +54,7 @@ for (const [name, opts] of [['switched on', { gate: true }], ['previewed in one 
 }
 
 test('gate off: held sessions are not listed, every other member session is', () => {
-  const { STAccess, STCatalog } = load();
+  const { STAccess, STCatalog } = load({ gate: false });
   const ids = new Set(STCatalog.map(item => item.id));
   assert.ok(STAccess.held.length > 0 && STAccess.held.every(id => !ids.has(id) && STAccess.members.includes(id)));
   assert.equal(STAccess.members.filter(id => !STAccess.held.includes(id) && !ids.has(id)).length, 0);

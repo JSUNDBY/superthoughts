@@ -118,7 +118,7 @@ window.STCatalog = [
    The rewrite runs only in a page (the service worker imports this file too and must keep the plain paths).
    `members` must match the member slugs in superthoughts-members/src/catalog.ts. */
 window.STAccess = {
- gate: false,
+ gate: true,
  app: 'https://members.superthoughts.com',
  /* Insight Timer premium tracks (Josh 2026-11-24): their audio exists only in the members app, never on a public CDN.
     While the gate is off they leave the catalog, the library, the sitemap and the published session pages. */
