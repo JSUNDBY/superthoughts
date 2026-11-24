@@ -129,6 +129,7 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
       <p>These sessions are spacious.</p>
       <p>A few words, and then room. Long pauses between the lines, so there is time to arrive, to notice what is here, and to let something settle or open on its own. You are not missing anything in the quiet. The quiet is the practice, and the music is there to hold you in it.</p>
       <p>Go at your own pace. Listen once or a hundred times, for the whole session or for a few minutes, eyes closed or open. Nothing here needs to be done right.</p>
+      <div class="th-byline"><img src="images/josh-sundby.jpg" width="72" height="72" alt="" loading="lazy"><p>Made by Josh Sundby, a meditation teacher and musician in Minneapolis.</p></div>
       <a class="th-link" href="about.html">About Superthoughts <span aria-hidden="true">→</span></a>
     </div></section>
 
@@ -207,6 +208,7 @@ about = f"""{head('About · Superthoughts', 'Superthoughts is guided sessions an
     <div class="th-wrap th-library-intro th-ethos">
       <p class="th-label">About</p>
       <h1 style="margin:0 0 36px">Made slowly, to be listened to slowly.</h1>
+      <img class="th-portrait" src="images/josh-sundby.jpg" width="880" height="1100" alt="Josh Sundby, the meditation teacher and musician who makes Superthoughts">
       <p>Superthoughts is made by Josh Sundby, a meditation teacher and musician in Minneapolis. He has taught meditation for more than twenty-five years.</p>
       <p>Every session starts with his own words, spoken in his own voice. The music is his too, composed for each session: slow, low and warm, made to be felt in the body as much as heard.</p>
       <p>These sessions are spacious. A few words, then long, open pauses. That space is where the real work happens: room to arrive, to notice what is here, and to let something settle or open on its own. You are not missing anything in the quiet. The music is there to hold you in it.</p>
