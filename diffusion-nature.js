@@ -105,7 +105,27 @@ const LIGHT_PALETTES = {
   letin: {shadow:'#120a0c', base:'#22141a', fold:'#45262f', lit:'#f0b9a0', light:'#fbebe2', edge:'#d98a78', air:'#2e1a20', reflection:'#fbebe2', undertone:'#40222a'},
   midday: {shadow:'#0b0f12', base:'#15202a', fold:'#2a3d4c', lit:'#a8cbe0', light:'#eaf3f8', edge:'#7aa6c2', air:'#1b2a36', reflection:'#eaf3f8', undertone:'#223443'},
   cDrifSlee: {shadow:'#141a23', base:'#2e3a4b', fold:'#4f627c', lit:'#dab976', light:'#f3e6cd', edge:'#a6774e', air:'#95a5bb', reflection:'#e3d28b', undertone:'#6f85a3'},
-  cFreqAbun: {shadow:'#14231c', base:'#2e4b3d', fold:'#4f7c66', lit:'#dab576', light:'#f3e5cd', edge:'#a6744e', air:'#95bba8', reflection:'#e3cf8b', undertone:'#6fa389'}
+  cFreqAbun: {shadow:'#14231c', base:'#2e4b3d', fold:'#4f7c66', lit:'#dab576', light:'#f3e5cd', edge:'#a6744e', air:'#95bba8', reflection:'#e3cf8b', undertone:'#6fa389'},
+  cDeepStar: {shadow:'#231c14', base:'#4b3d2e', fold:'#7c664f', lit:'#76b9da', light:'#cde6f3', edge:'#4e9aa6', air:'#bba895', reflection:'#8bbae3', undertone:'#a3896f'},
+  cQuieConf: {shadow:'#212314', base:'#464b2e', fold:'#747c4f', lit:'#a376da', light:'#decdf3', edge:'#644ea6', air:'#b4bb95', reflection:'#be8be3', undertone:'#9aa36f'},
+  cOpenAbun: {shadow:'#162314', base:'#324b2e', fold:'#557c4f', lit:'#da76a1', light:'#f3cddd', edge:'#a64e86', air:'#9abb95', reflection:'#e38ba5', undertone:'#76a36f'},
+  cSteaCalm: {shadow:'#14231c', base:'#2e4b3e', fold:'#4f7c68', lit:'#daba76', light:'#f3e7cd', edge:'#a6784e', air:'#95bbaa', reflection:'#e3d38b', undertone:'#6fa38c'},
+  cSleeLigh: {shadow:'#142023', base:'#2e454b', fold:'#4f717c', lit:'#8ada76', light:'#d5f3cd', edge:'#71a64e', air:'#95b2bb', reflection:'#91e38b', undertone:'#6f97a3'},
+  cSleeGrou: {shadow:'#141523', base:'#2e304b', fold:'#4f537c', lit:'#76dad2', light:'#cdf3f0', edge:'#4ea68d', air:'#9598bb', reflection:'#8bdfe3', undertone:'#6f74a3'},
+  cWeigLess: {shadow:'#1d1423', base:'#402e4b', fold:'#6a4f7c', lit:'#7976da', light:'#cecdf3', edge:'#4e5da6', air:'#ac95bb', reflection:'#9a8be3', undertone:'#8e6fa3'},
+  cDeepNerv: {shadow:'#23141f', base:'#4b2e43', fold:'#7c4f6f', lit:'#da76cb', light:'#f3cded', edge:'#a24ea6', air:'#bb95b0', reflection:'#e38bca', undertone:'#a36f94'},
+  cGrouLigh: {shadow:'#231414', base:'#4b2e2f', fold:'#7c4f51', lit:'#da9076', light:'#f3d7cd', edge:'#a6544e', air:'#bb9596', reflection:'#e3ae8b', undertone:'#a36f71'},
+  cWholBein: {shadow:'#232314', base:'#4b4b2e', fold:'#7c7c4f', lit:'#86da76', light:'#d3f3cd', edge:'#6ea64e', air:'#bbbb95', reflection:'#8ee38b', undertone:'#a3a36f'},
+  cRestShar: {shadow:'#1a2314', base:'#394b2e', fold:'#607c4f', lit:'#76d8da', light:'#cdf2f3', edge:'#4ea696', air:'#a3bb95', reflection:'#8bd6e3', undertone:'#83a36f'},
+  cSettBody: {shadow:'#142317', base:'#2e4b35', fold:'#4f7c5a', lit:'#8a76da', light:'#d5cdf3', edge:'#4e4ea6', air:'#95bb9e', reflection:'#a88be3', undertone:'#6fa37b'},
+  cSteaAliv: {shadow:'#142321', base:'#2e4b47', fold:'#4f7c75', lit:'#da76b4', light:'#f3cde4', edge:'#a64e96', air:'#95bbb5', reflection:'#e38bb6', undertone:'#6fa39b'},
+  cDeepConf: {shadow:'#141c23', base:'#2e3e4b', fold:'#4f677c', lit:'#daaf76', light:'#f3e2cd', edge:'#a66e4e', air:'#95a9bb', reflection:'#e3c98b', undertone:'#6f8ba3'},
+  cEmotRene: {shadow:'#151423', base:'#302e4b', fold:'#534f7c', lit:'#8fda76', light:'#d6f3cd', edge:'#75a64e', air:'#9895bb', reflection:'#95e38b', undertone:'#746fa3'},
+  cQuanIden: {shadow:'#1f1423', base:'#432e4b', fold:'#6e4f7c', lit:'#76dad3', light:'#cdf3f0', edge:'#4ea68e', air:'#af95bb', reflection:'#8bdde3', undertone:'#946fa3'},
+  cEmpaStea: {shadow:'#23141e', base:'#4b2e42', fold:'#7c4f6e', lit:'#8176da', light:'#d1cdf3', edge:'#4e55a6', air:'#bb95af', reflection:'#a18be3', undertone:'#a36f93'},
+  cEmpaYour: {shadow:'#231415', base:'#4b2e30', fold:'#7c4f52', lit:'#da76bc', light:'#f3cde7', edge:'#a64e9d', air:'#bb9597', reflection:'#e38bbd', undertone:'#a36f73'},
+  cSuspLigh: {shadow:'#231c14', base:'#4b3e2e', fold:'#7c684f', lit:'#daa676', light:'#f3dfcd', edge:'#a6674e', air:'#bbaa95', reflection:'#e3c18b', undertone:'#a38c6f'},
+  cEighPeac: {shadow:'#212314', base:'#464b2e', fold:'#747c4f', lit:'#97da76', light:'#daf3cd', edge:'#7da64e', air:'#b5bb95', reflection:'#9de38b', undertone:'#9aa36f'}
 };
 function rgba(hex, opacity) {
   return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${opacity})`;

@@ -186,6 +186,42 @@
 .th-shelf[hidden],.th-rows li[hidden]{display:none}
 .th-needs{margin-top:28px}
 .th-jump[hidden],.th-or[hidden]{display:none}
+/* Library doors (D84 B, 2026-11-23). One shape for door, shelf header and session card: 14px corners, a hairline,
+   a quiet surface, and the moment's light (--g, an rgb triple) in the top-right corner. */
+:root{--lib-card:rgba(236,226,207,.035);--lib-card-hover:rgba(236,226,207,.07);--lib-glow-a:.42;--lib-dot-a:.9}
+:root[data-theme="light"]{--lib-card:rgba(18,48,47,.04);--lib-card-hover:rgba(18,48,47,.075);--lib-glow-a:.5;--lib-dot-a:.95}
+.lib-lit{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:radial-gradient(130% 120% at 100% 0%,rgba(var(--g),var(--lib-glow-a)) 0%,rgba(var(--g),0) 58%),linear-gradient(var(--lib-card),var(--lib-card)),var(--bg)}
+.lib-doors{margin-top:32px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.lib-door{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:150px;padding:18px;text-decoration:none;transition:border-color .2s,background-color .2s}
+.lib-door strong{font-weight:500;font-size:18px;line-height:1.25;color:var(--text)}
+.lib-door small{font-size:14px;line-height:1.4;color:var(--quiet)}
+.lib-door:hover{border-color:rgba(var(--g),.75)}
+.lib-door.lib-wide{grid-column:1/-1;min-height:112px}
+.lib-count{position:absolute;top:14px;left:18px;font-size:13px;color:var(--muted)}
+.lib-back{margin:28px 0 0}
+.lib-back[hidden],.lib-doors[hidden],[data-feel-label][hidden],[data-feel][hidden]{display:none}
+.library-page .th-shelf-title.lib-lit{padding:56px 22px 22px;min-height:150px}
+.library-page .th-shelf-title .lib-count{left:22px;top:18px}
+.library-page .th-shelf .th-rows{border-top:0;display:grid;gap:10px}
+.library-page .th-shelf .th-rows li{border-bottom:0}
+.library-page .th-shelf .th-row{grid-template-columns:40px minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--lib-card);transition:border-color .2s,background-color .2s}
+.library-page .th-shelf .th-row::before{content:"";grid-row:1/span 2;grid-column:1;width:40px;height:40px;border-radius:50%;background:rgba(var(--g),var(--lib-dot-a)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M16 13l12 7-12 7z' fill='%2310211f'/%3E%3C/svg%3E") center/100% no-repeat}
+.library-page .th-shelf .th-row strong{grid-column:2;font-size:18px}
+.library-page .th-shelf .th-row .line,.library-page .th-shelf .th-row .starts{grid-column:2}
+.library-page .th-shelf .th-row .len{grid-column:3;grid-row:1/span 2}
+.library-page .th-shelf .th-row:hover{border-color:rgba(var(--g),.75);background:var(--lib-card-hover)}
+.library-page .th-shelf .th-row:hover strong{text-decoration:none}
+@media (max-width:980px){.lib-doors{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.lib-door{min-height:128px;padding:14px}.lib-door strong{font-size:16px}.lib-count{left:14px;top:12px}
+  .library-page .th-shelf-title.lib-lit{min-height:0;padding:48px 18px 18px}
+  .library-page .th-shelf .th-row{grid-template-columns:36px minmax(0,1fr) auto;padding:14px}.library-page .th-shelf .th-row::before{width:36px;height:36px}}
+@media (prefers-reduced-motion:reduce){.lib-door,.library-page .th-shelf .th-row{transition:none}}
+.lib-back .th-clear{font:inherit;font-size:15px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px 0 14px;border:1px solid var(--line);border-radius:99px;background:var(--lib-card);color:var(--text);cursor:pointer;text-decoration:none}
+.lib-back .th-clear::before{content:"\2190";color:var(--quiet)}
+.lib-back .th-clear:hover{border-color:var(--text)}
+.lib-door{justify-content:flex-start}
+.lib-door .lib-count{position:static;margin-bottom:auto;padding-bottom:14px}
+@media (max-width:520px){.lib-door{min-height:0}.lib-door .lib-count{padding-bottom:18px}}
 .th-portrait{display:block;width:min(100%,360px);height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:14px;margin:0 0 36px}
 .th-byline{display:flex;align-items:center;gap:16px;margin:8px 0 26px}
 .th-byline img{width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none}

@@ -19,11 +19,19 @@ e = lambda s: html.escape(s, quote=True)
 _cat = (ROOT / 'pilot-catalog.js').read_text()
 _field = lambda line, k: (re.search(k + r":'((?:[^'\\]|\\.)*)'", line) or re.search(k + r":(\d+)", line)).group(1)
 _sound_lines = [l for l in _cat.splitlines() if re.search(r"type:\s*'sound'", l)]
-sound = [{'title': _field(l, 'title').replace("\\'", "'"), 'href': f"session.html?session={_field(l, 'id')}", 'free': True,
+# Members-only sound pieces (Insight Timer premium, Josh 2026-11-24) are not free: free means "not in STAccess.members".
+_members = set(re.findall(r"'([a-z0-9-]+)'", (re.search(r" members: \[([^\]]*)\]", _cat) or re.search('()', '')).group(1)))
+sound = [{'title': _field(l, 'title').replace("\\'", "'"), 'href': f"session.html?session={_field(l, 'id')}", 'free': _field(l, 'id') not in _members,
           'length': f"{int(_field(l, 'duration')) // 60}:{int(_field(l, 'duration')) % 60:02d}",
           'line': _field(l, 'description').replace("\\'", "'"), 'needs': ['sound']}
          for l in _sound_lines if not re.search(r"unlisted\s*:\s*true", l)]
 assert len(_sound_lines) == len(re.findall(r"type:\s*'sound'", _cat)), 'a sound entry spans lines; parser missed it'
+# 2026-11-24 (Josh): one site for everyone. While the gate is off, the held sessions (members app only) are not listed.
+_gate_on = bool(re.search(r"^ gate: true,", _cat, re.M))
+_held = set(re.findall(r"'([a-z0-9-]+)'", re.search(r" held: \[([^\]]*)\]", _cat).group(1)))
+if not _gate_on:
+    sessions = [s for s in sessions if s['key'] not in _held]
+    sound = [x for x in sound if x['href'].split('=')[1] not in _held]
 SOUND_SHELF = {'id': 'listen', 'name': 'Just listen', 'line': 'Music with no words. Nothing to follow.'}
 on = lambda mid: [s for s in sessions if s['moment'] == mid]
 words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
@@ -73,6 +81,13 @@ def row(s, show_moment=False):
     free = '<span class="free">Free</span>' if s['free'] else ''
     where = f" · {e(next(m['name'] for m in moments + series if m['id'] == s['moment']))}" if show_moment else ''
     return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{minutes(s['length'])} min</span><span class="line">{e(s['line'])}{where}</span>{f'<span class="starts">{e(s["starts"])}</span>' if s.get('starts') else ''}</a></li>"""
+
+# Library doors (Josh 2026-11-23, D84 B): one soft light per moment. The same light carries from the door into its
+# shelf header and the play circle on each session card, so a door and what is behind it read as one thing.
+GLOW = {'morning': '232,178,122', 'before': '201,166,214', 'right-now': '168,205,191', 'after': '210,179,160',
+        'heart': '227,154,140', 'open': '230,194,122', 'still': '143,184,201', 'night': '127,143,196', 'clear-air': '184,201,168', 'listen': '176,160,220'}
+glow = lambda mid: GLOW.get(mid, '168,205,191')
+DOOR_NEEDS = {'morning', 'sleep', 'smoking'}  # already a door, so not repeated as a feeling
 
 free_count = sum(1 for s in sessions if s['free'])
 newest = sorted(sessions, key=lambda s: -s['num'])[:3]
@@ -141,10 +156,11 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
 </html>
 """
 
+door_count = lambda m: (words[len(sound)] if len(sound) < len(words) else str(len(sound))).capitalize() + ' pieces' if m is SOUND_SHELF else count_text(len(on(m['id'])))
 shelves = []
 def sound_shelf():
-    return f"""    <section class="th-shelf" id="{SOUND_SHELF['id']}" aria-labelledby="shelf-{SOUND_SHELF['id']}"><div class="th-wrap th-shelf-head">
-      <div class="th-shelf-title"><h2 id="shelf-{SOUND_SHELF['id']}">{SOUND_SHELF['name']}</h2><p>{e(SOUND_SHELF['line'])}</p></div>
+    return f"""    <section class="th-shelf" id="{SOUND_SHELF['id']}" style="--g:{glow(SOUND_SHELF['id'])}" aria-labelledby="shelf-{SOUND_SHELF['id']}"><div class="th-wrap th-shelf-head">
+      <div class="th-shelf-title lib-lit"><h2 id="shelf-{SOUND_SHELF['id']}">{SOUND_SHELF['name']}</h2><p>{e(SOUND_SHELF['line'])}</p><span class="lib-count">{door_count(SOUND_SHELF)}</span></div>
       <div><ul class="th-rows">{''.join(row(s) for s in sound)}</ul></div>
     </div></section>"""
 for m in moments + series:
@@ -152,15 +168,13 @@ for m in moments + series:
     items = on(m['id'])
     if not items and m in series: continue
     rows = f"""<ul class="th-rows">{''.join(row(s) for s in items)}</ul>""" if items else '<p class="th-empty">New sessions for this moment are on their way.</p>'
-    shelves.append(f"""    <section class="th-shelf" id="{m['id']}" aria-labelledby="shelf-{m['id']}"><div class="th-wrap th-shelf-head">
-      <div class="th-shelf-title"><h2 id="shelf-{m['id']}">{e(m['name'])}</h2><p>{e(m['line'])}</p></div>
+    shelves.append(f"""    <section class="th-shelf" id="{m['id']}" style="--g:{glow(m['id'])}" aria-labelledby="shelf-{m['id']}"><div class="th-wrap th-shelf-head">
+      <div class="th-shelf-title lib-lit"><h2 id="shelf-{m['id']}">{e(m['name'])}</h2><p>{e(m['line'])}</p><span class="lib-count">{count_text(len(items))}</span></div>
       <div>{rows}</div>
     </div></section>""")
 if sound and not series: shelves.append(sound_shelf())
-chips = ''.join(f'<button type="button" data-need="{n["id"]}" aria-pressed="false">{e(n["name"])}</button>' for n in need_list if any(n['id'] in s.get('needs', []) for s in sessions))
-jump = ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in moments if on(m['id']))
-jump += f'<a href="#{SOUND_SHELF["id"]}">{SOUND_SHELF["name"]}</a>' if sound else ''
-jump += ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in series if on(m['id']))
+chips = ''.join(f'<button type="button" data-need="{n["id"]}" aria-pressed="false">{e(n["name"])}</button>' for n in need_list if n['id'] not in DOOR_NEEDS and any(n['id'] in s.get('needs', []) for s in sessions))
+doors = ''.join(f'<a class="lib-door lib-lit{" lib-wide" if m in series else ""}" href="#{m["id"]}" data-door="{m["id"]}" style="--g:{glow(m["id"])}"><span class="lib-count">{door_count(m)}</span><strong>{e(m["name"])}</strong><small>{e(m["line"])}</small></a>' for m in moments + ([SOUND_SHELF] if sound else []) + series if on(m['id']) or m is SOUND_SHELF)
 
 library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, anxiety, stress, overthinking, tension in the body, morning, love, confidence and abundance. Filter by need and length. Some are free.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
 <body class="threshold library-page">
@@ -170,17 +184,17 @@ library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, a
     <div class="th-library-top"><div class="th-light th-soft" aria-hidden="true"><span class="teal"></span><span class="glow"></span><span class="seam"></span><span class="shade"></span><span class="grain"></span></div>
     <div class="th-wrap th-library-intro">
       <p class="th-label">The library</p>
-      <h1>Find what you need.</h1>
+      <h1>What do you need right now?</h1>
       <p class="intro">{len(sessions)} guided sessions, each with its own music{f', and {len(sound)} sound pieces with no words' if sound else ''}. The free ones are marked.</p>
+      <nav class="lib-doors" aria-label="Sessions by moment">{doors}</nav>
+      <p class="lib-back" data-back hidden><button type="button" class="th-clear">All moments</button></p>
       <div class="th-filter" data-filter hidden>
-        <p class="th-label">What do you need?</p>
-        <div class="th-chips" role="group" aria-label="Filter by need">{chips}</div>
+        <p class="th-label" data-feel-label>Or by feeling</p>
+        <div class="th-chips" role="group" aria-label="Filter by feeling" data-feel>{chips}</div>
         <p class="th-label">How long?</p>
         <div class="th-chips" role="group" aria-label="Filter by length"><button type="button" data-len="short" aria-pressed="false">Under 10 min</button><button type="button" data-len="mid" aria-pressed="false">10 to 20 min</button><button type="button" data-len="long" aria-pressed="false">Over 20 min</button><button type="button" data-free-only aria-pressed="false">Free only</button></div>
         <p class="th-filter-status" aria-live="polite"><span data-status></span> <button type="button" class="th-clear" data-clear hidden>Show all</button></p>
       </div>
-      <p class="th-label th-or">Or by moment</p>
-      <nav class="th-jump" aria-label="What each session is for">{jump}</nav>
     </div></div>
 {chr(10).join(shelves)}
     <div class="th-wrap" style="padding:56px 0 24px;display:flex;flex-wrap:wrap;gap:12px 32px"><a class="th-link" href="guides/">Guides: one question, one practice</a><a class="th-link" href="about.html">About Superthoughts</a><a class="th-link" href="explore.html#practice">Your listening history</a></div>

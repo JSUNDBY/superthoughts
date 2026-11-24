@@ -587,6 +587,286 @@
     "flip": true,
     "glow": 0.7317048427648842
    }
+  },
+  {
+   "slug": "morning-clarity-deep-start",
+   "title": "A Deep Start to the Day",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 7,
+    "horizontal": true,
+    "pos": 0.7749899382097647,
+    "width": 0.2959866925282404,
+    "tilt": -0.1770571194961667,
+    "flip": false,
+    "glow": 0.9329332935158163
+   }
+  },
+  {
+   "slug": "quiet-confidence",
+   "title": "Quiet Confidence",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 0,
+    "horizontal": true,
+    "pos": 0.5326845394307748,
+    "width": 0.22299407798331233,
+    "tilt": -0.028712415425106882,
+    "flip": true,
+    "glow": 0.7669234458589926
+   }
+  },
+  {
+   "slug": "opening-into-abundance",
+   "title": "Opening Into Abundance",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 2,
+    "horizontal": true,
+    "pos": 0.6602405131189153,
+    "width": 0.15108492989093064,
+    "tilt": 0.007615845669060945,
+    "flip": true,
+    "glow": 0.9804386418545619
+   }
+  },
+  {
+   "slug": "steady-calm",
+   "title": "Steady Calm",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 5,
+    "horizontal": true,
+    "pos": 0.7993983114743606,
+    "width": 0.23202379590366037,
+    "tilt": 0.1485495970118791,
+    "flip": true,
+    "glow": 0.5863056366797537
+   }
+  },
+  {
+   "slug": "sleep-ritual-light-within",
+   "title": "The Sleep Ritual: The Light Within",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 3,
+    "horizontal": true,
+    "pos": 0.7078175590699538,
+    "width": 0.24366285155527295,
+    "tilt": -0.1510362426470965,
+    "flip": true,
+    "glow": 0.9620397354010493
+   }
+  },
+  {
+   "slug": "sleep-ritual-grounded-and-safe",
+   "title": "The Sleep Ritual: Grounded and Safe",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 4,
+    "horizontal": true,
+    "pos": 0.5688478608336299,
+    "width": 0.11279925177339464,
+    "tilt": 0.02557015500962734,
+    "flip": true,
+    "glow": 0.9581218755338341
+   }
+  },
+  {
+   "slug": "weightless",
+   "title": "Weightless",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 6,
+    "horizontal": false,
+    "pos": 0.6756475559622049,
+    "width": 0.17136341644451022,
+    "tilt": -0.1742589464318007,
+    "flip": true,
+    "glow": 0.5049271514872089
+   }
+  },
+  {
+   "slug": "deep-nervous-system-reset",
+   "title": "Deep Nervous System Reset",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 7,
+    "horizontal": false,
+    "pos": 0.8168852592399344,
+    "width": 0.2164245948987082,
+    "tilt": -0.13849583423696457,
+    "flip": true,
+    "glow": 0.555243618786335
+   }
+  },
+  {
+   "slug": "grounded-in-light",
+   "title": "Grounded in Light",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 5,
+    "horizontal": false,
+    "pos": 0.6706177655421197,
+    "width": 0.14525730710476636,
+    "tilt": 0.09420834462158381,
+    "flip": true,
+    "glow": 0.8826357735088095
+   }
+  },
+  {
+   "slug": "the-whole-being",
+   "title": "The Whole Being",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 0,
+    "horizontal": false,
+    "pos": 0.7253424633946269,
+    "width": 0.2738119089882821,
+    "tilt": 0.07975543267093599,
+    "flip": false,
+    "glow": 0.6650628092465922
+   }
+  },
+  {
+   "slug": "resting-in-shared-awareness",
+   "title": "Resting in Shared Awareness",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 4,
+    "horizontal": false,
+    "pos": 0.5010708857653663,
+    "width": 0.12030465543270112,
+    "tilt": 0.14212806986644863,
+    "flip": true,
+    "glow": 0.7436467302031815
+   }
+  },
+  {
+   "slug": "settling-back-into-the-body",
+   "title": "Settling Back Into the Body",
+   "recipe": {
+    "room": "#171c1f",
+    "pair": 3,
+    "horizontal": false,
+    "pos": 0.7989384713908658,
+    "width": 0.1643047524895519,
+    "tilt": -0.17866986069828272,
+    "flip": false,
+    "glow": 0.8554089171811938
+   }
+  },
+  {
+   "slug": "steady-and-alive",
+   "title": "Steady and Alive",
+   "recipe": {
+    "room": "#13241a",
+    "pair": 2,
+    "horizontal": false,
+    "pos": 0.7494885578704997,
+    "width": 0.16243411681614817,
+    "tilt": 0.010954790292307734,
+    "flip": true,
+    "glow": 0.5829050886677578
+   }
+  },
+  {
+   "slug": "deep-confidence-activation",
+   "title": "Deep Confidence Activation",
+   "recipe": {
+    "room": "#13241a",
+    "pair": 1,
+    "horizontal": true,
+    "pos": 0.7380956710083411,
+    "width": 0.211532187811099,
+    "tilt": 0.17911168070510028,
+    "flip": false,
+    "glow": 0.9474496967159212
+   }
+  },
+  {
+   "slug": "emotional-renewal",
+   "title": "Emotional Renewal",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 2,
+    "horizontal": true,
+    "pos": 0.811186703122221,
+    "width": 0.17035585932899266,
+    "tilt": -0.1703448070306331,
+    "flip": false,
+    "glow": 0.7954805654007941
+   }
+  },
+  {
+   "slug": "quantum-identity",
+   "title": "Quantum Identity",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 1,
+    "horizontal": false,
+    "pos": 0.6948301895754412,
+    "width": 0.22152163724880666,
+    "tilt": 0.15971075981855393,
+    "flip": true,
+    "glow": 0.6621011456009
+   }
+  },
+  {
+   "slug": "empathic-journey-steady-presence",
+   "title": "The Empathic Journey: Steady Presence",
+   "recipe": {
+    "room": "#102522",
+    "pair": 6,
+    "horizontal": true,
+    "pos": 0.598022999544628,
+    "width": 0.2702817051997408,
+    "tilt": -0.05288112645037472,
+    "flip": false,
+    "glow": 0.9759608136955649
+   }
+  },
+  {
+   "slug": "empathic-journey-what-is-yours",
+   "title": "The Empathic Journey: What Is Yours",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 7,
+    "horizontal": true,
+    "pos": 0.6406851082667708,
+    "width": 0.3019854113087058,
+    "tilt": -0.017356130462139845,
+    "flip": true,
+    "glow": 0.9437987972050905
+   }
+  },
+  {
+   "slug": "suspended-in-light",
+   "title": "Suspended in Light",
+   "recipe": {
+    "room": "#102522",
+    "pair": 0,
+    "horizontal": true,
+    "pos": 0.5677390702767298,
+    "width": 0.1708173683937639,
+    "tilt": 0.16179572043009102,
+    "flip": false,
+    "glow": 0.7002921544481069
+   }
+  },
+  {
+   "slug": "eight-minutes-of-peace",
+   "title": "8 Minutes of Peace",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 5,
+    "horizontal": true,
+    "pos": 0.5621806582389399,
+    "width": 0.20472842430230231,
+    "tilt": -0.06185389369726181,
+    "flip": true,
+    "glow": 0.567868061363697
+   }
   }
  ]
 }

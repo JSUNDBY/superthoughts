@@ -1,0 +1,12 @@
+// superthoughts.com on Workers static assets (D81, 2026-11-23). Files match first and never run the script;
+// index.js only resolves folder and extensionless addresses the way GitHub Pages did.
+// No routes until launch day; then add superthoughts.com and www as custom domains.
+{
+  "name": "superthoughts-site",
+  "main": "index.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  // Preview for invited listeners before launch (Josh 2026-11-24). Same site as members.superthoughts.com, so member sign-in works here.
+  "routes": [{ "pattern": "preview.superthoughts.com", "custom_domain": true }],
+  "assets": { "directory": "../_site", "binding": "ASSETS", "html_handling": "none", "not_found_handling": "none" }
+}
