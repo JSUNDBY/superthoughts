@@ -186,3 +186,7 @@
 .th-shelf[hidden],.th-rows li[hidden]{display:none}
 .th-needs{margin-top:28px}
 .th-jump[hidden],.th-or[hidden]{display:none}
+.th-portrait{display:block;width:min(100%,360px);height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:14px;margin:0 0 36px}
+.th-byline{display:flex;align-items:center;gap:16px;margin:8px 0 26px}
+.th-byline img{width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none}
+.th-ethos .th-byline p{margin:0;font-size:16px;line-height:1.5;color:var(--text)}
