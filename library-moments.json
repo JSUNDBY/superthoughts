@@ -59,6 +59,49 @@
  ],
  "sessions": [
   {
+   "key": "shifting-timelines",
+   "href": "/sessions/shifting-timelines/",
+   "num": 42,
+   "title": "Shifting Timelines",
+   "line": "Thank the path that brought you here, and step toward what is next.",
+   "starts": "Starts with getting comfortable, then a gentle breath in and a slow exhale.",
+   "length": "13 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "confidence"
+   ]
+  },
+  {
+   "key": "frequency-of-abundance",
+   "href": "/sessions/frequency-of-abundance/",
+   "num": 41,
+   "title": "The Frequency of Abundance",
+   "line": "Settle in, and feel the abundance that is already here.",
+   "starts": "Starts with a short welcome, then a breath, as you are.",
+   "length": "11 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "abundance"
+   ]
+  },
+  {
+   "key": "drift-into-sleep",
+   "href": "/sessions/drift-into-sleep/",
+   "num": 40,
+   "title": "Drift Into Sleep",
+   "line": "A slow light down through the body, then a quiet room to fall asleep in.",
+   "starts": "Starts with a short welcome, then lying down and one deep breath.",
+   "length": "18 min",
+   "moment": "night",
+   "free": false,
+   "needs": [
+    "sleep",
+    "body"
+   ]
+  },
+  {
    "key": "five-minute-morning-clarity",
    "href": "/sessions/five-minute-morning-clarity/",
    "num": 39,
