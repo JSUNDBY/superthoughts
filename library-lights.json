@@ -545,6 +545,48 @@
     "flip": false,
     "glow": 0.8426160764647648
    }
+  },
+  {
+   "slug": "drift-into-sleep",
+   "title": "Drift Into Sleep",
+   "recipe": {
+    "room": "#102522",
+    "pair": 4,
+    "horizontal": false,
+    "pos": 0.7062935469811782,
+    "width": 0.10844493594951929,
+    "tilt": -0.16609289361163973,
+    "flip": true,
+    "glow": 0.5525691446382552
+   }
+  },
+  {
+   "slug": "frequency-of-abundance",
+   "title": "The Frequency of Abundance",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 1,
+    "horizontal": false,
+    "pos": 0.693009568490088,
+    "width": 0.30033552475273606,
+    "tilt": 0.11105259007774293,
+    "flip": true,
+    "glow": 0.923636598396115
+   }
+  },
+  {
+   "slug": "shifting-timelines",
+   "title": "Shifting Timelines",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 6,
+    "horizontal": true,
+    "pos": 0.5778080866439268,
+    "width": 0.14761122232768686,
+    "tilt": -0.1323859130591154,
+    "flip": true,
+    "glow": 0.7317048427648842
+   }
   }
  ]
 }
