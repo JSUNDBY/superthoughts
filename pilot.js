@@ -157,6 +157,9 @@ function renderLibrary() {
 
 function renderPractice() {
   const state = snapshot();
+  // 2026-11-24: a new visitor saw three zeros. Show a welcome line until there is history.
+  const fresh = !(state.totalSeconds || state.completedSessions);
+  if ($('practice-welcome')) { $('practice-welcome').hidden = !fresh; document.querySelector('.practice-layout').hidden = fresh; }
   $('total-minutes').innerHTML = `${Math.floor((state.totalSeconds || 0) / 60)} <small>min</small>`;
   $('session-count').textContent = state.completedSessions || 0;
   $('practice-days').textContent = state.practiceDays || 0;
@@ -360,7 +363,7 @@ $('share-button').addEventListener('click', async () => { if (!active) return; c
 $('goal-select').addEventListener('change', event => { store.setGoal(Number(event.target.value)); renderPractice(); });
 $('clear-history').addEventListener('click', () => { $('clear-confirm').hidden = false; $('clear-cancel').focus(); });
 $('clear-cancel').addEventListener('click', () => { $('clear-confirm').hidden = true; $('clear-history').focus(); });
-$('clear-yes').addEventListener('click', () => { audio.pause(); tracker.flush(); store.clear(); earnedCompletionId = null; pendingResume = 0; $('resume-message').hidden = true; $('welcome-back').hidden = true; $('clear-confirm').hidden = true; renderPractice(); renderLibrary(); updateFavoriteButton(); $('goal-select').focus(); });
+$('clear-yes').addEventListener('click', () => { audio.pause(); tracker.flush(); store.clear(); earnedCompletionId = null; pendingResume = 0; $('resume-message').hidden = true; $('welcome-back').hidden = true; $('clear-confirm').hidden = true; renderPractice(); renderLibrary(); updateFavoriteButton(); ($('practice-welcome') && !$('practice-welcome').hidden ? $('practice-welcome') : $('goal-select')).focus(); });
 
 audio.addEventListener('loadedmetadata', () => { if (pendingResume > 5 && pendingResume < audio.duration - 5) { try { audio.currentTime = pendingResume; } catch {} } pendingResume = 0; updateTime(); if (audio.paused) setStatus('Ready to listen'); });
 audio.addEventListener('canplay', () => { if (audio.paused && $('play-status').textContent === 'Loading audio…') setStatus('Ready to listen'); });
