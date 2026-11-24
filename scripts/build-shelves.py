@@ -6,13 +6,25 @@ plain words for what each session is for; the session page is where each light s
 arrival, the plain list of needs, the three newest sessions, why there is so much space, and the email list.
 Edit library-moments.json (publish_session.py adds new sessions there), then run:  python3 scripts/build-shelves.py
 """
-import html, json, pathlib
+import html, json, pathlib, re
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 data = json.loads((ROOT / 'library-moments.json').read_text())
 moments, series, sessions = data['moments'], data['series'], data['sessions']
 need_list = data.get('needs', [])   # 2026-11-17: plain-word needs for the filter chips
 e = lambda s: html.escape(s, quote=True)
+
+# 2026-11-24 (Josh, from a listener's note): the sound pieces had no place in the real library, only on the old
+# explore page. Read them from pilot-catalog.js (the one source the player uses) and give them their own shelf.
+_cat = (ROOT / 'pilot-catalog.js').read_text()
+_field = lambda line, k: (re.search(k + r":'((?:[^'\\]|\\.)*)'", line) or re.search(k + r":(\d+)", line)).group(1)
+_sound_lines = [l for l in _cat.splitlines() if re.search(r"type:\s*'sound'", l)]
+sound = [{'title': _field(l, 'title').replace("\\'", "'"), 'href': f"session.html?session={_field(l, 'id')}", 'free': True,
+          'length': f"{int(_field(l, 'duration')) // 60}:{int(_field(l, 'duration')) % 60:02d}",
+          'line': _field(l, 'description').replace("\\'", "'"), 'needs': ['sound']}
+         for l in _sound_lines if not re.search(r"unlisted\s*:\s*true", l)]
+assert len(_sound_lines) == len(re.findall(r"type:\s*'sound'", _cat)), 'a sound entry spans lines; parser missed it'
+SOUND_SHELF = {'id': 'listen', 'name': 'Just listen', 'line': 'Music with no words. Nothing to follow.'}
 on = lambda mid: [s for s in sessions if s['moment'] == mid]
 words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 count_text = lambda n: 'Coming soon' if n == 0 else f"{(words[n] if n < len(words) else str(n)).capitalize()} session{'s' if n != 1 else ''}"
@@ -65,6 +77,8 @@ def row(s, show_moment=False):
 free_count = sum(1 for s in sessions if s['free'])
 newest = sorted(sessions, key=lambda s: -s['num'])[:3]
 needs = ''.join(f"""<li><a class="th-row" href="library.html#{m['id']}"><strong>{e(m['name'])}</strong><span class="len">{count_text(len(on(m['id'])))}</span><span class="line">{e(m['line'])}</span></a></li>""" for m in moments + series if on(m['id']))
+if sound:
+    needs += f"""<li><a class="th-row" href="library.html#{SOUND_SHELF['id']}"><strong>{SOUND_SHELF['name']}</strong><span class="len">{(words[len(sound)] if len(sound) < len(words) else str(len(sound))).capitalize()} pieces</span><span class="line">{e(SOUND_SHELF['line'])}</span></a></li>"""
 
 need_links = ''.join(f'<a href="library.html?need={n["id"]}">{e(n["name"])}</a>' for n in need_list if any(n['id'] in s.get('needs', []) for s in sessions))
 
@@ -127,7 +141,13 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
 """
 
 shelves = []
+def sound_shelf():
+    return f"""    <section class="th-shelf" id="{SOUND_SHELF['id']}" aria-labelledby="shelf-{SOUND_SHELF['id']}"><div class="th-wrap th-shelf-head">
+      <div class="th-shelf-title"><h2 id="shelf-{SOUND_SHELF['id']}">{SOUND_SHELF['name']}</h2><p>{e(SOUND_SHELF['line'])}</p></div>
+      <div><ul class="th-rows">{''.join(row(s) for s in sound)}</ul></div>
+    </div></section>"""
 for m in moments + series:
+    if sound and m is (series[0] if series else None): shelves.append(sound_shelf())
     items = on(m['id'])
     if not items and m in series: continue
     rows = f"""<ul class="th-rows">{''.join(row(s) for s in items)}</ul>""" if items else '<p class="th-empty">New sessions for this moment are on their way.</p>'
@@ -135,8 +155,11 @@ for m in moments + series:
       <div class="th-shelf-title"><h2 id="shelf-{m['id']}">{e(m['name'])}</h2><p>{e(m['line'])}</p></div>
       <div>{rows}</div>
     </div></section>""")
+if sound and not series: shelves.append(sound_shelf())
 chips = ''.join(f'<button type="button" data-need="{n["id"]}" aria-pressed="false">{e(n["name"])}</button>' for n in need_list if any(n['id'] in s.get('needs', []) for s in sessions))
-jump = ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in moments + series if on(m['id']))
+jump = ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in moments if on(m['id']))
+jump += f'<a href="#{SOUND_SHELF["id"]}">{SOUND_SHELF["name"]}</a>' if sound else ''
+jump += ''.join(f'<a href="#{m["id"]}">{e(m["name"])}</a>' for m in series if on(m['id']))
 
 library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, anxiety, stress, overthinking, tension in the body, morning, love, confidence and abundance. Filter by need and length. Some are free.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
 <body class="threshold library-page">
@@ -147,7 +170,7 @@ library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, a
     <div class="th-wrap th-library-intro">
       <p class="th-label">The library</p>
       <h1>Find what you need.</h1>
-      <p class="intro">{len(sessions)} guided sessions, each with its own music. The free ones are marked.</p>
+      <p class="intro">{len(sessions)} guided sessions, each with its own music{f', and {len(sound)} sound pieces with no words' if sound else ''}. The free ones are marked.</p>
       <div class="th-filter" data-filter hidden>
         <p class="th-label">What do you need?</p>
         <div class="th-chips" role="group" aria-label="Filter by need">{chips}</div>
