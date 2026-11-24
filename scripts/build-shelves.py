@@ -19,7 +19,9 @@ e = lambda s: html.escape(s, quote=True)
 _cat = (ROOT / 'pilot-catalog.js').read_text()
 _field = lambda line, k: (re.search(k + r":'((?:[^'\\]|\\.)*)'", line) or re.search(k + r":(\d+)", line)).group(1)
 _sound_lines = [l for l in _cat.splitlines() if re.search(r"type:\s*'sound'", l)]
-sound = [{'title': _field(l, 'title').replace("\\'", "'"), 'href': f"session.html?session={_field(l, 'id')}", 'free': True,
+# Members-only sound pieces (Insight Timer premium, Josh 2026-11-24) are not free: free means "not in STAccess.members".
+_members = set(re.findall(r"'([a-z0-9-]+)'", (re.search(r" members: \[([^\]]*)\]", _cat) or re.search('()', '')).group(1)))
+sound = [{'title': _field(l, 'title').replace("\\'", "'"), 'href': f"session.html?session={_field(l, 'id')}", 'free': _field(l, 'id') not in _members,
           'length': f"{int(_field(l, 'duration')) // 60}:{int(_field(l, 'duration')) % 60:02d}",
           'line': _field(l, 'description').replace("\\'", "'"), 'needs': ['sound']}
          for l in _sound_lines if not re.search(r"unlisted\s*:\s*true", l)]

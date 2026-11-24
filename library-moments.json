@@ -59,6 +59,168 @@
  ],
  "sessions": [
   {
+   "key": "eight-minutes-of-peace",
+   "href": "/sessions/eight-minutes-of-peace/",
+   "num": 62,
+   "title": "8 Minutes of Peace",
+   "line": "Let everything be as it is for eight minutes.",
+   "starts": "Starts with a short welcome, then finding a position where you can let go a little.",
+   "length": "8 min",
+   "moment": "right-now",
+   "free": false,
+   "needs": [
+    "stress",
+    "beginners"
+   ]
+  },
+  {
+   "key": "suspended-in-light",
+   "href": "/sessions/suspended-in-light/",
+   "num": 61,
+   "title": "Suspended in Light",
+   "line": "A slow wave of light through a resting body.",
+   "starts": "Starts with getting comfortable and letting the body rest.",
+   "length": "15 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "sleep",
+    "body"
+   ]
+  },
+  {
+   "key": "empathic-journey-what-is-yours",
+   "href": "/sessions/empathic-journey-what-is-yours/",
+   "num": 60,
+   "title": "The Empathic Journey: What Is Yours",
+   "line": "Notice which feelings are yours, and which are passing through.",
+   "starts": "Starts with getting comfortable, then softening from the top of the head down.",
+   "length": "17 min",
+   "moment": "heart",
+   "free": false,
+   "needs": [
+    "anxiety",
+    "stress"
+   ]
+  },
+  {
+   "key": "empathic-journey-steady-presence",
+   "href": "/sessions/empathic-journey-steady-presence/",
+   "num": 59,
+   "title": "The Empathic Journey: Steady Presence",
+   "line": "For when you feel everyone's feelings: a steady center to come back to.",
+   "starts": "Starts with getting comfortable, then softening from the top of the head down.",
+   "length": "15 min",
+   "moment": "heart",
+   "free": false,
+   "needs": [
+    "anxiety",
+    "stress"
+   ]
+  },
+  {
+   "key": "quantum-identity",
+   "href": "/sessions/quantum-identity/",
+   "num": 58,
+   "title": "Quantum Identity",
+   "line": "Step toward the self you are becoming, with trust.",
+   "starts": "Starts with a short welcome, then a slow breath and the surface beneath you.",
+   "length": "14 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "confidence"
+   ]
+  },
+  {
+   "key": "emotional-renewal",
+   "href": "/sessions/emotional-renewal/",
+   "num": 57,
+   "title": "Emotional Renewal",
+   "line": "For after a heavy stretch: steady ground and a little clarity.",
+   "starts": "Starts with settling into a steady position and letting your body arrive.",
+   "length": "9 min",
+   "moment": "after",
+   "free": false,
+   "needs": [
+    "stress",
+    "anxiety"
+   ]
+  },
+  {
+   "key": "deep-confidence-activation",
+   "href": "/sessions/deep-confidence-activation/",
+   "num": 56,
+   "title": "Deep Confidence Activation",
+   "line": "Confidence that grows quietly, one breath at a time.",
+   "starts": "Goes straight to a slow, steady breath, then the body settling.",
+   "length": "20 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "confidence"
+   ]
+  },
+  {
+   "key": "steady-and-alive",
+   "href": "/sessions/steady-and-alive/",
+   "num": 55,
+   "title": "Steady and Alive",
+   "line": "Calm energy and steady strength, from the ground up.",
+   "starts": "Starts with getting comfortable and letting the surface beneath you take your weight.",
+   "length": "18 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "confidence",
+    "stress"
+   ]
+  },
+  {
+   "key": "settling-back-into-the-body",
+   "href": "/sessions/settling-back-into-the-body/",
+   "num": 54,
+   "title": "Settling Back Into the Body",
+   "line": "A slow, warm scan from head to feet.",
+   "starts": "Starts with getting comfortable, then warmth at the top of your head.",
+   "length": "20 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "body",
+    "stress"
+   ]
+  },
+  {
+   "key": "resting-in-shared-awareness",
+   "href": "/sessions/resting-in-shared-awareness/",
+   "num": 53,
+   "title": "Resting in Shared Awareness",
+   "line": "Rest in your body, and feel the quiet presence around you.",
+   "starts": "Starts with getting comfortable and letting the whole body arrive.",
+   "length": "16 min",
+   "moment": "heart",
+   "free": false,
+   "needs": [
+    "stress"
+   ]
+  },
+  {
+   "key": "the-whole-being",
+   "href": "/sessions/the-whole-being/",
+   "num": 52,
+   "title": "The Whole Being",
+   "line": "Meet each part of you with openness, and rest as one whole.",
+   "starts": "Starts with a slow breath in, then a gentle arrival in the body.",
+   "length": "12 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "body",
+    "stress"
+   ]
+  },
+  {
    "key": "grounded-in-light",
    "href": "/sessions/grounded-in-light/",
    "num": 51,
