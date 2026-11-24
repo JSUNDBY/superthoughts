@@ -100,6 +100,7 @@
 .th-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 24px;align-items:baseline;padding:20px 2px;text-decoration:none}
 .th-row strong{font-weight:400;font-size:20px}
 .th-row .line{grid-column:1;font-size:15px;line-height:1.55;color:var(--muted)}
+.th-row .starts{grid-column:1;font-size:14px;line-height:1.5;color:var(--quiet)}
 .th-row .len{grid-row:1;grid-column:2;font-size:14px;color:var(--quiet);white-space:nowrap}
 .th-row .free{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);margin-left:10px}
 :root[data-theme="light"] .th-row .free{color:#9a3a24}
