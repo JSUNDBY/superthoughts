@@ -17,13 +17,17 @@ files += [str(p.relative_to(ROOT)) for p in (ROOT/'fonts').iterdir() if p.is_fil
 if (ROOT/'homepage.js').is_file():files.append('homepage.js')
 if (ROOT/'images/og-listening.png').is_file():files.append('images/og-listening.png')
 catalog=json.loads(subprocess.check_output(['node','-e',"global.window={};require('./pilot-catalog.js');console.log(JSON.stringify(window.STCatalog))"],cwd=ROOT))
+# Members gate (pilot-catalog.js, STAccess): when it is on, member audio streams only from the members app, so its files leave the public build.
+access=json.loads(subprocess.check_output(['node','-e',"global.window={};require('./pilot-catalog.js');console.log(JSON.stringify(window.STAccess))"],cwd=ROOT))
+gated=set(access['members']) if access['gate'] else set()
+print('members gate:', 'ON, member audio not published' if gated else 'off')
 assert len(catalog)>=8
 assert len({item["id"] for item in catalog})==len(catalog)
 for item in catalog:
  # Free sessions now play from https://audio.superthoughts.com (audio move 3a, 2026-10-23). Keep publishing the
  # repo copy at the old same-origin path until the move is complete, so older cached pages keep working.
  local=lambda p:'audio/'+p.rsplit('/',1)[1] if p.startswith('https://') else p
- if not item.get('stream') and (ROOT/local(item['src'])).is_file():files.append(local(item['src']))
+ if not item.get('stream') and item['id'] not in gated and (ROOT/local(item['src'])).is_file():files.append(local(item['src']))
  # Each track's own lock-screen and tile art (images/art/<id>.jpg).
  art=f"images/art/{item['id']}.jpg"
  if (ROOT/art).is_file():files.append(art)
