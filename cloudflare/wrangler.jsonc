@@ -6,5 +6,7 @@
   "main": "index.js",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
+  // Preview for invited listeners before launch (Josh 2026-11-24). Same site as members.superthoughts.com, so member sign-in works here.
+  "routes": [{ "pattern": "preview.superthoughts.com", "custom_domain": true }],
   "assets": { "directory": "../_site", "binding": "ASSETS", "html_handling": "none", "not_found_handling": "none" }
 }
