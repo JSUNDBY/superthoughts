@@ -587,6 +587,132 @@
     "flip": true,
     "glow": 0.7317048427648842
    }
+  },
+  {
+   "slug": "morning-clarity-deep-start",
+   "title": "A Deep Start to the Day",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 7,
+    "horizontal": true,
+    "pos": 0.7749899382097647,
+    "width": 0.2959866925282404,
+    "tilt": -0.1770571194961667,
+    "flip": false,
+    "glow": 0.9329332935158163
+   }
+  },
+  {
+   "slug": "quiet-confidence",
+   "title": "Quiet Confidence",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 0,
+    "horizontal": true,
+    "pos": 0.5326845394307748,
+    "width": 0.22299407798331233,
+    "tilt": -0.028712415425106882,
+    "flip": true,
+    "glow": 0.7669234458589926
+   }
+  },
+  {
+   "slug": "opening-into-abundance",
+   "title": "Opening Into Abundance",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 2,
+    "horizontal": true,
+    "pos": 0.6602405131189153,
+    "width": 0.15108492989093064,
+    "tilt": 0.007615845669060945,
+    "flip": true,
+    "glow": 0.9804386418545619
+   }
+  },
+  {
+   "slug": "steady-calm",
+   "title": "Steady Calm",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 5,
+    "horizontal": true,
+    "pos": 0.7993983114743606,
+    "width": 0.23202379590366037,
+    "tilt": 0.1485495970118791,
+    "flip": true,
+    "glow": 0.5863056366797537
+   }
+  },
+  {
+   "slug": "sleep-ritual-light-within",
+   "title": "The Sleep Ritual: The Light Within",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 3,
+    "horizontal": true,
+    "pos": 0.7078175590699538,
+    "width": 0.24366285155527295,
+    "tilt": -0.1510362426470965,
+    "flip": true,
+    "glow": 0.9620397354010493
+   }
+  },
+  {
+   "slug": "sleep-ritual-grounded-and-safe",
+   "title": "The Sleep Ritual: Grounded and Safe",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 4,
+    "horizontal": true,
+    "pos": 0.5688478608336299,
+    "width": 0.11279925177339464,
+    "tilt": 0.02557015500962734,
+    "flip": true,
+    "glow": 0.9581218755338341
+   }
+  },
+  {
+   "slug": "weightless",
+   "title": "Weightless",
+   "recipe": {
+    "room": "#0f1a2a",
+    "pair": 6,
+    "horizontal": false,
+    "pos": 0.6756475559622049,
+    "width": 0.17136341644451022,
+    "tilt": -0.1742589464318007,
+    "flip": true,
+    "glow": 0.5049271514872089
+   }
+  },
+  {
+   "slug": "deep-nervous-system-reset",
+   "title": "Deep Nervous System Reset",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 7,
+    "horizontal": false,
+    "pos": 0.8168852592399344,
+    "width": 0.2164245948987082,
+    "tilt": -0.13849583423696457,
+    "flip": true,
+    "glow": 0.555243618786335
+   }
+  },
+  {
+   "slug": "grounded-in-light",
+   "title": "Grounded in Light",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 5,
+    "horizontal": false,
+    "pos": 0.6706177655421197,
+    "width": 0.14525730710476636,
+    "tilt": 0.09420834462158381,
+    "flip": true,
+    "glow": 0.8826357735088095
+   }
   }
  ]
 }

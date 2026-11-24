@@ -59,6 +59,139 @@
  ],
  "sessions": [
   {
+   "key": "grounded-in-light",
+   "href": "/sessions/grounded-in-light/",
+   "num": 51,
+   "title": "Grounded in Light",
+   "line": "Let the ground hold you, and return steady and clear.",
+   "starts": "Starts with a moment to arrive, then the surface beneath you holding your weight.",
+   "length": "14 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "body",
+    "stress"
+   ]
+  },
+  {
+   "key": "deep-nervous-system-reset",
+   "href": "/sessions/deep-nervous-system-reset/",
+   "num": 50,
+   "title": "Deep Nervous System Reset",
+   "line": "A longer settle, for when two minutes is not enough.",
+   "starts": "Starts with a moment to arrive, then finding a comfortable position.",
+   "length": "17 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "stress",
+    "anxiety",
+    "body"
+   ]
+  },
+  {
+   "key": "weightless",
+   "href": "/sessions/weightless/",
+   "num": 49,
+   "title": "Weightless",
+   "line": "A long, slow drift into deep rest.",
+   "starts": "Starts with settling in for the night, then a slow inhale and a long exhale.",
+   "length": "27 min",
+   "moment": "night",
+   "free": false,
+   "needs": [
+    "sleep",
+    "body"
+   ]
+  },
+  {
+   "key": "sleep-ritual-grounded-and-safe",
+   "href": "/sessions/sleep-ritual-grounded-and-safe/",
+   "num": 48,
+   "title": "The Sleep Ritual: Grounded and Safe",
+   "line": "Feel the quiet strength beneath you, and let sleep come.",
+   "starts": "Starts with “welcome back,” then getting comfortable for the night.",
+   "length": "11 min",
+   "moment": "night",
+   "free": false,
+   "needs": [
+    "sleep",
+    "anxiety"
+   ]
+  },
+  {
+   "key": "sleep-ritual-light-within",
+   "href": "/sessions/sleep-ritual-light-within/",
+   "num": 47,
+   "title": "The Sleep Ritual: The Light Within",
+   "line": "A soft glow down through the body, and the part of you that knows how to rest.",
+   "starts": "Starts with a short welcome, then a breath in through the nose and out through the mouth.",
+   "length": "11 min",
+   "moment": "night",
+   "free": false,
+   "needs": [
+    "sleep"
+   ]
+  },
+  {
+   "key": "steady-calm",
+   "href": "/sessions/steady-calm/",
+   "num": 46,
+   "title": "Steady Calm",
+   "line": "For when your system needs a calm, steady rhythm again.",
+   "starts": "Starts with settling in and a simple intention: let the body feel supported.",
+   "length": "13 min",
+   "moment": "still",
+   "free": false,
+   "needs": [
+    "stress",
+    "anxiety",
+    "body"
+   ]
+  },
+  {
+   "key": "opening-into-abundance",
+   "href": "/sessions/opening-into-abundance/",
+   "num": 45,
+   "title": "Opening Into Abundance",
+   "line": "Soften, breathe, and make room for more.",
+   "starts": "Starts with an easy breath, then your shoulders and stomach softening.",
+   "length": "17 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "abundance"
+   ]
+  },
+  {
+   "key": "quiet-confidence",
+   "href": "/sessions/quiet-confidence/",
+   "num": 44,
+   "title": "Quiet Confidence",
+   "line": "A long, slow settle, and confidence that needs no effort.",
+   "starts": "Starts with getting comfortable, then your shoulders, jaw and face softening.",
+   "length": "41 min",
+   "moment": "open",
+   "free": false,
+   "needs": [
+    "confidence"
+   ]
+  },
+  {
+   "key": "morning-clarity-deep-start",
+   "href": "/sessions/morning-clarity-deep-start/",
+   "num": 43,
+   "title": "A Deep Start to the Day",
+   "line": "The longer morning practice: settle, breathe, and choose how to meet the day.",
+   "starts": "Starts with settling into a comfortable position, then a slow breath in and an easy breath out.",
+   "length": "16 min",
+   "moment": "morning",
+   "free": false,
+   "needs": [
+    "morning"
+   ]
+  },
+  {
    "key": "shifting-timelines",
    "href": "/sessions/shifting-timelines/",
    "num": 42,
