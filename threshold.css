@@ -207,7 +207,7 @@
 .library-page .th-shelf .th-row{grid-template-columns:40px minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--lib-card);transition:border-color .2s,background-color .2s}
 .library-page .th-shelf .th-row::before{content:"";grid-row:1/span 2;grid-column:1;width:40px;height:40px;border-radius:50%;background:rgba(var(--g),var(--lib-dot-a)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M16 13l12 7-12 7z' fill='%2310211f'/%3E%3C/svg%3E") center/100% no-repeat}
 .library-page .th-shelf .th-row strong{grid-column:2;font-size:18px}
-.library-page .th-shelf .th-row .line{grid-column:2}
+.library-page .th-shelf .th-row .line,.library-page .th-shelf .th-row .starts{grid-column:2}
 .library-page .th-shelf .th-row .len{grid-column:3;grid-row:1/span 2}
 .library-page .th-shelf .th-row:hover{border-color:rgba(var(--g),.75);background:var(--lib-card-hover)}
 .library-page .th-shelf .th-row:hover strong{text-decoration:none}
