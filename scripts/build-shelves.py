@@ -178,7 +178,7 @@ library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, a
     <div class="th-library-top"><div class="th-light th-soft" aria-hidden="true"><span class="teal"></span><span class="glow"></span><span class="seam"></span><span class="shade"></span><span class="grain"></span></div>
     <div class="th-wrap th-library-intro">
       <p class="th-label">The library</p>
-      <h1>Where are you right now?</h1>
+      <h1>What do you need right now?</h1>
       <p class="intro">{len(sessions)} guided sessions, each with its own music{f', and {len(sound)} sound pieces with no words' if sound else ''}. The free ones are marked.</p>
       <nav class="lib-doors" aria-label="Sessions by moment">{doors}</nav>
       <p class="lib-back" data-back hidden><button type="button" class="th-clear">All moments</button></p>
