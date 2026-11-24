@@ -73,7 +73,7 @@ window.STCatalog = [
  {id:'wind-down',title:'Wind down',description:'Let the pace soften. A little space at the end of the day.',category:'evening',type:'guided',duration:210,src:'audio/wind-down-v14.mp3',cues:'audio/wind-down-v14-cues.json',visual:'wind-down',accent:'#b3c19b',kicker:'Let the day settle'},
  {id:"enter-your-work",title:"Enter your work",description:"Arrive at your desk, choose one small beginning, and start from there.",category:"reset",type:"guided",duration:285,src:"audio/enter-your-work-v1.mp3",cues:"audio/enter-your-work-v1-cues.json",visual:"begin-day",accent:"#e3a978",kicker:"One small step"},
  {id:"awake-again",title:"Awake again",description:"For when you wake in the night. Feel your body, slow your breath, and let sleep come back.",category:"evening",type:"guided",duration:600,src:"audio/awake-again-v3.mp3",cues:"audio/awake-again-v3-cues.json",visual:"drift",accent:"#8f9fd6",kicker:"Back to rest"},
- {id:"letting-go-into-sleep",title:"Letting go into sleep",description:"Breathe out the day, feel your body grow heavy, and let sleep come. Twenty minutes of guidance, then ten of quiet sound.",category:"evening",type:"guided",duration:1800,src:"audio/letting-go-into-sleep-v2.mp3",cues:"audio/letting-go-into-sleep-v2-cues.json",visual:"drift",accent:"#7f8fcb",kicker:"Down into sleep"},
+ {id:"letting-go-into-sleep",title:"Letting go into sleep",description:"Breathe out the day, feel your body grow heavy, and let sleep come. Twenty minutes of guidance, then ten of quiet sound.",category:"evening",type:"guided",duration:1800,src:"https://audio.superthoughts.com/free/letting-go-into-sleep-v2.mp3",cues:"audio/letting-go-into-sleep-v2-cues.json",visual:"drift",accent:"#7f8fcb",kicker:"Down into sleep"},
  {id:"frequency-of-abundance",title:"The frequency of abundance",description:"Settle your breath and tune into the place inside you where abundance already lives. Part of the Frequency series.",category:"reset",type:"guided",duration:665,src:"audio/frequency-of-abundance-v1.mp3",cues:"audio/frequency-of-abundance-v1-cues.json",visual:"afterglow",accent:"#e8b36f",kicker:"The Frequency series"},
  {id:'warmth',title:'Warmth',description:'Low, rounded tones unfolding into a soft, resonant room. Only sound.',category:'sound',type:'sound',duration:360,src:'audio/pilot-warmth-v2.mp3',cues:null,visual:'warmth',accent:'#dc9b8b',kicker:'A soft place to land'},
  {id:'open-space',title:'Open space',description:'Floating harmonies, long echoes, and room to follow your own attention.',category:'sound',type:'sound',duration:480,src:'audio/pilot-open-space-v2.mp3',cues:null,visual:'open-space',accent:'#9bbde7',kicker:'Let your attention wander'},
@@ -95,7 +95,12 @@ window.STAccess = {
  members: ['let-them-think', 'soft-place-to-land', 'precious-life', 'the-pause-before-asking', 'before-the-week-starts',
   'the-abundance-practice', 'the-empowerment-practice', 'the-frequency-of-enough', 'stress-without-the-cigarette',
   'a-new-small-ritual', 'when-the-urge-arrives', 'remembering-your-reason', 'when-you-wake-up-already-tense',
-  'when-your-mind-wont-stop-at-bedtime', 'open-to-receive', 'the-quantum-reset']
+  'when-your-mind-wont-stop-at-bedtime', 'open-to-receive', 'the-quantum-reset',
+  // Republished 2026-11-20 and four older library sessions, gated for launch (2026-11-23).
+  'three-minute-reset', 'five-minute-calm', 'five-minute-morning-clarity', 'set-down-guilt', 'evening-settle',
+  'ground-your-mind', 'let-the-day-close', 'quiet-the-mind', 'ground-into-your-body', 'morning-calm-activation',
+  'nervous-system-reset', 'tapping-into-your-creative-energy', 'letting-stress-leave-your-body', 'letting-love-in',
+  'a-five-minute-reset']
 };
 (() => {
  const A = window.STAccess;

@@ -27,7 +27,9 @@ for item in catalog:
  # Free sessions now play from https://audio.superthoughts.com (audio move 3a, 2026-10-23). Keep publishing the
  # repo copy at the old same-origin path until the move is complete, so older cached pages keep working.
  local=lambda p:'audio/'+p.rsplit('/',1)[1] if p.startswith('https://') else p
- if not item.get('stream') and item['id'] not in gated and (ROOT/local(item['src'])).is_file():files.append(local(item['src']))
+ # Cloudflare Pages caps a file at 25 MiB, so a legacy copy that size is skipped once the session plays from R2.
+ big=lambda p:(ROOT/p).stat().st_size>=25*2**20
+ if not item.get('stream') and item['id'] not in gated and (ROOT/local(item['src'])).is_file() and not (item['src'].startswith('https://') and big(local(item['src']))):files.append(local(item['src']))
  # Each track's own lock-screen and tile art (images/art/<id>.jpg).
  art=f"images/art/{item['id']}.jpg"
  if (ROOT/art).is_file():files.append(art)
