@@ -72,7 +72,7 @@ def minutes(length):
 def row(s, show_moment=False):
     free = '<span class="free">Free</span>' if s['free'] else ''
     where = f" · {e(next(m['name'] for m in moments + series if m['id'] == s['moment']))}" if show_moment else ''
-    return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{minutes(s['length'])} min</span><span class="line">{e(s['line'])}{where}</span></a></li>"""
+    return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{minutes(s['length'])} min</span><span class="line">{e(s['line'])}{where}</span>{f'<span class="starts">{e(s["starts"])}</span>' if s.get('starts') else ''}</a></li>"""
 
 # Library doors (Josh 2026-11-23, D84 B): one soft light per moment. The same light carries from the door into its
 # shelf header and the play circle on each session card, so a door and what is behind it read as one thing.
