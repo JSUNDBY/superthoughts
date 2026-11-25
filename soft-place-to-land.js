@@ -92,7 +92,7 @@ fetch('audio/soft-place-to-land-v5-cues.json').then(response => response.ok ? re
 $('captions').addEventListener('click', event => {
   captionsOn = !captionsOn;
   event.currentTarget.setAttribute('aria-pressed', String(captionsOn));
-  event.currentTarget.textContent = captionsOn ? 'Words on' : 'Words off';
+  event.currentTarget.textContent = captionsOn ? 'Hide words' : 'Show words';
   if (!captionsOn) { words.classList.remove('is-visible'); activeCue = -1; }
   else { activeCue = -1; audio.dispatchEvent(new Event('timeupdate')); }
   wake();

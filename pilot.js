@@ -355,7 +355,7 @@ $('dim-toggle').addEventListener('click', () => { dimmed = !dimmed; $('dim-toggl
 $('words-toggle')?.addEventListener('click', () => {
   captionsEnabled = !captionsEnabled;
   $('words-toggle').setAttribute('aria-pressed', String(captionsEnabled));
-  $('words-toggle').textContent = captionsEnabled ? 'Words on' : 'Words off';
+  $('words-toggle').textContent = captionsEnabled ? 'Hide words' : 'Show words';
   animateCaptions();
 });
 $('motion-toggle').addEventListener('click', () => { motionPaused = !motionPaused; $('motion-toggle').setAttribute('aria-pressed', String(motionPaused)); $('motion-toggle').textContent = motionPaused ? 'Resume motion' : 'Pause motion'; $('player-field').classList.toggle('motion-paused', motionPaused); syncSessionFilm(); });

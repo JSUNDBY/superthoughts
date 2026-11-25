@@ -43,7 +43,7 @@ audio.addEventListener('ended',()=>{setStatus('Welcome back');reveal()});audio.a
 audio.addEventListener('waiting',()=>{if(!audio.paused)setStatus('Loading the session…')});audio.addEventListener('playing',()=>setStatus('Listening now'));
 audio.addEventListener('error',async()=>{if(locked&&await locked())window.STAccess.lockNote($('#status'));else setStatus('The audio could not load. Please refresh and try again.');reveal()});
 seek.addEventListener('input',()=>{audio.currentTime=Number(seek.value);update();reveal()});
-$('#captions').addEventListener('click',()=>{words=!words;$('#captions').textContent=words?'Words on':'Words off';$('#captions').setAttribute('aria-pressed',String(words));captionKey='reset';updateCaption()});
+$('#captions').addEventListener('click',()=>{words=!words;$('#captions').textContent=words?'Hide words':'Show words';$('#captions').setAttribute('aria-pressed',String(words));captionKey='reset';updateCaption()});
 function syncMotion(){const paused=artwork.getState().paused;$('#motion').textContent=paused?'Resume motion':'Pause motion';$('#motion').setAttribute('aria-pressed',String(paused))}
 syncMotion();reduced.addEventListener('change',()=>queueMicrotask(syncMotion));
 $('#motion').addEventListener('click',()=>{artwork.setPaused(!artwork.getState().paused);syncMotion()});
