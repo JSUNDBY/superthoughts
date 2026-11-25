@@ -226,3 +226,28 @@
 .th-byline{display:flex;align-items:center;gap:16px;margin:8px 0 26px}
 .th-byline img{width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none}
 .th-ethos .th-byline p{margin:0;font-size:16px;line-height:1.5;color:var(--text)}
+/* Home screen section (appify.js) */
+.st-app [hidden]{display:none!important}
+.st-app .app-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px 64px;align-items:center}
+.st-app .app-install{display:inline-flex;align-items:center;min-height:56px;margin-top:28px;padding:0 24px;border:0;border-radius:4px;background:var(--button-bg);color:var(--button-text);font:500 16px var(--font);cursor:pointer}
+.st-app .app-steps{margin:28px 0 0;padding-left:1.3em;max-width:30em;font-size:17px;line-height:1.6;color:var(--muted)}
+.st-app .app-steps li{padding-left:.3em;margin-bottom:6px}
+.st-app .app-how{margin:24px 0 0;max-width:30em;font-size:17px;line-height:1.6;color:var(--muted)}
+.st-app strong{color:var(--text);font-weight:600}
+.app-phone-wrap{margin:0;display:flex;flex-direction:column;align-items:center;gap:20px}
+.app-phone{width:232px;padding:14px;border:1px solid var(--line);border-radius:38px;background:var(--surface)}
+.app-screen{display:grid;grid-template-columns:repeat(4,1fr);align-content:start;gap:18px 14px;min-height:400px;padding:36px 8px 24px;border-radius:26px}
+.app-tile{position:relative;aspect-ratio:1;border-radius:12px;background:var(--line);transition:opacity .6s ease calc(var(--i,0)*45ms)}
+.app-tile b{position:absolute;top:-6px;right:-8px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--coral);color:#fff;font:600 11px/19px var(--font);text-align:center;transition:transform .35s cubic-bezier(.4,0,.6,1) calc(var(--i,0)*70ms),opacity .35s ease calc(var(--i,0)*70ms)}
+.app-tile.is-ours{background:none}
+.app-tile.is-ours img{display:block;width:100%;height:100%;border-radius:12px;transition:box-shadow 1.2s ease}
+.st-app.is-hushed .app-tile:not(.is-ours){opacity:.28}
+.st-app.is-hushed .app-tile b{transform:scale(0);opacity:0}
+.st-app.is-hushed .is-ours img{box-shadow:0 0 0 1px rgba(246,240,230,.35),0 0 28px 6px rgba(242,154,92,.35);animation:app-breathe 6s ease-in-out 1.2s infinite}
+@keyframes app-breathe{50%{box-shadow:0 0 0 1px rgba(246,240,230,.35),0 0 40px 10px rgba(242,154,92,.22)}}
+.app-phone-wrap figcaption{display:flex;flex-direction:column;align-items:center;gap:8px;min-height:84px}
+.app-hush{min-height:48px;padding:0 4px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);font:400 16px var(--font);cursor:pointer}
+.app-after{font-size:15px;color:var(--quiet);min-height:1.5em}
+.st-app button:focus-visible{outline:2px solid var(--seafoam);outline-offset:3px}
+@media (max-width:760px){.st-app .app-grid{grid-template-columns:1fr}.app-phone-wrap{justify-self:center}}
+@media (prefers-reduced-motion:reduce){.app-tile,.app-tile b,.app-tile.is-ours img{transition:none}.st-app.is-hushed .is-ours img{animation:none}}

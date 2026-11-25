@@ -9,7 +9,7 @@
   <script>(function(){try{var t=localStorage.getItem('st-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}})();</script>
   <link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="threshold.css">
-  <link rel="canonical" href="https://superthoughts.com/"><link rel="icon" href="images/favicon.svg"><link rel="manifest" href="pilot.webmanifest"><meta property="og:type" content="website"><meta property="og:url" content="https://superthoughts.com/"><meta property="og:title" content="Superthoughts. Make room for bigger thoughts."><meta property="og:description" content="Guided sessions and original music. Put on headphones, close your eyes, and let the space open up."><meta property="og:image" content="https://superthoughts.com/images/og-listening.png"><meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://superthoughts.com/"><link rel="icon" href="images/favicon.svg"><link rel="manifest" href="pilot.webmanifest"><link rel="apple-touch-icon" href="/images/app-icon-180.png"><meta name="apple-mobile-web-app-title" content="Superthoughts"><meta property="og:type" content="website"><meta property="og:url" content="https://superthoughts.com/"><meta property="og:title" content="Superthoughts. Make room for bigger thoughts."><meta property="og:description" content="Guided sessions and original music. Put on headphones, close your eyes, and let the space open up."><meta property="og:image" content="https://superthoughts.com/images/og-listening.png"><meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="threshold home-page page-home">
   <a class="th-skip" href="#main">Skip to content</a>
@@ -59,6 +59,7 @@
       <a class="th-link" href="about.html">About Superthoughts <span aria-hidden="true">→</span></a>
     </div></section>
 
+    <section class="th-section st-app" id="app" data-appify hidden aria-labelledby="app-title"></section>
     <section class="th-section" id="newsletter" aria-labelledby="newsletter-title"><div class="th-wrap th-email">
       <div><p class="th-label">An occasional note</p><h2 id="newsletter-title">Only when there is something new to hear.</h2><p class="intro">New sessions arrive most weeks. You'll hear from us only when something new is ready or something matters, so you can stay close to what is happening here without a crowded inbox. The library stays open either way.</p></div>
       <div id="newsletter-signup"><form action="https://app.kit.com/forms/10010941/subscriptions" method="post" style="display:flex;flex-direction:column;gap:14px">
@@ -74,6 +75,6 @@
   <script>(function(){var b=document.querySelector('.th-theme');if(!b)return;var r=document.documentElement;
 function label(){var light=r.dataset.theme==='light';b.textContent=light?'Dark':'Light';b.setAttribute('aria-label',light?'Switch to dark':'Switch to light');}
 label();b.addEventListener('click',function(){r.dataset.theme=r.dataset.theme==='light'?'dark':'light';try{localStorage.setItem('st-theme',r.dataset.theme);}catch(e){}label();});})();</script>
-  <script src="newsletter.js" defer></script><script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
+  <script src="newsletter.js" defer></script><script src="appify.js" defer></script><script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
 </body>
 </html>
