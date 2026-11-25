@@ -251,3 +251,7 @@
 .st-app button:focus-visible{outline:2px solid var(--seafoam);outline-offset:3px}
 @media (max-width:760px){.st-app .app-grid{grid-template-columns:1fr}.app-phone-wrap{justify-self:center}}
 @media (prefers-reduced-motion:reduce){.app-tile,.app-tile b,.app-tile.is-ours img{transition:none}.st-app.is-hushed .is-ours img{animation:none}}
+/* Homepage hero: a still lake at dusk (dark theme). Light theme keeps the drawn light. No pan or zoom on the still. */
+:root:not([data-theme="light"]) .page-home .th-light{background:linear-gradient(rgba(11,21,18,.22),rgba(11,21,18,.22)),url(images/hero-lake.jpg) 50% 58%/cover no-repeat var(--bg)}
+:root:not([data-theme="light"]) .page-home .th-light :is(.teal,.glow,.seam){display:none}
+@media (max-width:760px){:root:not([data-theme="light"]) .page-home .th-light{background-image:linear-gradient(rgba(11,21,18,.42),rgba(11,21,18,.42)),url(images/hero-lake-960.jpg);background-position:41% 50%}}
