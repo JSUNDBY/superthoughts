@@ -93,7 +93,14 @@ glow = lambda mid: GLOW.get(mid, '168,205,191')
 DOOR_NEEDS = {'morning', 'sleep', 'smoking', 'eating'}  # already a door, so not repeated as a feeling
 
 free_count = sum(1 for s in sessions if s['free'])
-newest = sorted(sessions, key=lambda s: -s['num'])[:3]
+# 2026-11-24: one per shelf, and a series shows its first session, so a new series can't fill "New here" with its last parts.
+_series_ids = {x['id'] for x in series}
+newest, _seen = [], set()
+for s in sorted(sessions, key=lambda s: -s['num']):
+    if s['moment'] in _seen: continue
+    _seen.add(s['moment'])
+    newest.append(min(on(s['moment']), key=lambda x: x['num']) if s['moment'] in _series_ids else s)
+    if len(newest) == 3: break
 needs = ''.join(f"""<li><a class="th-row" href="library.html#{m['id']}"><strong>{e(m['name'])}</strong><span class="len">{count_text(len(on(m['id'])))}</span><span class="line">{e(m['line'])}</span></a></li>""" for m in moments + series if on(m['id']))
 if sound:
     needs += f"""<li><a class="th-row" href="library.html#{SOUND_SHELF['id']}"><strong>{SOUND_SHELF['name']}</strong><span class="len">{(words[len(sound)] if len(sound) < len(words) else str(len(sound))).capitalize()} pieces</span><span class="line">{e(SOUND_SHELF['line'])}</span></a></li>"""
