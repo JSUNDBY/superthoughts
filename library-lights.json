@@ -867,6 +867,104 @@
     "flip": true,
     "glow": 0.567868061363697
    }
+  },
+  {
+   "slug": "arriving-at-the-table",
+   "title": "Arriving at the Table",
+   "recipe": {
+    "room": "#0f1f1a",
+    "pair": 4,
+    "horizontal": true,
+    "pos": 0.4870963092148304,
+    "width": 0.14317752175498755,
+    "tilt": -0.11809521406888962,
+    "flip": false,
+    "glow": 0.5141423911554739
+   }
+  },
+  {
+   "slug": "hunger-vs-habit",
+   "title": "Hunger vs. Habit",
+   "recipe": {
+    "room": "#13241a",
+    "pair": 3,
+    "horizontal": true,
+    "pos": 0.6897721479879693,
+    "width": 0.12256750584114344,
+    "tilt": 0.16640292780473828,
+    "flip": true,
+    "glow": 0.7440172333735973
+   }
+  },
+  {
+   "slug": "the-pause-before-eating",
+   "title": "The Pause Before Eating",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 6,
+    "horizontal": false,
+    "pos": 0.672472623186186,
+    "width": 0.13542178046889602,
+    "tilt": -0.16617537807673216,
+    "flip": false,
+    "glow": 0.6674537673825398
+   }
+  },
+  {
+   "slug": "eating-with-your-senses",
+   "title": "Eating with Your Senses",
+   "recipe": {
+    "room": "#2a1214",
+    "pair": 0,
+    "horizontal": false,
+    "pos": 0.6090221032453701,
+    "width": 0.1280966416746378,
+    "tilt": 0.13828602933324874,
+    "flip": false,
+    "glow": 0.7864246433600783
+   }
+  },
+  {
+   "slug": "the-stories-we-tell",
+   "title": "The Stories We Tell",
+   "recipe": {
+    "room": "#102522",
+    "pair": 4,
+    "horizontal": false,
+    "pos": 0.647897732486017,
+    "width": 0.175415494479239,
+    "tilt": 0.03569519095122814,
+    "flip": true,
+    "glow": 0.6115603575017303
+   }
+  },
+  {
+   "slug": "emotional-weather",
+   "title": "Emotional Weather",
+   "recipe": {
+    "room": "#0c2229",
+    "pair": 7,
+    "horizontal": false,
+    "pos": 0.7559978538425639,
+    "width": 0.3144408954307437,
+    "tilt": -0.11388134937733412,
+    "flip": true,
+    "glow": 0.6238260269165039
+   }
+  },
+  {
+   "slug": "your-own-way-forward",
+   "title": "Your Own Way Forward",
+   "recipe": {
+    "room": "#1d1a12",
+    "pair": 2,
+    "horizontal": false,
+    "pos": 0.60540123866871,
+    "width": 0.22947940635494887,
+    "tilt": 0.004542523976415395,
+    "flip": true,
+    "glow": 0.5807703780010343
+   }
   }
  ]
 }

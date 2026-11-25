@@ -33,7 +33,9 @@ if not _gate_on:
     sessions = [s for s in sessions if s['key'] not in _held]
     sound = [x for x in sound if x['href'].split('=')[1] not in _held]
 SOUND_SHELF = {'id': 'listen', 'name': 'Just listen', 'line': 'Music with no words. Nothing to follow.'}
-on = lambda mid: [s for s in sessions if s['moment'] == mid]
+# A series marked "order": "program" lists its sessions first to last (session 1 first), not newest first.
+_program = {m['id'] for m in series if m.get('order') == 'program'}
+on = lambda mid: sorted([s for s in sessions if s['moment'] == mid], key=lambda s: s['num']) if mid in _program else [s for s in sessions if s['moment'] == mid]
 words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 count_text = lambda n: 'Coming soon' if n == 0 else f"{(words[n] if n < len(words) else str(n)).capitalize()} session{'s' if n != 1 else ''}"
 
@@ -85,9 +87,10 @@ def row(s, show_moment=False):
 # Library doors (Josh 2026-11-23, D84 B): one soft light per moment. The same light carries from the door into its
 # shelf header and the play circle on each session card, so a door and what is behind it read as one thing.
 GLOW = {'morning': '232,178,122', 'before': '201,166,214', 'right-now': '168,205,191', 'after': '210,179,160',
-        'heart': '227,154,140', 'believe': '238,164,104', 'open': '230,194,122', 'still': '143,184,201', 'night': '127,143,196', 'clear-air': '184,201,168', 'listen': '176,160,220'}
+        'heart': '227,154,140', 'believe': '238,164,104', 'open': '230,194,122', 'still': '143,184,201', 'night': '127,143,196', 'clear-air': '184,201,168', 'listen': '176,160,220',
+        'mindful-eating': '198,190,112'}
 glow = lambda mid: GLOW.get(mid, '168,205,191')
-DOOR_NEEDS = {'morning', 'sleep', 'smoking'}  # already a door, so not repeated as a feeling
+DOOR_NEEDS = {'morning', 'sleep', 'smoking', 'eating'}  # already a door, so not repeated as a feeling
 
 free_count = sum(1 for s in sessions if s['free'])
 newest = sorted(sessions, key=lambda s: -s['num'])[:3]

@@ -125,7 +125,14 @@ const LIGHT_PALETTES = {
   cEmpaStea: {shadow:'#23141e', base:'#4b2e42', fold:'#7c4f6e', lit:'#8176da', light:'#d1cdf3', edge:'#4e55a6', air:'#bb95af', reflection:'#a18be3', undertone:'#a36f93'},
   cEmpaYour: {shadow:'#231415', base:'#4b2e30', fold:'#7c4f52', lit:'#da76bc', light:'#f3cde7', edge:'#a64e9d', air:'#bb9597', reflection:'#e38bbd', undertone:'#a36f73'},
   cSuspLigh: {shadow:'#231c14', base:'#4b3e2e', fold:'#7c684f', lit:'#daa676', light:'#f3dfcd', edge:'#a6674e', air:'#bbaa95', reflection:'#e3c18b', undertone:'#a38c6f'},
-  cEighPeac: {shadow:'#212314', base:'#464b2e', fold:'#747c4f', lit:'#97da76', light:'#daf3cd', edge:'#7da64e', air:'#b5bb95', reflection:'#9de38b', undertone:'#9aa36f'}
+  cEighPeac: {shadow:'#212314', base:'#464b2e', fold:'#747c4f', lit:'#97da76', light:'#daf3cd', edge:'#7da64e', air:'#b5bb95', reflection:'#9de38b', undertone:'#9aa36f'},
+  cArriTabl: {shadow:'#192414', base:'#364c2f', fold:'#5c7c50', lit:'#dab577', light:'#f3e5ce', edge:'#a6754e', air:'#9fbb95', reflection:'#e3cf8c', undertone:'#7ea470'},
+  cHungHabi: {shadow:'#14241a', base:'#2f4c38', fold:'#507c5f', lit:'#c6da77', light:'#ecf3ce', edge:'#a6a64e', air:'#95bba2', reflection:'#c6e38c', undertone:'#70a481'},
+  cPausEati: {shadow:'#142423', base:'#2f4c4a', fold:'#507c79', lit:'#9eda77', light:'#ddf3ce', edge:'#83a64e', air:'#95bbb9', reflection:'#a3e38c', undertone:'#70a4a0'},
+  cEatiSens: {shadow:'#141c24', base:'#2f3c4c', fold:'#50657c', lit:'#dacd77', light:'#f3eece', edge:'#a6894e', air:'#95a7bb', reflection:'#e3e38c', undertone:'#7088a4'},
+  cStorTell: {shadow:'#161424', base:'#322f4c', fold:'#56507c', lit:'#87da77', light:'#d4f3ce', edge:'#6fa64e', air:'#9a95bb', reflection:'#8fe38c', undertone:'#7770a4'},
+  cEmotWeat: {shadow:'#201424', base:'#442f4c', fold:'#70507c', lit:'#daa577', light:'#f3dfce', edge:'#a6664e', air:'#b195bb', reflection:'#e3c08c', undertone:'#9670a4'},
+  cYourForw: {shadow:'#24141f', base:'#4c2f42', fold:'#7c506d', lit:'#b2da77', light:'#e4f3ce', edge:'#95a64e', air:'#bb95af', reflection:'#b5e38c', undertone:'#a47092'}
 };
 function rgba(hex, opacity) {
   return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${opacity})`;
