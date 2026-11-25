@@ -816,7 +816,7 @@
    "starts": "Starts sitting or standing steady, with a deep breath.",
    "length": "9 min",
    "moment": "believe",
-   "free": false,
+   "free": true,
    "needs": [
     "confidence"
    ]

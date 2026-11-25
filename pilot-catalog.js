@@ -128,7 +128,7 @@ window.STAccess = {
   'empathic-journey-what-is-yours', 'suspended-in-light', 'eight-minutes-of-peace',
   'deep-tonal-rest', 'extended-stillness', 'drift-beyond-thought', 'breath-of-stillness', 'spacious-rest'],
  members: ['let-them-think', 'soft-place-to-land', 'precious-life', 'the-pause-before-asking', 'before-the-week-starts',
-  'the-abundance-practice', 'the-empowerment-practice', 'the-frequency-of-enough', 'stress-without-the-cigarette',
+  'the-abundance-practice', 'the-frequency-of-enough', 'stress-without-the-cigarette',
   'a-new-small-ritual', 'when-the-urge-arrives', 'remembering-your-reason', 'when-you-wake-up-already-tense',
   'when-your-mind-wont-stop-at-bedtime', 'open-to-receive', 'the-quantum-reset',
   // Republished 2026-11-20 and four older library sessions, gated for launch (2026-11-23).
