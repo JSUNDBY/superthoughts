@@ -1,4 +1,4 @@
-/* Library: eight doors (D84 B, 2026-11-23) over the moment shelves, plus plain-word feelings and length.
+/* Library: nine doors (believe added 2026-11-24) (D84 B, 2026-11-23) over the moment shelves, plus plain-word feelings and length.
    A door opens its shelf alone; a feeling shows matching sessions across shelves. Without JS the doors are anchors.
    Works from the URL too: library.html#sleep, library.html?need=stress&len=short&free=1 */
 (function () {

@@ -8,6 +8,12 @@
    "light": "morning"
   },
   {
+   "id": "believe",
+   "name": "Believe in yourself",
+   "line": "Confidence, courage and your own strength",
+   "light": "open"
+  },
+  {
    "id": "before",
    "name": "Before something hard",
    "line": "A conversation, a decision, a week ahead",
@@ -33,8 +39,8 @@
   },
   {
    "id": "open",
-   "name": "Confidence and possibility",
-   "line": "Creativity, abundance, your own power",
+   "name": "Possibility and abundance",
+   "line": "Creativity, abundance, what could open up",
    "light": "open"
   },
   {
@@ -126,7 +132,7 @@
    "line": "Step toward the self you are becoming, with trust.",
    "starts": "Starts with a short welcome, then a slow breath and the surface beneath you.",
    "length": "14 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence"
@@ -155,7 +161,7 @@
    "line": "Confidence that grows quietly, one breath at a time.",
    "starts": "Goes straight to a slow, steady breath, then the body settling.",
    "length": "20 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence"
@@ -169,7 +175,7 @@
    "line": "Calm energy and steady strength, from the ground up.",
    "starts": "Starts with getting comfortable and letting the surface beneath you take your weight.",
    "length": "18 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence",
@@ -333,7 +339,7 @@
    "line": "A long, slow settle, and confidence that needs no effort.",
    "starts": "Starts with getting comfortable, then your shoulders, jaw and face softening.",
    "length": "41 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence"
@@ -361,7 +367,7 @@
    "line": "Thank the path that brought you here, and step toward what is next.",
    "starts": "Starts with getting comfortable, then a gentle breath in and a slow exhale.",
    "length": "13 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence"
@@ -643,7 +649,7 @@
    "line": "For evenings when you want to put the day's self down and start fresh.",
    "starts": "A longer practice. Starts with finding a position where you can be still.",
    "length": "28 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence",
@@ -809,7 +815,7 @@
    "line": "Remember that you are powerful: feet, breath, heat in the chest, and the fire that is already yours.",
    "starts": "Starts sitting or standing steady, with a deep breath.",
    "length": "9 min",
-   "moment": "open",
+   "moment": "believe",
    "free": false,
    "needs": [
     "confidence"

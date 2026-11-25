@@ -85,7 +85,7 @@ def row(s, show_moment=False):
 # Library doors (Josh 2026-11-23, D84 B): one soft light per moment. The same light carries from the door into its
 # shelf header and the play circle on each session card, so a door and what is behind it read as one thing.
 GLOW = {'morning': '232,178,122', 'before': '201,166,214', 'right-now': '168,205,191', 'after': '210,179,160',
-        'heart': '227,154,140', 'open': '230,194,122', 'still': '143,184,201', 'night': '127,143,196', 'clear-air': '184,201,168', 'listen': '176,160,220'}
+        'heart': '227,154,140', 'believe': '238,164,104', 'open': '230,194,122', 'still': '143,184,201', 'night': '127,143,196', 'clear-air': '184,201,168', 'listen': '176,160,220'}
 glow = lambda mid: GLOW.get(mid, '168,205,191')
 DOOR_NEEDS = {'morning', 'sleep', 'smoking'}  # already a door, so not repeated as a feeling
 
