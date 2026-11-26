@@ -1,6 +1,6 @@
 # Evening Invitation for Kit
 
-`evening-invitation-kit.html` is a reusable Kit HTML email template. The Superthoughts masthead, decorative portal, and footer are part of the template. The subject, preheader, heading, session title, CTA, body, and signature belong in each Kit email. Use a regular body paragraph for Josh’s signature.
+`evening-invitation-kit.html` is a reusable Kit HTML email template. The Superthoughts masthead, quiet divider, and footer are part of the template. The subject, preheader, heading, session title, CTA, body, and signature belong in each Kit email. Use a regular body paragraph for Josh’s signature.
 
 ## Install and preview
 
@@ -15,7 +15,7 @@ The template styles regular content links and Kit’s `.button` class. To use a 
 
 ## Rendering checks
 
-The template uses a fluid table capped at 600 px, solid forest and ivory colors, and Arial or Helvetica when the Manrope web font is unavailable. The portal has a solid fallback. Gmail’s `color-scheme` hint requests the authored palette for supported Google-account inboxes on mobile. Color treatment can still vary by client and account. [Gmail CSS support](https://developers.google.com/workspace/gmail/design/css)
+The template uses a fluid table capped at 600 px, solid forest and ivory colors, and Arial or Helvetica when the Manrope web font is unavailable. The template has solid background fallbacks. Gmail’s `color-scheme` hint requests the authored palette for supported Google-account inboxes on mobile. Color treatment can still vary by client and account. [Gmail CSS support](https://developers.google.com/workspace/gmail/design/css)
 
 | Inbox | Check in light and dark appearance |
 | --- | --- |
@@ -26,4 +26,4 @@ The template uses a fluid table capped at 600 px, solid forest and ivory colors,
 
 Local Chromium checks with sample content confirmed a 320 px layout without horizontal overflow, the 600 px width cap, and a 44 px CTA. The 320 px check also passed with embedded styles removed and the inline CTA styles applied.
 
-Use an actual Kit inbox delivery to verify these clients, including the intended sequence content, any custom CTA, the mailing address, and the recipient-specific links. Check a narrow layout at 320 px. This template has not been installed in Kit or sent to an inbox.
+Use an actual Kit inbox delivery to verify these clients, including the intended sequence content, any custom CTA, the mailing address, and the recipient-specific links. Check a narrow layout at 320 px. Installed as Kit template 5729633 and assigned to the Superthoughts welcome sequence and its five emails. Four new emails remain drafts. A revised original-welcome preview arrived in Gmail with SPF, DKIM and DMARC passing; its sender was Superthoughts. The arc was removed after that preview and the saved template source was checked against this file. The latest arc-free revision has not been tested in a physical-phone inbox. The original welcome copy rewrite is saved as unpublished changes for Josh to review. `confirmation-content.html` is the isolated branded HTML block used alongside Kit’s native confirmation button; Kit provides the required footer separately. No shared account template default changed.
