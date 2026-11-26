@@ -1,67 +1,175 @@
-/* Library: nine doors (believe added 2026-11-24) (D84 B, 2026-11-23) over the moment shelves, plus plain-word feelings and length.
-   A door opens its shelf alone; a feeling shows matching sessions across shelves. Without JS the doors are anchors.
-   Works from the URL too: library.html#sleep, library.html?need=stress&len=short&free=1 */
+/* Moment links lead to shelf anchors when JavaScript is unavailable. */
 (function () {
-  var box = document.querySelector('[data-filter]'); if (!box) return;
-  box.hidden = false;
-  var doors = document.querySelector('.lib-doors'), back = document.querySelector('[data-back]');
+  var box = document.querySelector('[data-filter]');
+  if (!box) return;
+  var doors = document.querySelector('.lib-doors');
+  var back = document.querySelector('[data-back]');
   var featured = document.querySelector('[data-featured]');
-  var filterLink = featured && featured.querySelector('[data-filter-link]');
-  if (filterLink) filterLink.hidden = false;
-  var feelLabel = box.querySelector('[data-feel-label]'), feel = box.querySelector('[data-feel]');
-  var rows = [].slice.call(document.querySelectorAll('.th-shelf li[data-needs]'));
-  var shelves = [].slice.call(document.querySelectorAll('.th-shelf'));
-  var status = box.querySelector('[data-status]'), clear = box.querySelector('[data-clear]');
-  var q = new URLSearchParams(location.search);
-  var hash = location.hash.slice(1);
-  var state = { door: shelves.some(function (s) { return s.id === hash; }) ? hash : '',
-                need: q.get('need') || '', len: q.get('len') || '', free: q.get('free') === '1' };
-  if (state.door) state.need = '';
-  var inLen = { short: function (m) { return m < 10; }, mid: function (m) { return m >= 10 && m <= 20; }, long: function (m) { return m > 20; } };
-  function name(btn) { return btn ? btn.textContent : ''; }
-  function apply(push) {
+  var filterLink = featured.querySelector('[data-filter-link]');
+  var options = box.querySelector('details');
+  var summary = options.querySelector('summary');
+  var feelLabel = box.querySelector('[data-feel-label]');
+  var feel = box.querySelector('[data-feel]');
+  var needLabels = JSON.parse(box.dataset.needLabels);
+  var needs = Array.from(box.querySelectorAll('[data-need]'));
+  var lengths = Array.from(box.querySelectorAll('[data-len]'));
+  var freeOnly = box.querySelector('[data-free-only]');
+  var rows = Array.from(document.querySelectorAll('.th-shelf li[data-needs]'));
+  var shelves = Array.from(document.querySelectorAll('.th-shelf'));
+  var statusGroup = box.querySelector('[data-filter-status]');
+  var status = box.querySelector('[data-status]');
+  var clear = box.querySelector('[data-clear]');
+  var inLen = {
+    short: function (m) { return m < 10; },
+    mid: function (m) { return m >= 10 && m <= 20; },
+    long: function (m) { return m > 20; }
+  };
+
+  function readState() {
+    var q = new URLSearchParams(location.search);
+    var hash = location.hash.slice(1);
+    var need = q.get('need');
+    var len = q.get('len');
+    var door = shelves.some(function (shelf) { return shelf.id === hash; }) ? hash : '';
+    return {
+      door: door,
+      need: !door && rows.some(function (row) { return row.dataset.needs.split(' ').includes(need); }) ? need : '',
+      len: lengths.some(function (button) { return button.dataset.len === len; }) ? len : '',
+      free: q.get('free') === '1'
+    };
+  }
+
+  var state = readState();
+
+  function hasFilters() {
+    return !!(state.need || state.len || state.free);
+  }
+
+  function apply() {
     var shown = 0;
-    rows.forEach(function (li) {
-      var ok = (!state.door || li.closest('.th-shelf').id === state.door) &&
-               (!state.need || li.dataset.needs.split(' ').indexOf(state.need) > -1) &&
-               (!state.len || inLen[state.len](+li.dataset.min)) && (!state.free || li.hasAttribute('data-free'));
-      li.hidden = !ok; if (ok) shown++;
+    rows.forEach(function (row) {
+      row.hidden = !!(
+        (state.door && row.closest('.th-shelf').id !== state.door) ||
+        (state.need && !row.dataset.needs.split(' ').includes(state.need)) ||
+        (state.len && !inLen[state.len](+row.dataset.min)) ||
+        (state.free && !row.hasAttribute('data-free'))
+      );
+      if (!row.hidden) shown++;
     });
-    shelves.forEach(function (s) { s.hidden = state.door ? s.id !== state.door : !s.querySelector('li[data-needs]:not([hidden])'); });
-    var open = !!(state.door || state.need);
-    if (featured) featured.hidden = open || !!state.len || state.free;
-    doors.hidden = open; back.hidden = !open;
+    shelves.forEach(function (shelf) {
+      var matches = shelf.querySelectorAll('li[data-needs]:not([hidden])').length;
+      var count = shelf.querySelector('.lib-count');
+      if (!count.dataset.total) count.dataset.total = count.textContent;
+      count.textContent = hasFilters() ? matches + (matches === 1 ? ' match' : ' matches') : count.dataset.total;
+      shelf.hidden = state.door
+        ? shelf.id !== state.door || (hasFilters() && !shown)
+        : !matches;
+    });
+
+    var active = !!state.door || hasFilters();
+    featured.hidden = doors.hidden = active;
+    back.hidden = !active;
+    document.body.classList.toggle('library-browse-active', active);
     feelLabel.hidden = feel.hidden = !!state.door;
-    box.querySelectorAll('[data-need]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.need === state.need); });
-    box.querySelectorAll('[data-len]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.len === state.len); });
-    box.querySelector('[data-free-only]').setAttribute('aria-pressed', state.free);
-    var any = state.need || state.len || state.free;
-    var parts = [];
-    if (state.need) parts.push(name(box.querySelector('[data-need="' + state.need + '"]')).toLowerCase());
-    if (state.len) parts.push(name(box.querySelector('[data-len="' + state.len + '"]')).toLowerCase());
-    if (state.free) parts.push('free');
-    status.textContent = any ? (shown === 0 ? 'Nothing matches all of those yet.' : shown + (shown === 1 ? ' session' : ' sessions') + ': ' + parts.join(', ') + '.') : '';
-    clear.hidden = !(state.len || state.free);
-    if (push) {
-      var p = new URLSearchParams();
-      if (state.need) p.set('need', state.need); if (state.len) p.set('len', state.len); if (state.free) p.set('free', '1');
-      history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : '') + (state.door ? '#' + state.door : ''));
+    needs.forEach(function (button) {
+      button.setAttribute('aria-pressed', button.dataset.need === state.need);
+    });
+    lengths.forEach(function (button) {
+      button.setAttribute('aria-pressed', button.dataset.len === state.len);
+    });
+    freeOnly.setAttribute('aria-pressed', state.free);
+
+    var selectedLength = lengths.find(function (button) { return button.dataset.len === state.len; });
+    var parts = [
+      needLabels[state.need],
+      selectedLength && selectedLength.textContent,
+      state.free && 'Free only'
+    ].filter(Boolean);
+    statusGroup.classList.toggle('has-results-status', hasFilters());
+    status.textContent = hasFilters() ? (
+      parts.join(' · ') + '. ' +
+      (shown ? shown + (shown === 1 ? ' result.' : ' results.') : 'No matches. Try clearing a filter.')
+    ) : '';
+    clear.textContent = state.door ? 'Clear filters' : 'Show all';
+    clear.hidden = !hasFilters();
+  }
+
+  function pushState() {
+    var url = new URL(location.href);
+    url.searchParams.delete('need');
+    url.searchParams.delete('len');
+    url.searchParams.delete('free');
+    if (state.need) url.searchParams.set('need', state.need);
+    if (state.len) url.searchParams.set('len', state.len);
+    if (state.free) url.searchParams.set('free', '1');
+    url.hash = state.door;
+    if (url.href !== location.href) history.pushState(null, '', url);
+  }
+
+  function focusTop(target) {
+    if (target) {
+      target.focus({ preventScroll: true });
+      target.closest('.th-library-intro').scrollIntoView({ block: 'start' });
     }
   }
-  function toTop() { var top = document.querySelector('.th-library-intro'); if (top) top.scrollIntoView({ block: 'start' }); }
-  doors.addEventListener('click', function (ev) {
-    var d = ev.target.closest('[data-door]'); if (!d) return;
-    ev.preventDefault(); state.door = d.dataset.door; state.need = ''; apply(true); toTop();
-    var h = document.getElementById('shelf-' + state.door); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+
+  function showAll() {
+    state = { door: '', need: '', len: '', free: false };
+    pushState();
+    options.open = true;
+    apply();
+    focusTop(featured.querySelector('a'));
+  }
+
+  doors.addEventListener('click', function (event) {
+    var link = event.target.closest('[data-door]');
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey ||
+        event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    state.door = link.dataset.door;
+    state.need = '';
+    pushState();
+    options.open = false;
+    apply();
+    focusTop(back.querySelector('button'));
   });
-  back.addEventListener('click', function () { state = { door: '', need: '', len: '', free: false }; apply(true); toTop(); });
-  box.addEventListener('click', function (ev) {
-    var b = ev.target.closest('button'); if (!b) return;
-    if (b.dataset.need) state.need = state.need === b.dataset.need ? '' : b.dataset.need;
-    else if (b.dataset.len) state.len = state.len === b.dataset.len ? '' : b.dataset.len;
-    else if (b.hasAttribute('data-free-only')) state.free = !state.free;
-    else if (b.hasAttribute('data-clear')) { state.len = ''; state.free = false; }
-    apply(true);
+
+  filterLink.addEventListener('click', function () {
+    options.open = true;
   });
-  apply(false);
+
+  back.addEventListener('click', showAll);
+  box.addEventListener('click', function (event) {
+    var button = event.target.closest('button');
+    if (!button) return;
+    if (button === clear && !state.door) {
+      showAll();
+      return;
+    }
+    var wasActive = state.door || hasFilters();
+    if (button.dataset.need) state.need = state.need === button.dataset.need ? '' : button.dataset.need;
+    else if (button.dataset.len) state.len = state.len === button.dataset.len ? '' : button.dataset.len;
+    else if (button === freeOnly) state.free = !state.free;
+    else if (button === clear) { state.len = ''; state.free = false; }
+    pushState();
+    apply();
+    if (!wasActive && hasFilters()) {
+      options.open = false;
+      focusTop(summary);
+    } else if (button === clear) {
+      summary.focus();
+    }
+  });
+
+  function restore() {
+    state = readState();
+    options.open = !(state.door || hasFilters());
+    apply();
+  }
+
+  window.addEventListener('popstate', restore);
+  window.addEventListener('hashchange', restore);
+  box.hidden = false;
+  filterLink.hidden = false;
+  restore();
 })();

@@ -10,3 +10,7 @@ These photographs are used under the [Pexels license](https://www.pexels.com/lic
 | Before You Check Anything | klaas wauben | [Sunlight through trees](https://www.pexels.com/photo/serene-forest-with-sunlight-filtering-through-trees-32479529/) |
 | Before You Say Yes | Christoph Hanssen | [Coastal dunes](https://www.pexels.com/photo/serene-coastal-sand-dunes-under-overcast-sky-39982416/) |
 | Three Minute Reset | Kostas Dimopoulos | [A wave on the shoreline](https://www.pexels.com/photo/wave-gently-lapping-on-sandy-beach-shoreline-36457225/) |
+| Arriving at the Table | Letícia Alvares | [A White Bowl on the Table Against a White Wall](https://www.pexels.com/photo/a-white-bowl-on-the-table-against-a-white-wall-26161017/) |
+| For Someone You Love and Miss | Dmytro Koplyk | [Minimalist Close-up of a Single Wildflower](https://www.pexels.com/photo/minimalist-close-up-of-a-single-wildflower-37195168/) |
+| Connecting to Abundance | Robert Skorwider | [Grassy Meadow and Hills in the Back](https://www.pexels.com/photo/grassy-meadow-and-hills-in-the-back-18906227/) |
+| The Empowerment Practice | Mahmoud Alaydi | [A Rock Formation during Sunset](https://www.pexels.com/photo/a-rock-formation-during-sunset-7942134/) |

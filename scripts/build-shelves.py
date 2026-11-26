@@ -87,6 +87,16 @@ def row(s, show_moment=False):
     where = f" · {e(next(m['name'] for m in moments + series if m['id'] == s['moment']))}" if show_moment else ''
     return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{minutes(s['length'])} min</span><span class="line">{e(s['line'])}{where}</span>{f'<span class="starts">{e(s["starts"])}</span>' if s.get('starts') else ''}</a></li>"""
 
+def library_row(s, *, guided=True):
+    photo = ''
+    slug = s.get('libraryCover', {}).get('cover', s.get('key', ''))
+    if guided and s['free'] and (ROOT / 'images' / 'session-covers' / f'{slug}.jpg').is_file():
+        position = f' style="object-position:{e(s["thumbnailPosition"])}"' if s.get('thumbnailPosition') else ''
+        photo = f'<img class="row-photo"{position} src="/images/session-covers/{e(slug)}.jpg" alt="" width="128" height="128" loading="lazy" decoding="async">'
+    access = 'Free' if s['free'] else 'Member'
+    starts = f'<span class="starts">{e(s["starts"])}</span>' if guided and s.get('starts') else ''
+    return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row{' th-row-photo' if photo else ''}" href="{e(s['href'])}">{photo}<strong>{e(s['title'])}</strong><span class="len">{minutes(s['length'])} min · {access}</span><span class="line">{e(s['line'])}</span>{starts}</a></li>"""
+
 def cover_card(session, *, lead=False):
     cover = session['libraryCover']
     image = f'/images/session-covers/{e(cover["cover"])}.jpg'
@@ -198,19 +208,20 @@ shelves = []
 def sound_shelf():
     return f"""    <section class="th-shelf" id="{SOUND_SHELF['id']}" style="--g:{glow(SOUND_SHELF['id'])}" aria-labelledby="shelf-{SOUND_SHELF['id']}"><div class="th-wrap th-shelf-head">
       <div class="th-shelf-title lib-lit"><h2 id="shelf-{SOUND_SHELF['id']}">{SOUND_SHELF['name']}</h2><p>{e(SOUND_SHELF['line'])}</p><span class="lib-count">{door_count(SOUND_SHELF)}</span></div>
-      <div><ul class="th-rows">{''.join(row(s) for s in sound)}</ul></div>
+      <div><ul class="th-rows">{''.join(library_row(s, guided=False) for s in sound)}</ul></div>
     </div></section>"""
 for m in moments + series:
     if sound and m is (series[0] if series else None): shelves.append(sound_shelf())
     items = on(m['id'])
     if not items and m in series: continue
-    rows = f"""<ul class="th-rows">{''.join(row(s) for s in items)}</ul>""" if items else '<p class="th-empty">New sessions for this moment are on their way.</p>'
+    rows = f"""<ul class="th-rows">{''.join(library_row(s) for s in items)}</ul>""" if items else '<p class="th-empty">New sessions for this moment are on their way.</p>'
     shelves.append(f"""    <section class="th-shelf" id="{m['id']}" style="--g:{glow(m['id'])}" aria-labelledby="shelf-{m['id']}"><div class="th-wrap th-shelf-head">
       <div class="th-shelf-title lib-lit"><h2 id="shelf-{m['id']}">{e(m['name'])}</h2><p>{e(m['line'])}</p><span class="lib-count">{count_text(len(items))}</span></div>
       <div>{rows}</div>
     </div></section>""")
 if sound and not series: shelves.append(sound_shelf())
 chips = ''.join(f'<button type="button" data-need="{n["id"]}" aria-pressed="false">{e(n["name"])}</button>' for n in need_list if n['id'] not in DOOR_NEEDS and any(n['id'] in s.get('needs', []) for s in sessions))
+need_labels = e(json.dumps({n['id']: n['name'] for n in need_list}))
 doors = ''.join(f'<a class="lib-door lib-lit{" lib-wide" if m in series else ""}" href="#{m["id"]}" data-door="{m["id"]}" style="--g:{glow(m["id"])}"><span class="lib-count">{door_count(m)}</span><strong>{e(m["name"])}</strong><small>{e(m["line"])}</small></a>' for m in moments + ([SOUND_SHELF] if sound else []) + series if on(m['id']) or m is SOUND_SHELF)
 cover_order = ['still-enough-to-listen', 'after-a-tense-conversation', 'still-enough-to-sleep',
                'before-you-pick-up-the-phone', 'before-you-say-yes']
@@ -238,12 +249,15 @@ library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, a
       </section>
       <nav class="lib-doors" id="browse-moments" aria-label="Sessions by moment">{doors}</nav>
       <p class="lib-back" data-back hidden><button type="button" class="th-clear">All moments</button></p>
-      <div class="th-filter" id="library-filters" data-filter hidden>
-        <p class="th-label" data-feel-label>Or by feeling</p>
-        <div class="th-chips" role="group" aria-label="Filter by feeling" data-feel>{chips}</div>
-        <p class="th-label">How long?</p>
-        <div class="th-chips" role="group" aria-label="Filter by length"><button type="button" data-len="short" aria-pressed="false">Under 10 min</button><button type="button" data-len="mid" aria-pressed="false">10 to 20 min</button><button type="button" data-len="long" aria-pressed="false">Over 20 min</button><button type="button" data-free-only aria-pressed="false">Free only</button></div>
-        <p class="th-filter-status" aria-live="polite"><span data-status></span> <button type="button" class="th-clear" data-clear hidden>Show all</button></p>
+      <div class="th-filter" id="library-filters" data-filter data-need-labels="{need_labels}" hidden>
+        <details class="lib-filter-options" open>
+          <summary>Filters</summary>
+          <p class="th-label" data-feel-label>By feeling</p>
+          <div class="th-chips" role="group" aria-label="Filter by feeling" data-feel>{chips}</div>
+          <p class="th-label">How long?</p>
+          <div class="th-chips" role="group" aria-label="Filter by length and access"><button type="button" data-len="short" aria-pressed="false">Under 10 min</button><button type="button" data-len="mid" aria-pressed="false">10 to 20 min</button><button type="button" data-len="long" aria-pressed="false">Over 20 min</button><button type="button" data-free-only aria-pressed="false">Free only</button></div>
+        </details>
+        <div class="th-filter-status" data-filter-status><p role="status" data-status></p><button type="button" class="th-clear" data-clear hidden>Clear filters</button></div>
       </div>
     </div></div>
 {chr(10).join(shelves)}
@@ -252,7 +266,7 @@ library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, a
   </main>
 {FOOT}
   {TOGGLE}
-  <script src="library-filter.js" defer></script><script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
+  <script src="library-filter.js" defer></script><script type="module" src="library-return.js"></script><script src="pilot-catalog.js"></script><script type="module" src="pilot-analytics.js"></script>
 </body>
 </html>
 """

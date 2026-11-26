@@ -219,3 +219,133 @@
     letter-spacing: .22em;
   }
 }
+
+.library-page .th-filter-status:not(.has-results-status) {
+  min-height: 0;
+  margin: 0;
+}
+
+.lib-filter-options > summary {
+  min-height: 44px;
+  width: fit-content;
+  padding: 11px 10px 11px 0;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.lib-filter-options .th-label {
+  margin-top: 10px;
+}
+
+.library-page .th-filter-status {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.library-page .th-filter-status button {
+  min-height: 44px;
+}
+
+.library-page .th-filter-status p {
+  margin: 0;
+}
+
+.library-browse-active .lib-back {
+  margin-top: 12px;
+}
+
+.library-browse-active .th-filter {
+  margin-top: 4px;
+}
+
+.library-browse-active .th-shelf {
+  padding-top: 28px;
+}
+
+.library-page .th-shelf .th-row {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  padding: 11px 13px;
+}
+
+.library-page .th-shelf .th-row::before {
+  width: 34px;
+  height: 34px;
+}
+
+.library-page .th-shelf .th-row-photo {
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+}
+
+.library-page .th-shelf .th-row-photo::before {
+  display: none;
+}
+
+.row-photo {
+  grid-area: 1 / 1 / span 3;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.library-page .th-shelf .th-row .len {
+  grid-row: 1;
+  align-self: baseline;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.library-page .th-shelf .th-row .line,
+.library-page .th-shelf .th-row .starts {
+  grid-column: 2 / -1;
+}
+
+@media (max-width: 600px) {
+  .library-browse-active .th-library-intro {
+    padding-bottom: 12px;
+  }
+
+  .library-browse-active .th-shelf {
+    padding-top: 18px;
+  }
+
+  .library-browse-active .th-shelf-head {
+    gap: 12px;
+  }
+
+  .library-page.library-browse-active .th-shelf-title.lib-lit {
+    min-height: 0;
+    padding: 12px 14px;
+  }
+
+  .library-page.library-browse-active .th-shelf-title .lib-count {
+    position: static;
+    display: inline-block;
+    margin-top: 6px;
+  }
+
+  .library-page.library-browse-active .th-shelf-title p {
+    margin-top: 4px;
+  }
+
+  .library-page .th-shelf .th-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+    column-gap: 10px;
+  }
+
+  .library-page .th-shelf .th-row-photo {
+    grid-template-columns: clamp(55px, 17vw, 80px) minmax(0, 1fr);
+  }
+
+  .row-photo {
+    grid-row: 1 / span 4;
+    align-self: start;
+  }
+
+  .library-page .th-shelf .th-row .len {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}

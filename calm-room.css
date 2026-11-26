@@ -51,6 +51,10 @@
 .room-photographic[data-design="tense"] { --photo-focus: 54% 51%; }
 .room-photographic[data-design="phone"] { --photo-focus: 55% 52%; }
 .room-photographic[data-design="yesmouth"] { --photo-focus: 35% 55%; }
+.room-photographic[data-design="cArriTabl"] { --photo-focus: 53% 88%; }
+.room-photographic[data-design="lovemiss"] { --photo-focus: 84% 28%; }
+.room-photographic[data-design="connect"] { --photo-focus: 47% 53%; }
+.room-photographic[data-design="empower"] { --photo-focus: 51% 62%; }
 
 .room-photo {
   position: absolute;
@@ -67,6 +71,14 @@
   background:
     linear-gradient(0deg, #0a0d0df5 0%, #0a0d0db3 27%, #0a0d0d12 68%, #0a0d0d99 100%),
     linear-gradient(90deg, #0a0d0dbd 0%, #0a0d0d75 36%, #0a0d0d12 75%);
+}
+
+@media (min-width: 641px) {
+  .session-page .room-photographic[data-design="cArriTabl"] .room-shade {
+    background:
+      linear-gradient(90deg, #0a0d0ddb 0%, #0a0d0da6 36%, #0a0d0d12 75%),
+      linear-gradient(0deg, #0a0d0ded 0%, #0a0d0d59 29%, #0a0d0d12 68%, #0a0d0d99 100%);
+  }
 }
 
 .session-page .room-photographic .session-intro {
@@ -145,10 +157,6 @@
 #sleep-timer-dialog form { margin-top: 16px; text-align: right; }
 
 @media (max-width: 640px) {
-  html:has(.room-photographic):has(.analytics-choice:not([hidden])) {
-    scroll-padding-bottom: 116px;
-  }
-
   .session-page .room-photographic {
     --room-inset: 24px;
     --photo-height: 42svh;
@@ -162,6 +170,10 @@
   .session-page:has(.room-photographic[data-design="phone"]) { --photo-ground: #29271e; }
   .session-page:has(.room-photographic[data-design="cThreMinuRese"]) { --photo-ground: #2b2925; }
   .session-page:has(.room-photographic[data-design="yesmouth"]) { --photo-ground: #282b29; }
+  .session-page:has(.room-photographic[data-design="cArriTabl"]) { --photo-ground: #2b2823; }
+  .session-page:has(.room-photographic[data-design="lovemiss"]) { --photo-ground: #25241f; }
+  .session-page:has(.room-photographic[data-design="connect"]) { --photo-ground: #23291f; }
+  .session-page:has(.room-photographic[data-design="empower"]) { --photo-ground: #302720; }
 
   .session-page:has(.room-photographic) {
     background: var(--photo-ground, #172021);
@@ -190,6 +202,18 @@
   }
 
   .session-page .room-photographic #description { line-height: 1.48; }
+}
+
+@media (max-width: 640px) and (height > 720px) {
+  html:has(.room-photographic):has(.analytics-choice:not([hidden])) {
+    scroll-padding-bottom: 116px;
+  }
+}
+
+@media (max-width: 640px) and (max-height: 720px) {
+  .session-page:has(.room-photographic) > .analytics-choice {
+    position: static;
+  }
 }
 
 @media (max-width: 640px) and (prefers-reduced-motion: no-preference) {

@@ -1,3 +1,4 @@
+import './library-return.js';
 import {createPracticeStore,createPlaybackTracker} from './pilot-progress.mjs';
 import {createArtwork} from './diffusion-artwork.js';
 import {sessions,clock} from './diffusion-catalog.js';
