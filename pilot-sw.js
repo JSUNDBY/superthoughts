@@ -1,7 +1,7 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v112-photo-covers';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v113-arrival-reset';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 // Free sessions and their cues live on the public audio host (2026-10-23 audio move, phase 3a).
@@ -10,6 +10,7 @@ const AUDIO_HOST = 'https://audio.superthoughts.com';
 const HOSTED_AUDIO = /^https:\/\/audio\.superthoughts\.com\/free\/[a-z0-9][a-z0-9-]*\.mp3$/;
 const HOSTED_CUES = /^https:\/\/audio\.superthoughts\.com\/cues\/[a-z0-9][a-z0-9-]*-cues\.json$/;
 const SHELL_FILES = [
+  'images/session-covers/three-minute-reset.jpg',
   'images/session-covers/still-enough-to-listen.jpg',
   'images/session-covers/after-a-tense-conversation.jpg',
   'images/session-covers/still-enough-to-sleep.jpg',

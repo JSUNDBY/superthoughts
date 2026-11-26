@@ -9,3 +9,4 @@ These photographs are used under the [Pexels license](https://www.pexels.com/lic
 | Still Enough to Sleep | Atahan Demir | [Mountains at dusk](https://www.pexels.com/photo/scenic-view-of-mountains-10920818/) |
 | Before You Check Anything | klaas wauben | [Sunlight through trees](https://www.pexels.com/photo/serene-forest-with-sunlight-filtering-through-trees-32479529/) |
 | Before You Say Yes | Christoph Hanssen | [Coastal dunes](https://www.pexels.com/photo/serene-coastal-sand-dunes-under-overcast-sky-39982416/) |
+| Three Minute Reset | Kostas Dimopoulos | [A wave on the shoreline](https://www.pexels.com/photo/wave-gently-lapping-on-sandy-beach-shoreline-36457225/) |

@@ -251,10 +251,34 @@
 .st-app button:focus-visible{outline:2px solid var(--seafoam);outline-offset:3px}
 @media (max-width:760px){.st-app .app-grid{grid-template-columns:1fr}.app-phone-wrap{justify-self:center}}
 @media (prefers-reduced-motion:reduce){.app-tile,.app-tile b,.app-tile.is-ours img{transition:none}.st-app.is-hushed .is-ours img{animation:none}}
-/* Homepage hero: a still lake at dusk (dark theme). Light theme keeps the drawn light. No pan or zoom on the still. */
-:root:not([data-theme="light"]) .page-home .th-light{background:linear-gradient(rgba(11,21,18,.22),rgba(11,21,18,.22)),url(images/hero-lake.jpg) 50% 58%/cover no-repeat var(--bg)}
-:root:not([data-theme="light"]) .page-home .th-light :is(.teal,.glow,.seam){display:none}
-@media (max-width:760px){:root:not([data-theme="light"]) .page-home .th-light{background-image:linear-gradient(rgba(11,21,18,.42),rgba(11,21,18,.42)),url(images/hero-lake-960.jpg);background-position:41% 50%}}
+/* The home photograph has a local scrim for legibility and a fade into the page. */
+.page-home .th-light{
+  --hero-scrim:28,25,23;
+  background:url(images/session-covers/still-enough-to-sleep.jpg) center 48%/cover no-repeat var(--bg);
+}
+.page-home .th-light :is(.teal,.glow,.seam,.grain){display:none}
+.page-home .th-light .shade{
+  background:
+    linear-gradient(180deg,rgba(var(--hero-scrim),.8),rgba(var(--hero-scrim),0) 26%,rgba(var(--hero-scrim),0) 80%,var(--bg)),
+    linear-gradient(90deg,rgba(var(--hero-scrim),.91),rgba(var(--hero-scrim),.76) 39%,rgba(var(--hero-scrim),.38) 61%,rgba(var(--hero-scrim),0) 74%);
+}
+:root[data-theme="light"] .page-home .th-light{--hero-scrim:236,226,207}
+:root[data-theme="light"] .page-home .th-light .shade{
+  background:
+    linear-gradient(180deg,rgba(var(--hero-scrim),.87),rgba(var(--hero-scrim),0) 26%,rgba(var(--hero-scrim),0) 80%,var(--bg)),
+    linear-gradient(90deg,rgba(var(--hero-scrim),.98),rgba(var(--hero-scrim),.87) 39%,rgba(var(--hero-scrim),0) 70%);
+}
+@media (max-width:1080px){
+  .page-home .th-light{background-position:60% 85%;background-size:auto max(115%, 67vw)}
+  .page-home .th-light .shade{
+    background:
+      linear-gradient(180deg,rgba(var(--hero-scrim),.96),rgba(var(--hero-scrim),.74) 7%,rgba(var(--hero-scrim),.06) 17%,rgba(var(--hero-scrim),.78) 27%,rgba(var(--hero-scrim),.72) 85%,rgba(var(--hero-scrim),.08) 94%,var(--bg)),
+      linear-gradient(90deg,rgba(var(--hero-scrim),.43),rgba(var(--hero-scrim),0) 85%);
+  }
+  :root[data-theme="light"] .page-home .th-light .shade{
+    background:linear-gradient(180deg,rgba(var(--hero-scrim),.94),rgba(var(--hero-scrim),.16) 17%,rgba(var(--hero-scrim),.91) 27%,rgba(var(--hero-scrim),.91) 85%,rgba(var(--hero-scrim),.18) 94%,var(--bg));
+  }
+}
 
 /* 2026-11-25: Membership in the header reads "Join" on phones so the bar fits at 360px. */
 .th-nav .sm-only{display:none}

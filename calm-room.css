@@ -160,6 +160,7 @@
   .session-page:has(.room-photographic[data-design="tense"]) { --photo-ground: #202929; }
   .session-page:has(.room-photographic[data-design="stillsleep"]) { --photo-ground: #17232f; }
   .session-page:has(.room-photographic[data-design="phone"]) { --photo-ground: #29271e; }
+  .session-page:has(.room-photographic[data-design="cThreMinuRese"]) { --photo-ground: #2b2925; }
   .session-page:has(.room-photographic[data-design="yesmouth"]) { --photo-ground: #282b29; }
 
   .session-page:has(.room-photographic) {
