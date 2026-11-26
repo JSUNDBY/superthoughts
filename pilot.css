@@ -355,3 +355,6 @@ button:disabled{opacity:.45;cursor:default}
 .page-session .play-toggle:hover,.player-panel .play-toggle:hover{background:rgba(255,238,215,.16);border-color:#fff5e6;transform:translateY(-1px)}
 .listen-mark{border-radius:16px;padding:0;animation:none}
 .listen-mark::before,.listen-mark::after{border-radius:18px;animation:none}
+
+/* 2026-11-25: the header Membership link stays off phones; the footer carries it there. */
+@media (max-width:640px){.site-nav .nav-join{display:none}}

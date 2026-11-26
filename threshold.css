@@ -141,7 +141,7 @@
 @media (max-width:980px){.th-doors{grid-template-columns:repeat(2,minmax(0,1fr))}.th-shelf-head{grid-template-columns:1fr}.th-email{grid-template-columns:1fr}}
 @media (max-width:640px){
   .th-wrap{width:min(100% - 40px,1248px)}
-  .th-nav{gap:18px;font-size:14px}.th-nav .hide-sm{display:none}
+  .th-nav{gap:18px;font-size:14px}.th-nav .hide-sm{display:none}.th-nav .sm-only{display:inline}.th-header .th-wrap{gap:16px}
   .th-arrival .th-wrap{padding:120px 0 48px}
   .th-light .seam{left:95%}.th-arrival .lede{max-width:82%}.th-light .glow{top:64%;height:30%}
   .th-light .shade{background:linear-gradient(180deg,rgba(11,21,18,.5) 0%,rgba(11,21,18,.12) 40%,rgba(11,21,18,0) 70%,rgba(11,21,18,.2) 88%,var(--bg) 100%)}
@@ -255,3 +255,8 @@
 :root:not([data-theme="light"]) .page-home .th-light{background:linear-gradient(rgba(11,21,18,.22),rgba(11,21,18,.22)),url(images/hero-lake.jpg) 50% 58%/cover no-repeat var(--bg)}
 :root:not([data-theme="light"]) .page-home .th-light :is(.teal,.glow,.seam){display:none}
 @media (max-width:760px){:root:not([data-theme="light"]) .page-home .th-light{background-image:linear-gradient(rgba(11,21,18,.42),rgba(11,21,18,.42)),url(images/hero-lake-960.jpg);background-position:41% 50%}}
+
+/* 2026-11-25: Membership in the header reads "Join" on phones so the bar fits at 360px. */
+.th-nav .sm-only{display:none}
+@media (max-width:640px){.th-nav .sm-only{display:inline}}
+@media (max-width:380px){.th-brand{letter-spacing:.24em}}

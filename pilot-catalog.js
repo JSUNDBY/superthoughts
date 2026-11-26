@@ -175,3 +175,20 @@ window.STAccess = {
   el.append(join, ' or ', login, ' to listen.');
  };
 })();
+/* 2026-11-25 (Josh): after a free session ends, one quiet line about membership. Never on a member session. */
+(() => {
+ const A = window.STAccess;
+ if (typeof document === 'undefined' || !A.on) return;
+ addEventListener('DOMContentLoaded', () => {
+  const audio = document.getElementById('pilot-audio'), note = document.getElementById('resume-note');
+  if (!audio || !note) return;
+  audio.addEventListener('ended', () => {
+   if ((audio.currentSrc || audio.src).startsWith(`${A.app}/audio/`)) return;
+   A.isMember().then(member => {
+    if (member) return;
+    note.textContent = `There are ${A.members.length} more sessions like this for members. `;
+    note.append(Object.assign(document.createElement('a'), {href: `${A.app}/join`, textContent: 'See membership'}));
+   });
+  });
+ });
+})();

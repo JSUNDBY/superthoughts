@@ -66,12 +66,14 @@ def header(current):
     <nav class="th-nav" aria-label="Main navigation">
       <a href="library.html"{cur('library')}>Library</a>
       <a class="hide-sm" href="about.html"{cur('about')}>About</a>
+      <a href="{JOIN}"><span class="hide-sm">Membership</span><span class="sm-only">Join</span></a>
       <button class="th-theme" type="button">Light</button>
     </nav>
   </div></header>"""
 
+JOIN = 'https://members.superthoughts.com/join'
 FOOT = """  <div class="th-wrap"><p class="th-disclaimer">Superthoughts recordings are for relaxation and entertainment, made as art. They are not medical or mental health care. <a href="/terms.html">Terms</a></p></div>
-  <footer class="th-footer"><div class="th-wrap"><span>© 2026 Superthoughts</span><a href="about.html">About</a><a href="guides/">Guides</a><a href="explore.html#practice">Your practice</a><a href="index.html#newsletter">Email notes</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a><a href="https://www.google.com/preferences/source?q=superthoughts.com">Add us on Google</a></div></footer>"""
+  <footer class="th-footer"><div class="th-wrap"><span>© 2026 Superthoughts</span><a href="https://members.superthoughts.com/join">Membership</a><a href="about.html">About</a><a href="guides/">Guides</a><a href="explore.html#practice">Your practice</a><a href="index.html#newsletter">Email notes</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><button type="button" data-analytics-settings>Privacy choices</button><a href="contact.html">Contact</a><a href="https://www.google.com/preferences/source?q=superthoughts.com">Add us on Google</a></div></footer>"""
 
 def minutes(length):
     """'19:30' -> 20, '9 min' -> 9. One format everywhere (Josh 2026-11-17)."""
@@ -93,6 +95,14 @@ glow = lambda mid: GLOW.get(mid, '168,205,191')
 DOOR_NEEDS = {'morning', 'sleep', 'smoking', 'eating'}  # already a door, so not repeated as a feeling
 
 free_count = sum(1 for s in sessions if s['free'])
+# 2026-11-25 (Josh): the join page had no door from the site. One quiet band on home and library.
+MEMBER_BAND = f"""    <section class="th-section th-member" aria-labelledby="member-title"><div class="th-wrap">
+      <p class="th-label">Membership</p>
+      <h2 id="member-title">The whole library, whenever you need it.</h2>
+      <p class="intro">{len(_members)} member sessions, each with its own music, and new ones most weeks. The free sessions stay free for everyone.</p>
+      <p class="intro">The first 100 members pay $69 a year, and that price holds for as long as you stay. Founding members can also ask for a session they need.</p>
+      <div class="th-actions"><a class="th-button" href="{JOIN}">See membership</a><a class="th-link" href="https://members.superthoughts.com/login">Already a member? Sign in</a></div>
+    </div></section>"""
 # 2026-11-24: one per shelf, and a series shows its first session, so a new series can't fill "New here" with its last parts.
 _series_ids = {x['id'] for x in series}
 newest, _seen = [], set()
@@ -148,6 +158,8 @@ home = f"""{head('Superthoughts. Make room for bigger thoughts.', "Guided sessio
       <div class="th-byline"><img src="images/josh-sundby.jpg" width="72" height="72" alt="" loading="lazy"><p>Made by Josh Sundby, a mindfulness guide, sound bath host and music producer in Minneapolis.</p></div>
       <a class="th-link" href="about.html">About Superthoughts <span aria-hidden="true">→</span></a>
     </div></section>
+
+{MEMBER_BAND}
 
     <section class="th-section" id="newsletter" aria-labelledby="newsletter-title"><div class="th-wrap th-email">
       <div><p class="th-label">An occasional note</p><h2 id="newsletter-title">Only when there is something new to hear.</h2><p class="intro">New sessions arrive most weeks. You'll hear from us only when something new is ready or something matters, so you can stay close to what is happening here without a crowded inbox. The library stays open either way.</p></div>
@@ -207,6 +219,7 @@ library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, a
       </div>
     </div></div>
 {chr(10).join(shelves)}
+{MEMBER_BAND}
     <div class="th-wrap" style="padding:56px 0 24px;display:flex;flex-wrap:wrap;gap:12px 32px"><a class="th-link" href="guides/">Guides: one question, one practice</a><a class="th-link" href="about.html">About Superthoughts</a><a class="th-link" href="explore.html#practice">Your listening history</a></div>
   </main>
 {FOOT}

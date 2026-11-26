@@ -28,3 +28,6 @@
 .guide-main .guide-note{color:#b9c0b7;font-size:16px;margin-top:40px}
 .guide-index .guide-practice{margin:0 0 14px}
 @media(max-width:760px){.guide-main{padding:70px 24px 90px}.guide-main h2{margin-top:40px}}
+
+/* 2026-11-25: the header Membership link stays off phones; the footer carries it there. */
+@media (max-width:640px){.site-nav .nav-join{display:none}}
