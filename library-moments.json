@@ -551,7 +551,7 @@
    "starts": "Goes straight to three slow, full breaths.",
    "length": "3 min",
    "moment": "right-now",
-   "free": false,
+   "free": true,
    "needs": [
     "stress",
     "beginners"
