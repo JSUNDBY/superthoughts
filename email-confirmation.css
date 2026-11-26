@@ -1,0 +1,186 @@
+@font-face {
+  font-family: Manrope;
+  src: url("fonts/manrope-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --ink: #182421;
+  --ivory: #eeeae0;
+  --muted: #ccc8bc;
+  --amber: #c5a16d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--ink);
+  color: var(--ivory);
+  font-family: Manrope, system-ui, sans-serif;
+  font-weight: 400;
+}
+
+a { color: inherit; }
+
+a:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  inset: 12px auto auto 12px;
+  z-index: 2;
+  padding: 12px 16px;
+  background: var(--ivory);
+  color: var(--ink);
+}
+
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+}
+
+.frame {
+  width: min(100% - 40px, 70rem);
+  margin-inline: auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: clamp(12px, 2vw, 26px);
+}
+
+.page-header a,
+.page-footer a,
+.retry a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-underline-offset: 4px;
+}
+
+.page-header a,
+.page-footer a {
+  text-decoration: none;
+}
+
+.page-header a:hover,
+.page-footer a:hover {
+  text-decoration: underline;
+}
+
+.brand {
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: 30rem;
+  padding: clamp(2.75rem, 8vw, 7rem) clamp(1.25rem, 7vw, 7rem);
+  border: 1px solid #eeeae023;
+  border-radius: 8px;
+  background: #131d1b;
+}
+
+main::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, #131d1b 12%, #131d1bf0 40%, #131d1b00 100%),
+    radial-gradient(ellipse 19% 50% at 78% 58%, #c5a16d2e, transparent 100%),
+    radial-gradient(ellipse 2% 40% at 78% 50%, #c5a16d47, transparent 100%),
+    radial-gradient(ellipse 50% 96% at 77% 54%, #4b4b35, transparent 100%);
+}
+
+.message {
+  max-width: 32rem;
+}
+
+h1 {
+  margin: 0 0 18px;
+  font-size: clamp(2rem, 7vw, 4.5rem);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.07;
+}
+
+p {
+  margin: 0 0 10px;
+  max-width: 38ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.lede {
+  color: var(--ivory);
+  font-size: clamp(1.0625rem, 2vw, 1.25rem);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 52px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  background: var(--ivory);
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.action:hover {
+  background: #e6d8c2;
+}
+
+.action small {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8125rem;
+}
+
+.retry {
+  margin: 8px 0 0;
+  font-size: 0.875rem;
+}
+
+.retry a {
+  color: var(--ivory);
+}
+
+.page-footer {
+  padding-block: 8px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 36rem) {
+  main::before {
+    background:
+      linear-gradient(90deg, #131d1be8, #131d1b60),
+      radial-gradient(ellipse 36% 65% at 91% 45%, #c5a16d3b, transparent 100%),
+      radial-gradient(ellipse 3% 45% at 91% 42%, #c5a16d47, transparent 100%);
+  }
+}

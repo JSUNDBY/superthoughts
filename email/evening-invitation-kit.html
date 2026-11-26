@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>Superthoughts</title>
+  <style>
+    @font-face {
+      font-family: Manrope;
+      src: url('https://superthoughts.com/fonts/manrope-latin.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 300 500;
+    }
+  </style>
+  <style>
+    .message-content p,
+    .message-content ul,
+    .message-content ol {
+      margin: 0 0 20px;
+      color: #eeeae0 !important;
+      font-family: Manrope,Arial,Helvetica,sans-serif !important;
+      font-size: 17px !important;
+      line-height: 1.65;
+    }
+
+    .message-content h1,
+    .message-content h2,
+    .message-content h3 {
+      margin: 0 0 16px;
+      color: #eeeae0;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .message-content h1 { font-size: 30px; }
+    .message-content h2 { font-size: 28px; }
+    .message-content h3 { font-size: 22px; }
+
+    .message-content a,
+    .email-footer a {
+      color: #e7d4b4;
+      text-decoration: underline;
+    }
+
+    .message-content a.button,
+    .message-content .button a,
+    .message-content a.evening-button {
+      display: inline-block;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding: 11px 20px;
+      border-radius: 4px;
+      background-color: #e7d4b4;
+      color: #202b25;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 22px;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .message-content img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media screen and (max-width: 480px) {
+      .email-gutter { padding-left: 24px !important; padding-right: 24px !important; }
+      .portal-gutter { padding-left: 12px !important; padding-right: 12px !important; }
+      .message-content h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background-color:#182421;color:#eeeae0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#182421" style="width:100%;background-color:#182421;">
+    <tr>
+      <td align="center">
+        <!--[if mso]>
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" align="center">
+          <tr><td>
+        <![endif]-->
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#182421" style="width:100%;max-width:600px;background-color:#182421;">
+          <tr>
+            <td class="email-gutter" style="padding:32px 36px 22px;color:#eeeae0;font-family:Manrope,Arial,Helvetica,sans-serif;">
+              <div style="font-size:13px;line-height:20px;font-weight:400;letter-spacing:4px;">SUPERTHOUGHTS</div>
+              <div style="margin-top:8px;color:#b9c0b5;font-size:10px;line-height:16px;font-weight:400;letter-spacing:1.6px;">A NOTE FROM JOSH</div>
+            </td>
+          </tr>
+          <tr aria-hidden="true">
+            <td class="portal-gutter" style="padding:0 18px;">
+              <table role="presentation" aria-hidden="true" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td align="center" valign="bottom" height="68" bgcolor="#293a31" style="height:68px;border-radius:50% 50% 3px 3px / 85% 85% 3px 3px;background-color:#293a31;background-image:radial-gradient(ellipse at 83% 0%,#766449 0%,#46513c 42%,#293a31 76%);">
+                    <table role="presentation" width="28" cellspacing="0" cellpadding="0" border="0" style="width:28px;margin-bottom:18px;">
+                      <tr>
+                        <td height="1" bgcolor="#c5a16d" style="height:1px;background-color:#c5a16d;font-size:0;line-height:0;">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="email-gutter" align="left" bgcolor="#182421" style="padding:28px 36px 12px;background-color:#182421;color:#eeeae0;font-family:Manrope,Arial,Helvetica,sans-serif;font-size:17px;font-weight:400;line-height:1.65;word-wrap:break-word;overflow-wrap:break-word;">
+              <div class="message-content" style="color:#eeeae0;font-family:Manrope,Arial,Helvetica,sans-serif;font-size:17px;font-weight:400;line-height:1.65;">
+                {{ message_content }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="email-gutter email-footer" align="left" bgcolor="#182421" style="padding:0 36px 30px;background-color:#182421;color:#b9c0b5;font-family:Manrope,Arial,Helvetica,sans-serif;font-size:12px;line-height:19px;">
+              <div style="border-top:1px solid #3c4a41;padding-top:17px;">Superthoughts &middot; Words, space, music.</div>
+              <div style="padding-top:6px;color:#e7d4b4;">
+                <a href="{{ unsubscribe_url }}" style="color:#e7d4b4;text-decoration:underline;">Unsubscribe</a>
+                <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
+                <a href="{{ subscriber_preferences_url }}" style="color:#e7d4b4;text-decoration:underline;">Email preferences</a>
+              </div>
+              <div style="padding-top:6px;">{{ address }}</div>
+            </td>
+          </tr>
+        </table>
+        <!--[if mso]>
+          </td></tr>
+        </table>
+        <![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
