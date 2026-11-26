@@ -9,6 +9,7 @@ function load({ page = true, gate, preview = false } = {}) {
   const source = gate === undefined ? catalogSource : catalogSource.replace(/^ gate: (true|false),$/m, ` gate: ${gate},`);
   const context = { window: {} };
   if (page) {
+    context.addEventListener = () => {};
     context.document = { createElement: () => ({ append() {} }) };
     context.localStorage = { getItem: key => (key === 'st-gate' && preview ? 'on' : null) };
   }

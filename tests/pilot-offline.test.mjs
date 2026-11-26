@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../pilot-sw.js', import.meta.url), 'utf8');
@@ -11,6 +12,8 @@ const catalog = Array.from(catalogContext.window.STCatalog, item => ({
   id: item.id, src: item.src, cues: item.cues, stream: item.stream === true
 }));
 const origin = 'http://localhost:8846/';
+const gatedMembers = new Set(catalogContext.window.STAccess.gate ? catalogContext.window.STAccess.members : []);
+const publicRoot = process.env.ST_TEST_PUBLIC_ROOT;
 const guided = catalog.find(item => item.id === 'gratitude');
 const sound = catalog.find(item => item.id === 'warmth');
 const saved = response => Array.from(response.saved);
@@ -24,7 +27,7 @@ function worker(options = {}) {
   let fetcher = options.fetcher || (async input => {
     const url = typeof input === 'string' ? input : input.url;
     if (url.endsWith('.mp3')) return new Response(allBytes, {
-      status: 200, headers: { 'Content-Length': String(allBytes.byteLength) }
+      status: 200, headers: { 'Content-Type': 'audio/mpeg', 'Content-Length': String(allBytes.byteLength) }
     });
     if (url.endsWith('.json')) return new Response('[]', {
       status: 200, headers: { 'Content-Length': '2' }
@@ -34,12 +37,10 @@ function worker(options = {}) {
   const key = input => typeof input === 'string' ? input : input.url;
   const context = {
     URL, Request, Response, TextDecoder,
-    self: {
-      registration: { scope: origin },
-      addEventListener(type, callback) { listeners.set(type, callback); },
-      skipWaiting: async () => {},
-      clients: { claim: async () => {} }
-    },
+    registration: { scope: options.scope ?? origin },
+    addEventListener(type, callback) { listeners.set(type, callback); },
+    skipWaiting: async () => {},
+    clients: { claim: async () => {} },
     caches: {
       async open(name) {
         let entries = buckets.get(name);
@@ -52,7 +53,11 @@ function worker(options = {}) {
           },
           async delete(input) { return entries.delete(key(input)); },
           async addAll(urls) {
-            for (const url of urls) entries.set(url, new Response('cached pilot'));
+            for (const url of urls) {
+              const path = new URL(url).pathname.slice(1);
+              if (options.publicRoot) assert.ok(statSync(join(options.publicRoot, path)).isFile(), path);
+              entries.set(url, new Response('cached pilot'));
+            }
           }
         };
       },
@@ -65,13 +70,13 @@ function worker(options = {}) {
     }
   };
   // In a real service worker `self` is the global object.
-  context.window = context.self;
+  context.self = context;
   vm.createContext(context);
   context.importScripts = path => {
     assert.equal(path, 'pilot-catalog.js');
     vm.runInContext(options.catalogSource ?? catalogSource, context, { filename: path });
   };
-  vm.runInContext(source, context, { filename: 'pilot-sw.js' });
+  vm.runInContext(options.source ?? source, context, { filename: 'pilot-sw.js' });
   return {
     buckets,
     fetchCalls,
@@ -169,7 +174,7 @@ test('a guided session is listed only after audio and cues are complete', async 
 
 test('every current downloadable catalog session can be saved and removed offline', async () => {
   const sw = worker();
-  const local = catalog.filter(item => !item.stream);
+  const local = catalog.filter(item => !item.stream && !gatedMembers.has(item.id));
   for (const item of local) {
     const result = await sw.message({ type: 'CACHE_SESSION', src: item.src, cues: item.cues });
     assert.equal(result.ok, true, `${item.id}: ${result.error || ''}`);
@@ -192,9 +197,17 @@ test('failed cue, incomplete audio, and storage quota failures never report a ne
   assert.equal(result.ok, false);
   assert.deepEqual(saved(result), []);
 
+  const nonAudio = worker({ fetcher: async input =>
+    String(input).endsWith('.json') ? new Response('[]') : new Response('<html>Unavailable</html>')
+  });
+  result = await nonAudio.message({ type: 'CACHE_SESSION', ...guided });
+  assert.equal(result.ok, false);
+  assert.match(result.error, /did not contain an audio recording/);
+  assert.deepEqual(saved(result), []);
+
   const incomplete = worker({ fetcher: async input => {
     if (String(input).endsWith('.json')) return new Response('[]');
-    return new Response(Uint8Array.of(1, 2), { headers: { 'Content-Length': '4' } });
+    return new Response(Uint8Array.of(1, 2), { headers: { 'Content-Type': 'audio/mpeg', 'Content-Length': '4' } });
   } });
   result = await incomplete.message({ type: 'CACHE_SESSION', ...guided });
   assert.equal(result.ok, false);
@@ -311,4 +324,116 @@ test('a hosted session cannot be saved with another session\'s cues', async () =
   const result = await sw.message({ type: 'CACHE_SESSION', src: a.src, cues: b.cues });
   assert.equal(result.ok, false);
   assert.equal(sw.fetchCalls.length, 0);
+});
+
+test('offline controls require a controlling worker and return when switching back to a free session', async () => {
+  class Element extends EventTarget {}
+  const elements = Object.fromEntries(['pilot-audio', 'offline-button', 'offline-note', 'install-button']
+    .map(id => [id, new Element()]));
+  const audio = elements['pilot-audio'];
+  const button = elements['offline-button'];
+  const note = elements['offline-note'];
+  const member = { src: 'https://members.superthoughts.com/audio/example', access: 'member' };
+  const streams = { src: 'audio/streamed-example.mp3', stream: true };
+  const window = Object.assign(new EventTarget(), { STCatalog: [guided, member, streams], isSecureContext: true });
+  const serviceWorker = Object.assign(new EventTarget(), {
+    controller: null,
+    async register() { return { active: {} }; }
+  });
+  audio.src = new URL(guided.src, origin).href;
+  const ui = readFileSync(new URL('../pilot-offline.js', import.meta.url), 'utf8');
+  vm.runInNewContext(ui, {
+    window, URL, MessageChannel, setTimeout, clearTimeout,
+    navigator: { serviceWorker },
+    document: { baseURI: origin, getElementById: id => elements[id] }
+  });
+  await Promise.resolve();
+  assert.equal(button.disabled, true);
+
+  serviceWorker.controller = {
+    postMessage(data, [port]) {
+      assert.equal(data.type, 'LIST_SAVED');
+      port.postMessage({ ok: true, saved: [guided.src] });
+      port.close();
+    }
+  };
+  serviceWorker.dispatchEvent(new Event('controllerchange'));
+  assert.equal(button.disabled, false);
+
+  audio.src = member.src;
+  audio.dispatchEvent(new Event('loadstart'));
+  assert.equal(button.hidden, true);
+  assert.match(note.textContent, /available for free sessions/);
+
+  audio.src = new URL(streams.src, origin).href;
+  audio.dispatchEvent(new Event('loadstart'));
+  assert.equal(button.hidden, true);
+
+  audio.src = new URL(guided.src, origin).href;
+  audio.dispatchEvent(new Event('loadstart'));
+  assert.equal(button.hidden, false);
+  assert.equal(button.disabled, false);
+});
+
+test('built release installs, excludes member recordings, and serves saved free audio ranges', {
+  skip: !publicRoot
+}, async () => {
+  const scope = 'https://superthoughts.com/';
+  const builtCatalogSource = readFileSync(join(publicRoot, 'pilot-catalog.js'), 'utf8');
+  const builtContext = { window: {} };
+  vm.runInNewContext(builtCatalogSource, builtContext, { filename: 'pilot-catalog.js' });
+  const access = builtContext.window.STAccess;
+  const builtCatalog = builtContext.window.STCatalog;
+  const gated = access.gate ? builtCatalog.filter(item => access.members.includes(item.id)) : [];
+  if (access.gate) {
+    assert.ok(gated.length > 0);
+    assert.ok(gated.some(item => item.src.startsWith(access.app + '/audio/')));
+  }
+
+  const sw = worker({
+    scope,
+    publicRoot,
+    source: readFileSync(join(publicRoot, 'pilot-sw.js'), 'utf8'),
+    catalogSource: builtCatalogSource
+  });
+  await sw.install();
+  for (const item of gated) {
+    const result = await sw.message({ type: 'CACHE_SESSION', src: item.src, cues: item.cues });
+    assert.equal(result.ok, false, item.id);
+    assert.deepEqual(saved(result), []);
+    assert.equal(await sw.route(new URL(item.src, scope).href), undefined, item.id);
+  }
+  assert.equal(sw.fetchCalls.length, 0);
+
+  const eligible = builtCatalog.filter(item => !gated.includes(item) && item.stream !== true);
+  for (const [id, srcPrefix] of [
+    ['arriving-at-the-table', 'audio/'],
+    ['still-enough-to-listen', 'https://audio.superthoughts.com/free/']
+  ]) {
+    const item = eligible.find(candidate => candidate.id === id);
+    assert.ok(item?.cues && item.src.startsWith(srcPrefix), id);
+    const audioUrl = new URL(item.src, scope).href;
+    const cueUrl = new URL(item.cues, scope).href;
+    sw.setFetcher(async input => {
+      assert.equal(typeof input, 'string');
+      if (input === cueUrl) return new Response('[]');
+      assert.equal(input, audioUrl);
+      return new Response(Uint8Array.from([0, 1, 2, 3, 4]), {
+        headers: { 'Content-Type': 'audio/mpeg', 'Content-Length': '5' }
+      });
+    });
+    const result = await sw.message({ type: 'CACHE_SESSION', src: item.src, cues: item.cues });
+    assert.equal(result.ok, true, result.error);
+    assert.ok(saved(result).includes(item.src));
+    sw.setFetcher(async () => { throw Error('offline'); });
+    const part = await sw.route(audioUrl, { range: 'bytes=2-' });
+    assert.equal(part.status, 206);
+    assert.equal(part.headers.get('content-range'), 'bytes 2-4/5');
+    assert.deepEqual([...new Uint8Array(await part.arrayBuffer())], [2, 3, 4]);
+    const beginning = await sw.route(audioUrl, { range: 'bytes=0-', mode: 'no-cors' });
+    assert.equal(beginning.status, 206);
+    assert.equal(beginning.headers.get('content-range'), 'bytes 0-4/5');
+    assert.deepEqual([...new Uint8Array(await beginning.arrayBuffer())], [0, 1, 2, 3, 4]);
+    assert.equal(await (await sw.route(cueUrl)).text(), '[]');
+  }
 });

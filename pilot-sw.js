@@ -1,11 +1,11 @@
 /* Optional offline support for the pilot. This worker ignores the rest of the site. */
 'use strict';
 
-const SHELL_CACHE = 'superthoughts-pilot-shell-v108-membership';
+const SHELL_CACHE = 'superthoughts-pilot-shell-v109-offline';
 const SESSION_CACHE = 'superthoughts-pilot-sessions-v1';
 const ROOT = new URL(self.registration.scope);
 // Free sessions and their cues live on the public audio host (2026-10-23 audio move, phase 3a).
-// Only its free/ and cues/ folders are accepted; member audio stays same-origin until the paywall launches.
+// Only its free/ and cues/ folders are accepted.
 const AUDIO_HOST = 'https://audio.superthoughts.com';
 const HOSTED_AUDIO = /^https:\/\/audio\.superthoughts\.com\/free\/[a-z0-9][a-z0-9-]*\.mp3$/;
 const HOSTED_CUES = /^https:\/\/audio\.superthoughts\.com\/cues\/[a-z0-9][a-z0-9-]*-cues\.json$/;
@@ -25,8 +25,11 @@ importScripts('pilot-catalog.js');
 const SESSION_FILES = (() => {
   const catalog = self.STCatalog;
   if (!Array.isArray(catalog) || !catalog.length) throw new Error('Missing session catalog.');
+  const access = self.STAccess;
+  const members = new Set(access?.gate ? access.members : []);
   const files = new Map();
   for (const item of catalog) {
+    if (members.has(item?.id) || item?.access === 'member') continue;
     // Streamed catalog sessions live on the audio CDN and are never cached offline.
     if (item && item.stream === true && typeof item.src === 'string' &&
         /^https:\/\/superthoughts-audio\.b-cdn\.net\/site\/[a-z0-9][a-z0-9-]*\.mp3$/.test(item.src)) continue;
@@ -214,6 +217,10 @@ async function completeResponse(relative, isAudio) {
   const response = await fetch(urlFor(relative), { cache: 'no-store' });
   if (!response.ok || response.status !== 200 || response.headers.has('content-range')) {
     throw new Error(`Could not download ${isAudio ? 'audio' : 'cues'} completely.`);
+  }
+  const contentType = response.headers.get('content-type')?.split(';', 1)[0].trim().toLowerCase();
+  if (isAudio && contentType !== 'audio/mpeg' && contentType !== 'audio/mp3') {
+    throw new Error('The download did not contain an audio recording.');
   }
   const bytes = await response.arrayBuffer();
   if (!bytes.byteLength) throw new Error(`Empty ${isAudio ? 'audio' : 'cue'} file.`);

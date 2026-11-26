@@ -5,24 +5,33 @@
   const note = document.getElementById('offline-note');
   const install = document.getElementById('install-button');
   const catalog = window.STCatalog || [];
-  let worker = null;
+  if (!audio || !button || !note || !install) return;
+  let availability = 'Offline saving is getting ready.';
   let saved = new Set();
   let busy = false;
   let installPrompt = null;
   const current = () => catalog.find(item => new URL(item.src, document.baseURI).href === audio.src);
+  const controller = () => navigator.serviceWorker?.controller;
+  const unavailable = item => item?.access === 'member' || item?.stream === true;
   function update() {
     const item = current();
-    if (item && item.stream) { button.hidden = true; note.textContent = 'This session streams. Offline saving is not available for it yet.'; return; }
-    if (item && item.access === 'member') { button.hidden = true; note.textContent = 'Offline saving is not available for members sessions yet.'; return; }
+    button.hidden = unavailable(item);
+    if (button.hidden) {
+      note.textContent = item.access === 'member'
+        ? 'Offline saving is available for free sessions.'
+        : 'This session is available to stream online.';
+      return;
+    }
+    const worker = controller();
     button.disabled = busy || !worker || !item;
     button.textContent = busy ? 'Saving…' : saved.has(item?.src) ? 'Remove offline copy' : 'Save for offline';
-    if (!busy && worker) note.textContent = saved.has(item?.src)
-      ? 'Saved in this browser. You can play this session without a connection.'
-      : 'Save a session before you travel. Browser storage may be cleared by your device.';
+    if (!busy) note.textContent = !worker ? availability : saved.has(item?.src)
+      ? 'Saved in this browser for offline listening. Your device may clear browser storage.'
+      : 'Save this free session to listen offline.';
   }
   function send(data) {
     return new Promise((resolve, reject) => {
-      worker = navigator.serviceWorker.controller || worker;
+      const worker = controller();
       if (!worker || worker.state === 'redundant') return reject(new Error('The listening space has updated. Reload once and try again.'));
       const channel = new MessageChannel();
       const timer = setTimeout(() => { channel.port1.close(); reject(new Error('Saving took too long. Check your connection and try again.')); }, 120000);
@@ -35,7 +44,7 @@
     });
   }
   button.addEventListener('click', async () => {
-    const item = current(); if (!item || busy) return;
+    const item = current(); if (!item || busy || !controller() || unavailable(item)) return;
     const removing = saved.has(item.src);busy = true;update();
     note.textContent = removing ? 'Removing this offline copy…' : 'Saving the full recording. You can keep listening.';
     try { await send({type: removing ? 'REMOVE_SESSION' : 'CACHE_SESSION',src:item.src,cues:item.cues});busy = false;update(); }
@@ -49,19 +58,16 @@
   });
   window.addEventListener('appinstalled', () => { install.hidden=true;installPrompt=null; });
   if (!('serviceWorker' in navigator) || !window.isSecureContext) {
-    note.textContent = 'Offline saving is unavailable in this browser. Listening still works online.';update();return;
+    availability = 'Offline saving is unavailable in this browser.';update();return;
   }
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    worker = navigator.serviceWorker.controller || worker;
-    if (!busy) send({type:'LIST_SAVED'}).then(update).catch(() => {});
+  function refreshSaved() {
+    update();
+    if (controller() && !busy) send({type:'LIST_SAVED'}).then(update).catch(() => {});
+  }
+  navigator.serviceWorker.addEventListener('controllerchange', refreshSaved);
+  refreshSaved();
+  navigator.serviceWorker.register(new URL('pilot-sw.js', document.baseURI).href).catch(() => {
+    availability = 'Offline saving is unavailable right now. Reload and try again.';
+    update();
   });
-  (async () => {
-    try {
-      const registration = await navigator.serviceWorker.register(new URL('pilot-sw.js', document.baseURI).href);
-      await navigator.serviceWorker.ready;
-      worker = registration.active;
-      if (!worker) throw new Error('Offline saving is getting ready. Reload once to try again.');
-      await send({type:'LIST_SAVED'});update();
-    } catch (error) { note.textContent = error.message || 'Offline saving is unavailable right now.';update(); }
-  })();
 })();

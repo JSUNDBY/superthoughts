@@ -1,6 +1,6 @@
 """Build only the public listening experience; never publish production or archives."""
 from pathlib import Path
-import json, subprocess, shutil, re
+import json, os, subprocess, shutil, re
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'_site'
 if OUT.exists():shutil.rmtree(OUT)
@@ -85,4 +85,9 @@ if held:
  print(f'gate off: {len(held)} held sessions left out of pages and sitemap')
 (OUT/'.nojekyll').touch()
 (OUT/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Come back to Superthoughts</title><body style="background:#131716;color:#f6f0e6;font:20px system-ui;padding:12vw"><h1>A new place to listen.</h1><p>This page has moved. Your next moment is in the library.</p><a style="color:inherit" href="/">Come back to Superthoughts →</a></body></html>')
+# Check the exact release worker and catalog after membership URL rewriting.
+subprocess.run(
+ ['node','--test','--test-name-pattern=^built release','tests/pilot-offline.test.mjs'],
+ cwd=ROOT, env={**os.environ,'ST_TEST_PUBLIC_ROOT':str(OUT)}, check=True
+)
 print(f'Public release: {sum(p.is_file() for p in OUT.rglob("*"))} files, {sum(p.stat().st_size for p in OUT.rglob("*") if p.is_file())/1e6:.1f} MB')
