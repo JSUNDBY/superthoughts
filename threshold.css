@@ -259,9 +259,10 @@
 .page-home .th-light :is(.teal,.glow,.seam,.grain){display:none}
 .page-home .th-light .shade{
   background:
-    linear-gradient(180deg,rgba(var(--hero-scrim),.8),rgba(var(--hero-scrim),0) 26%,rgba(var(--hero-scrim),0) 80%,var(--bg)),
-    linear-gradient(90deg,rgba(var(--hero-scrim),.91),rgba(var(--hero-scrim),.76) 39%,rgba(var(--hero-scrim),.38) 61%,rgba(var(--hero-scrim),0) 74%);
+    linear-gradient(180deg,rgba(var(--hero-scrim),.84) 64px,rgba(var(--hero-scrim),0) 26%,rgba(var(--hero-scrim),0) 80%,var(--bg)),
+    linear-gradient(90deg,rgba(var(--hero-scrim),.91),rgba(var(--hero-scrim),.76) 39%,rgba(var(--hero-scrim),.44) 61%,rgba(var(--hero-scrim),0) 74%);
 }
+:root:not([data-theme="light"]) .page-home .th-arrival .th-label{color:var(--muted)}
 :root[data-theme="light"] .page-home .th-light{--hero-scrim:236,226,207}
 :root[data-theme="light"] .page-home .th-light .shade{
   background:
