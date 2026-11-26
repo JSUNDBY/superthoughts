@@ -40,3 +40,164 @@
 .session-page .player-controls button{min-width:44px}
 .th-jump a{min-width:44px}
 .session-page .playing{font-size:15px}
+
+.session-page .room-photographic {
+  --photo-focus: center;
+  --room-inset: clamp(24px, 7vw, 110px);
+  background: #172021;
+}
+
+.room-photographic[data-design="still"] { --photo-focus: 65% 52%; }
+.room-photographic[data-design="tense"] { --photo-focus: 54% 51%; }
+.room-photographic[data-design="phone"] { --photo-focus: 55% 52%; }
+.room-photographic[data-design="yesmouth"] { --photo-focus: 35% 55%; }
+
+.room-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--photo-focus);
+  pointer-events: none;
+}
+
+.session-page .room-photographic .room-shade {
+  background:
+    linear-gradient(0deg, #0a0d0df5 0%, #0a0d0db3 27%, #0a0d0d12 68%, #0a0d0d99 100%),
+    linear-gradient(90deg, #0a0d0dbd 0%, #0a0d0d75 36%, #0a0d0d12 75%);
+}
+
+.session-page .room-photographic .session-intro {
+  padding-top: clamp(88px, 20svh, 235px);
+}
+
+.session-page .room-photographic .intro-duration {
+  margin: 10px 0 0;
+  color: #e6dccb;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.session-page .room-photographic .play {
+  border-color: #f3ead9;
+  background: #f3ead9;
+  color: #172021;
+}
+
+.session-page .room-photographic .play:hover { background: #fff6e8; }
+
+.room-photographic .caption.visible {
+  position: relative;
+  inset: auto;
+  align-self: flex-start;
+  max-width: 640px;
+  margin: 0 var(--room-inset) 20px;
+  padding: 10px 16px;
+  border-radius: 4px;
+  background: #0a0d0de8;
+  color: #f3ead9;
+  font-size: clamp(16px, 2.3vw, 20px);
+  line-height: 1.5;
+  text-align: left;
+}
+
+.room-photographic:fullscreen,
+.room-photographic.expanded {
+  min-height: 0;
+  overflow: auto;
+}
+
+#sleep-timer-dialog {
+  width: min(380px, calc(100% - 48px));
+  padding: 22px;
+  border: 1px solid #e6dccb66;
+  border-radius: 8px;
+  background: #172021;
+  color: #f3ead9;
+}
+
+#sleep-timer-dialog::backdrop { background: #0a0d0dc4; }
+#sleep-timer-dialog h2 { margin: 0 0 14px; font-size: 20px; }
+
+.sleep-timer-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#sleep-timer-dialog button {
+  min-height: 44px;
+  border: 1px solid #e6dccb66;
+  border-radius: 4px;
+  padding: 0 12px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+#sleep-timer-dialog button[aria-pressed="true"] {
+  background: #f3ead9;
+  color: #172021;
+}
+
+#sleep-timer-dialog form { margin-top: 16px; text-align: right; }
+
+@media (max-width: 640px) {
+  html:has(.room-photographic):has(.analytics-choice:not([hidden])) {
+    scroll-padding-bottom: 116px;
+  }
+
+  .session-page .room-photographic {
+    --room-inset: 24px;
+    --photo-height: 42svh;
+    min-height: 0;
+    background: var(--photo-ground, #172021);
+  }
+
+  .session-page:has(.room-photographic[data-design="still"]) { --photo-ground: #302923; }
+  .session-page:has(.room-photographic[data-design="tense"]) { --photo-ground: #202929; }
+  .session-page:has(.room-photographic[data-design="stillsleep"]) { --photo-ground: #17232f; }
+  .session-page:has(.room-photographic[data-design="phone"]) { --photo-ground: #29271e; }
+  .session-page:has(.room-photographic[data-design="yesmouth"]) { --photo-ground: #282b29; }
+
+  .session-page:has(.room-photographic) {
+    background: var(--photo-ground, #172021);
+  }
+
+  .room-photographic .room-photo,
+  .room-photographic .room-shade { height: var(--photo-height); }
+
+  .room-photographic.immersed .room-photo,
+  .room-photographic.immersed .room-shade { height: 100%; }
+
+  .session-page .room-photographic .room-shade {
+    background: linear-gradient(180deg, #0a0d0dc9 0%, transparent 28% 65%, var(--photo-ground, #172021) 100%);
+  }
+
+  .session-page .room-photographic .session-intro {
+    margin: 0 var(--room-inset) 22px;
+    padding-top: max(16px, calc(var(--photo-height) - 64px - env(safe-area-inset-top)));
+    text-shadow: none;
+  }
+
+  .session-page .room-photographic .session-intro h1 {
+    margin: 8px 0;
+    font-size: clamp(26px, 7.2vw, 36px);
+    line-height: 1.1;
+  }
+
+  .session-page .room-photographic #description { line-height: 1.48; }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .room-photographic .room-photo,
+  .room-photographic .room-shade { transition: height 1.5s ease; }
+}
+
+@media (min-width: 641px) {
+  .session-page:has(.analytics-choice:not([hidden])) .room-photographic:not(.expanded, :fullscreen) {
+    min-height: calc(100svh - 72px);
+  }
+}

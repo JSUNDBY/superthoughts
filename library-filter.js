@@ -5,6 +5,9 @@
   var box = document.querySelector('[data-filter]'); if (!box) return;
   box.hidden = false;
   var doors = document.querySelector('.lib-doors'), back = document.querySelector('[data-back]');
+  var featured = document.querySelector('[data-featured]');
+  var filterLink = featured && featured.querySelector('[data-filter-link]');
+  if (filterLink) filterLink.hidden = false;
   var feelLabel = box.querySelector('[data-feel-label]'), feel = box.querySelector('[data-feel]');
   var rows = [].slice.call(document.querySelectorAll('.th-shelf li[data-needs]'));
   var shelves = [].slice.call(document.querySelectorAll('.th-shelf'));
@@ -26,6 +29,7 @@
     });
     shelves.forEach(function (s) { s.hidden = state.door ? s.id !== state.door : !s.querySelector('li[data-needs]:not([hidden])'); });
     var open = !!(state.door || state.need);
+    if (featured) featured.hidden = open || !!state.len || state.free;
     doors.hidden = open; back.hidden = !open;
     feelLabel.hidden = feel.hidden = !!state.door;
     box.querySelectorAll('[data-need]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.need === state.need); });

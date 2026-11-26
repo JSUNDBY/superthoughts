@@ -44,7 +44,8 @@ TOGGLE = """<script>(function(){var b=document.querySelector('.th-theme');if(!b)
 function label(){var light=r.dataset.theme==='light';b.textContent=light?'Dark':'Light';b.setAttribute('aria-label',light?'Switch to dark':'Switch to light');}
 label();b.addEventListener('click',function(){r.dataset.theme=r.dataset.theme==='light'?'dark':'light';try{localStorage.setItem('st-theme',r.dataset.theme);}catch(e){}label();});})();</script>"""
 
-def head(title, desc, canonical, og_title):
+def head(title, desc, canonical, og_title, *, extra_stylesheet=None):
+    style = f'\n  <link rel="stylesheet" href="{extra_stylesheet}">' if extra_stylesheet else ''
     return f"""<!doctype html>
 <html lang="en" data-theme="dark">
 <head>
@@ -55,7 +56,7 @@ def head(title, desc, canonical, og_title):
   <meta name="description" content="{e(desc)}">
   {THEME}
   <link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="threshold.css">
+  <link rel="stylesheet" href="threshold.css">{style}
   <link rel="canonical" href="{canonical}"><link rel="icon" href="images/favicon.svg"><link rel="manifest" href="pilot.webmanifest"><meta property="og:type" content="website"><meta property="og:url" content="{canonical}"><meta property="og:title" content="{e(og_title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:image" content="https://superthoughts.com/images/og-listening.png"><meta name="twitter:card" content="summary_large_image">
 </head>"""
 
@@ -85,6 +86,20 @@ def row(s, show_moment=False):
     free = '<span class="free">Free</span>' if s['free'] else ''
     where = f" · {e(next(m['name'] for m in moments + series if m['id'] == s['moment']))}" if show_moment else ''
     return f"""<li data-needs="{' '.join(s.get('needs', []))}" data-min="{minutes(s['length'])}"{' data-free' if s['free'] else ''}><a class="th-row" href="{e(s['href'])}"><strong>{e(s['title'])}{free}</strong><span class="len">{minutes(s['length'])} min</span><span class="line">{e(s['line'])}{where}</span>{f'<span class="starts">{e(s["starts"])}</span>' if s.get('starts') else ''}</a></li>"""
+
+def cover_card(session, *, lead=False):
+    cover = session['libraryCover']
+    image = f'/images/session-covers/{e(cover["cover"])}.jpg'
+    loading = 'fetchpriority="high"' if lead else 'loading="lazy"'
+    free = ' · Free' if session['free'] else ''
+    return f"""          <li{' class="featured-lead"' if lead else ''}><a href="{e(session['href'])}">
+            <img src="{image}" alt="" {loading} decoding="async">
+            <span class="featured-copy">
+              <strong>{e(session['title'])}</strong>
+              <span class="featured-opening">{e(cover['opening'])}</span>
+              <span class="featured-meta">{minutes(session['length'])} min{free}</span>
+            </span>
+          </a></li>"""
 
 # Library doors (Josh 2026-11-23, D84 B): one soft light per moment. The same light carries from the door into its
 # shelf header and the play circle on each session card, so a door and what is behind it read as one thing.
@@ -197,20 +212,33 @@ for m in moments + series:
 if sound and not series: shelves.append(sound_shelf())
 chips = ''.join(f'<button type="button" data-need="{n["id"]}" aria-pressed="false">{e(n["name"])}</button>' for n in need_list if n['id'] not in DOOR_NEEDS and any(n['id'] in s.get('needs', []) for s in sessions))
 doors = ''.join(f'<a class="lib-door lib-lit{" lib-wide" if m in series else ""}" href="#{m["id"]}" data-door="{m["id"]}" style="--g:{glow(m["id"])}"><span class="lib-count">{door_count(m)}</span><strong>{e(m["name"])}</strong><small>{e(m["line"])}</small></a>' for m in moments + ([SOUND_SHELF] if sound else []) + series if on(m['id']) or m is SOUND_SHELF)
+cover_order = ['still-enough-to-listen', 'after-a-tense-conversation', 'still-enough-to-sleep',
+               'before-you-pick-up-the-phone', 'before-you-say-yes']
+cover_sessions = {s['libraryCover']['cover']: s for s in sessions if 'libraryCover' in s}
+featured_cards = '\n'.join(cover_card(cover_sessions[slug], lead=index == 0)
+                           for index, slug in enumerate(cover_order) if slug in cover_sessions)
 
-library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, anxiety, stress, overthinking, tension in the body, morning, love, confidence and abundance. Filter by need and length. Some are free.', 'https://superthoughts.com/library.html', 'The Superthoughts library')}
+library = f"""{head('Library · Superthoughts', 'Guided meditations for sleep, anxiety, stress, overthinking, tension in the body, morning, love, confidence and abundance. Filter by need and length. Some are free.', 'https://superthoughts.com/library.html', 'The Superthoughts library', extra_stylesheet='library-covers.css')}
 <body class="threshold library-page">
   <a class="th-skip" href="#main">Skip to content</a>
 {header('library')}
   <main id="main">
     <div class="th-library-top"><div class="th-light th-soft" aria-hidden="true"><span class="teal"></span><span class="glow"></span><span class="seam"></span><span class="shade"></span><span class="grain"></span></div>
     <div class="th-wrap th-library-intro">
-      <p class="th-label">The library</p>
-      <h1>What do you need right now?</h1>
-      <p class="intro">{len(sessions)} guided sessions, each with its own music{f', and {len(sound)} sound pieces with no words' if sound else ''}. The free ones are marked.</p>
-      <nav class="lib-doors" aria-label="Sessions by moment">{doors}</nav>
+      <h1>Library</h1>
+      <p class="intro">{len(sessions)} guided sessions{f' · {len(sound)} sound pieces' if sound else ''}</p>
+      <section class="featured-listening" aria-label="Free sessions to begin with" data-featured>
+        <nav class="featured-nav" aria-label="Browse the full library">
+          <a href="#browse-moments">Browse by moment</a>
+          <a href="#library-filters" data-filter-link hidden>Filters</a>
+        </nav>
+        <ul class="featured-covers">
+{featured_cards}
+        </ul>
+      </section>
+      <nav class="lib-doors" id="browse-moments" aria-label="Sessions by moment">{doors}</nav>
       <p class="lib-back" data-back hidden><button type="button" class="th-clear">All moments</button></p>
-      <div class="th-filter" data-filter hidden>
+      <div class="th-filter" id="library-filters" data-filter hidden>
         <p class="th-label" data-feel-label>Or by feeling</p>
         <div class="th-chips" role="group" aria-label="Filter by feeling" data-feel>{chips}</div>
         <p class="th-label">How long?</p>

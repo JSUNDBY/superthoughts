@@ -5,9 +5,14 @@ const id=document.querySelector('#room').dataset.design;
 const session=sessions[id]||sessions.still;
 const $=s=>document.querySelector(s);
 const room=$('#room'),audio=$('#pilot-audio'),play=$('#play'),seek=$('#seek'),art=$('#session-art');
-art.dataset.color=session.color;
-const artwork=createArtwork(art,{variant:'diffusion',layout:session.layout,phase:session.phase,color:session.color});
-$('#title').textContent=session.title;$('#description').textContent=session.description;$('#player-title').textContent=session.title;
+const sleepTimerDialog = $('#sleep-timer-dialog');
+let artwork;
+if(art){
+ art.dataset.color=session.color;
+ artwork=createArtwork(art,{variant:'diffusion',layout:session.layout,phase:session.phase,color:session.color});
+ $('#description').textContent=session.description;
+}
+$('#title').textContent=session.title;$('#player-title').textContent=session.title;
 document.title=`${session.title} · Superthoughts`;
 const item=(window.STCatalog||[]).find(s=>s.id===session.id);
 if(!item)throw Error('Missing session metadata');
@@ -23,10 +28,10 @@ const setStatus=text=>$('#status').textContent=text;
 const locked=item.access==='member'?async()=>!(await window.STAccess.isMember()):null;
 if(locked)locked().then(no=>{if(no)window.STAccess.lockNote($('#status'))});
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-function reveal(){room.classList.remove('immersed');$('#wake').tabIndex=-1;$('#wake').setAttribute('aria-hidden','true');clearTimeout(hideTimer);if(!audio.paused&&!audio.ended)hideTimer=setTimeout(()=>{if(!(keyboard&&room.contains(document.activeElement))){room.classList.add('immersed');$('#wake').tabIndex=0;$('#wake').setAttribute('aria-hidden','false')}},6500)}
+function reveal(){room.classList.remove('immersed');$('#wake').tabIndex=-1;$('#wake').setAttribute('aria-hidden','true');clearTimeout(hideTimer);if(!audio.paused&&!audio.ended)hideTimer=setTimeout(()=>{if(!sleepTimerDialog?.open&&!(keyboard&&room.contains(document.activeElement))){room.classList.add('immersed');$('#wake').tabIndex=0;$('#wake').setAttribute('aria-hidden','false')}},6500)}
 room.addEventListener('pointerdown',()=>{keyboard=false;reveal()});room.addEventListener('pointermove',reveal);
 room.addEventListener('focusin',()=>{if(keyboard)reveal()});
-addEventListener('keydown',event=>{keyboard=true;reveal();if(event.key==='Escape'&&room.classList.contains('expanded')){room.classList.remove('expanded');document.body.classList.remove('has-expanded');syncFull()}});
+addEventListener('keydown',event=>{keyboard=true;reveal();if(event.key==='Escape'&&!sleepTimerDialog?.open&&room.classList.contains('expanded')){room.classList.remove('expanded');document.body.classList.remove('has-expanded');syncFull()}});
 $('#wake').addEventListener('click',reveal);
 function updateCaption(){
  const cue=words?cues.find(c=>audio.currentTime>=c.start&&audio.currentTime<c.end+2.5):null;
@@ -44,19 +49,73 @@ audio.addEventListener('waiting',()=>{if(!audio.paused)setStatus('Loading the se
 audio.addEventListener('error',async()=>{if(locked&&await locked())window.STAccess.lockNote($('#status'));else setStatus('The audio could not load. Please refresh and try again.');reveal()});
 seek.addEventListener('input',()=>{audio.currentTime=Number(seek.value);update();reveal()});
 $('#captions').addEventListener('click',()=>{words=!words;$('#captions').textContent=words?'Hide words':'Show words';$('#captions').setAttribute('aria-pressed',String(words));captionKey='reset';updateCaption()});
-function syncMotion(){const paused=artwork.getState().paused;$('#motion').textContent=paused?'Resume motion':'Pause motion';$('#motion').setAttribute('aria-pressed',String(paused))}
-syncMotion();reduced.addEventListener('change',()=>queueMicrotask(syncMotion));
-$('#motion').addEventListener('click',()=>{artwork.setPaused(!artwork.getState().paused);syncMotion()});
-$('#dim').addEventListener('click',()=>{const dim=!artwork.getState().dim;artwork.setDim(dim);$('#dim').textContent=dim?'Restore light':'Dim light';$('#dim').setAttribute('aria-pressed',String(dim))});
+if(artwork){
+ function syncMotion(){const paused=artwork.getState().paused;$('#motion').textContent=paused?'Resume motion':'Pause motion';$('#motion').setAttribute('aria-pressed',String(paused))}
+ if(navigator.connection?.saveData)artwork.setPaused(true);
+ syncMotion();reduced.addEventListener('change',()=>queueMicrotask(syncMotion));
+ $('#motion').addEventListener('click',()=>{artwork.setPaused(!artwork.getState().paused);syncMotion()});
+ $('#dim').addEventListener('click',()=>{const dim=!artwork.getState().dim;artwork.setDim(dim);$('#dim').textContent=dim?'Restore light':'Dim light';$('#dim').setAttribute('aria-pressed',String(dim))});
+ let suspendedMotion=null;
+ addEventListener('pagehide',()=>{suspendedMotion=artwork.getState().paused;artwork.setPaused(true)});
+ addEventListener('pageshow',event=>{if(event.persisted&&suspendedMotion!==null){artwork.setPaused(suspendedMotion||reduced.matches);syncMotion();reveal()}});
+}
 function syncFull(){const full=document.fullscreenElement===room||room.classList.contains('expanded');$('#fullscreen').textContent=full?'Exit full screen':'Full screen';$('#fullscreen').setAttribute('aria-pressed',String(full));reveal()}
 $('#fullscreen').addEventListener('click',async()=>{if(document.fullscreenElement){await document.exitFullscreen()}else if(room.classList.contains('expanded')){room.classList.remove('expanded');document.body.classList.remove('has-expanded')}else{try{if(!room.requestFullscreen)throw Error('fallback');await room.requestFullscreen()}catch{room.classList.add('expanded');document.body.classList.add('has-expanded')}}syncFull()});document.addEventListener('fullscreenchange',syncFull);
 fetch(item.cues).then(r=>{if(!r.ok)throw Error('cues unavailable');return r.json()}).then(data=>{cues=data;const lines=$('#transcript-lines');lines.replaceChildren(...cues.map(c=>{const p=document.createElement('p');p.textContent=c.text;return p}));updateCaption()}).catch(()=>{$('#transcript-lines').textContent='The words could not load. The recording is still available.'});
-if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:session.title,artist:'Superthoughts',artwork:[{src:new URL(`images/art/${session.id}.jpg`,document.baseURI).href,sizes:'768x768',type:'image/jpeg'}]});navigator.mediaSession.setActionHandler('play',()=>{if(audio.paused)play.click()});navigator.mediaSession.setActionHandler('pause',()=>audio.pause());navigator.mediaSession.setActionHandler('seekto',event=>{if(Number.isFinite(event.seekTime)){audio.currentTime=event.seekTime;update()}})}
-let suspendedMotion=null;
-addEventListener('pagehide',()=>{playback.flush();clearTimeout(hideTimer);clearTimeout(captionTimer);suspendedMotion=artwork.getState().paused;artwork.setPaused(true)});
-addEventListener('pageshow',event=>{if(event.persisted&&suspendedMotion!==null){artwork.setPaused(suspendedMotion||reduced.matches);syncMotion();reveal()}});
+if('mediaSession' in navigator){const photo=$('.room-photo');navigator.mediaSession.metadata=new MediaMetadata({title:session.title,artist:'Superthoughts',artwork:photo?[{src:photo.src,type:'image/jpeg'}]:[{src:new URL(`images/art/${session.id}.jpg`,document.baseURI).href,sizes:'768x768',type:'image/jpeg'}]});navigator.mediaSession.setActionHandler('play',()=>{if(audio.paused)play.click()});navigator.mediaSession.setActionHandler('pause',()=>audio.pause());navigator.mediaSession.setActionHandler('seekto',event=>{if(Number.isFinite(event.seekTime)){audio.currentTime=event.seekTime;update()}})}
+addEventListener('pagehide',()=>{playback.flush();clearTimeout(hideTimer);clearTimeout(captionTimer)});
+addEventListener('pageshow',event=>{if(event.persisted&&!artwork)reveal()});
 
 $('#restart').addEventListener('click',async()=>{const wasPlaying=!audio.paused;audio.pause();playback.select(session.id,session.duration,{restart:true});audio.currentTime=0;$('#resume-note').textContent='';update();reveal();if(wasPlaying){try{await audio.play()}catch{setStatus('Please tap Play to begin again.')}}});
 $('#share').addEventListener('click',async()=>{const url=new URL(session.page,location.href).href;try{if(navigator.share)await navigator.share({title:session.title,url});else{await navigator.clipboard.writeText(url);setStatus('Session link copied')}}catch(e){if(e.name!=='AbortError')setStatus('The link could not be shared here')}reveal()});
-if(navigator.connection?.saveData)artwork.setPaused(true);
-syncMotion();
+
+if (sleepTimerDialog?.showModal) {
+ const timerButton = $('#sleep-timer');
+ const options = [...sleepTimerDialog.querySelectorAll('[data-minutes]')];
+ let deadline = 0;
+ let timeout;
+
+ function setTimer(minutes) {
+  clearTimeout(timeout);
+  deadline = minutes ? Date.now() + minutes * 60_000 : 0;
+  timerButton.textContent = minutes ? `Timer · ${minutes} min` : 'Sleep timer';
+  for (const option of options) {
+   option.setAttribute('aria-pressed', String(Number(option.dataset.minutes) === minutes));
+  }
+  if (deadline) {
+   timeout = setTimeout(function expire() {
+    const remaining = deadline - Date.now();
+    if (remaining > 0) timeout = setTimeout(expire, remaining);
+    else checkTimer();
+   }, minutes * 60_000);
+  }
+ }
+
+ function checkTimer() {
+  if (!deadline || Date.now() < deadline) return;
+  setTimer(0);
+  const announce = () => setStatus('Your sleep timer has paused the session.');
+  if (audio.paused) {
+   setStatus('Sleep timer ended.');
+  } else {
+   audio.addEventListener('pause', announce, { once: true });
+   audio.pause();
+  }
+ }
+
+ timerButton.hidden = false;
+ timerButton.addEventListener('click', () => sleepTimerDialog.showModal());
+ sleepTimerDialog.addEventListener('close', reveal);
+ for (const option of options) {
+  option.addEventListener('click', () => {
+   const minutes = Number(option.dataset.minutes);
+   setTimer(minutes);
+   sleepTimerDialog.close();
+   setStatus(minutes ? `Listening will pause in ${minutes} minutes.` : 'Sleep timer off.');
+  });
+ }
+ document.addEventListener('visibilitychange', checkTimer);
+ addEventListener('pageshow', checkTimer);
+ audio.addEventListener('timeupdate', checkTimer);
+ audio.addEventListener('ended', () => setTimer(0));
+}
