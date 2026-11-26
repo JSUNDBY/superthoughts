@@ -797,22 +797,6 @@
    ]
   },
   {
-   "key": "two-minutes-between-things",
-   "href": "/sessions/two-minutes-between-things/",
-   "num": 20,
-   "title": "Two Minutes Between Things",
-   "line": "One slow reset between meetings or errands.",
-   "starts": "Goes straight to one slow breath and your feet on the floor.",
-   "length": "5 min",
-   "moment": "right-now",
-   "free": true,
-   "needs": [
-    "stress",
-    "anxiety",
-    "beginners"
-   ]
-  },
-  {
    "key": "when-you-wake-up-already-tense",
    "href": "/sessions/when-you-wake-up-already-tense/",
    "num": 19,
