@@ -46,7 +46,21 @@ function restoreLibrary(event) {
   }
   // A new tab, or a browser without a usable history entry, follows the normal link.
   const visit = storedVisit();
-  if (visit?.returning && document.referrer && route(document.referrer) === visit.player) {
+  if (!visit || !document.referrer || route(document.referrer) !== visit.player) return;
+  // A quick tap can follow the static Library link before the player module loads.
+  // Recover only if the two preceding entries prove this was the original visit.
+  const nav = window.navigation;
+  const index = nav?.currentEntry?.index;
+  const entries = nav?.entries();
+  const previousPlayer = entries?.[index - 1]?.url;
+  const previousLibrary = entries?.[index - 2]?.url;
+  const earlyReturn = route(location.href) === '/library.html' && previousPlayer && previousLibrary
+    && route(previousPlayer) === visit.player && route(previousLibrary) === visit.library;
+  if (earlyReturn && route(location.href) !== visit.library) {
+    history.replaceState({ ...history.state, stLibraryVisit: visit }, '', visit.library);
+    window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }));
+  }
+  if (earlyReturn || visit.returning) {
     saveVisit({ ...visit, returning: false });
     restoreRow(visit);
   }
